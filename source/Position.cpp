@@ -1,19 +1,19 @@
-#include "Position.h"
-
-void Position::Get(float& a_x, float& a_y)
-{
-	a_x = x;
-	a_y = y;
-}
-
-void Position::Set(float a_x, float a_y)
-{
-	x = a_x;
-	y = a_y;
-}
+#include "position.h"
 
 Position::Position()
 {
-	x = 0.f;
-	y = 0.f;
+	fX = 0.f;
+	fY = 0.f;
+}
+
+void Position::Set(float a_fX, float a_fY)
+{
+	fX = a_fX;
+	fY = a_fY;
+}
+
+void Position::Get(float & a_fX, float & a_fY)
+{
+	a_fX = fX;
+	a_fY = fY;
 }

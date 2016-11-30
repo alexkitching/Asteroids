@@ -8,115 +8,61 @@
 #include <iostream>
 
 #include "GameStates.h"
+#include "menu.h"
+#include "spaceship.h"
+
+void InitialiseGameAssets(oSpaceship& a_spaceship);
+
+int g_iScreenWidth = 0;
+int g_iScreenHeight = 0;
 
 int main(int argv, char* argc[])
 {
 	GameState currentState = MENU;
 	bool bShouldQuit = false;
-	bool onMenu = true;
+	
 	do
 	{
 		switch (currentState)
 		{
 		case MENU:
 		{
-			std::string menuItem[3] = { "[Play Game]", "[Options]", "[Exit Game]" };
-			int selectedItem = 0;
-			while (onMenu == true)
-			{
-				system("cls"); // Resets Console Window
-
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // Sets Console Text to White
-
-
-				std::cout << "     ___           _______.___________. _______ .______        ______    __   _______       _______.\n";
-				std::cout << "    /   \\         /       |           ||   ____||   _  \\      /  __  \\  |  | |       \\     /       |\n";
-				std::cout << "   /  ^  \\       |   (----`---|  |----`|  |__   |  |_)  |    |  |  |  | |  | |  .--.  |   |   (----`\n";
-				std::cout << "  /  /_\\  \\       \\   \\       |  |     |   __|  |      /     |  |  |  | |  | |  |  |  |    \\   \\    \n";
-				std::cout << " /  _____  \\  .----)   |      |  |     |  |____ |  |\\  \\----.|  `--'  | |  | |  '--'  |.----)   |   \n";
-				std::cout << "/__/     \\__\\ |_______/       |__|     |_______|| _| `._____| \\______/  |__| |_______/ |_______/    \n\n";
-				for (int i = 0; i < 3; ++i)
-				{
-					if (i == selectedItem) // Hightlights selected Item
-					{
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
-						std::cout << menuItem[i] << std::endl;
-					}
-					else
-					{
-						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-						std::cout << menuItem[i] << std::endl;
-					}
-				}
-
-				while (onMenu == true)
-				{
-					if (GetAsyncKeyState(VK_UP) != 0)
-					{
-						selectedItem -= 1;
-						if (selectedItem == -1)
-						{
-							selectedItem = 2;
-						}
-						break;
-					}
-
-					else if (GetAsyncKeyState(VK_DOWN) != 0)
-					{
-						selectedItem += 1;
-						if (selectedItem == 3)
-						{
-							selectedItem = 0;
-						}
-						break;
-					}
-
-					else if (GetAsyncKeyState(VK_RETURN) != 0)
-					{
-						switch (selectedItem)
-						{
-							case 0:
-							{
-								std::cout << "\n\n\nPrepare your thrusters! - Starting Game";
-								Sleep(1000);
-								currentState = GAMEPLAY;
-								onMenu = false;
-								break;
-							} 
-							case 1:
-							{
-								std::cout << "Options Menu test...";
-								Sleep(1000);
-								break;
-							} 
-							case 2:
-							{
-								currentState = GAMEOVER;
-								onMenu = false;
-								break;
-							}
-						}
-						break;
-					}
-				}
-				Sleep(200);
-			}
+			Menu menu;
+			currentState = menu.Initialise();
+			break;
 		}
 		case GAMEPLAY:
 		{
+			//Screen Dimensions
+			
+
+			
 
 			if (UG::Create(1024, 768, false, "Asteroids", 100, 100))
 			{
+				UG::GetScreenSize(g_iScreenWidth, g_iScreenHeight);
+
+				UG::SetBackgroundColor(UG::SColour(0x00, 0x00, 0x00, 0xFF));
+				//UG::AddFont("./fonts/pixel.ttf");
+
+				//Create Spaceship Sprite
+				oSpaceship spaceship;
+				InitialiseGameAssets(spaceship);
+				
 				do
 				{
 
-				} while (UG::Process);
+					spaceship.MoveSpaceship(spaceship);
+					UG::ClearScreen();
+				} while (UG::Process());
 			}
 			UG::Dispose();
+			break;
 		}
 		case GAMEOVER:
 		{
 			bShouldQuit = true;
+			break;
 		}
 		}
 	} while (!bShouldQuit);
@@ -125,4 +71,14 @@ int main(int argv, char* argc[])
 }
 
 
+#pragma region Initialisation - Initialisation of Assets
+void InitialiseGameAssets(oSpaceship& a_spaceship)
+{
+	//Initialise Spaceship
+	oSpaceship spaceship;
+	spaceship.Initialise(a_spaceship, "./images/Ship.png", g_iScreenWidth * 0.5f, g_iScreenHeight *0.1f);
+	spaceship.SetSpaceshipMovementKeys(a_spaceship, UG::KEY_UP, UG::KEY_DOWN, UG::KEY_LEFT, UG::KEY_RIGHT, UG::KEY_P);
+	UG::DrawSprite(a_spaceship.iSpriteID);
+}
+#pragma endregion
 

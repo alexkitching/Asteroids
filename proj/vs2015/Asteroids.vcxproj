@@ -20,9 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\main.cpp" />
+    <ClCompile Include="..\..\source\menu.cpp" />
+    <ClCompile Include="..\..\source\position.cpp" />
+    <ClCompile Include="..\..\source\spaceship.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\GameStates.h" />
+    <ClInclude Include="..\..\include\menu.h" />
+    <ClInclude Include="..\..\include\position.h" />
+    <ClInclude Include="..\..\include\spaceship.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7CD622AF-69B8-4D7B-9E10-3FC691CEDC98}</ProjectGuid>

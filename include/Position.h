@@ -5,12 +5,11 @@ class Position
 {
 public:
 	Position();
-	void Set(float a_x, float a_y);
-	void Get(float& a_x, float& a_y);
-
+	void Set(float a_fX, float a_fY);
+	void Get(float& a_fX, float& a_fY);
 private:
-	float x;
-	float y;
+	float fX;
+	float fY;
 };
 
 #endif
