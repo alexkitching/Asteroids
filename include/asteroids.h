@@ -6,9 +6,11 @@ class oAsteroidLarge
 {
 public:
 	oAsteroidLarge();
-	void Initialise(oAsteroidLarge& a_asteroidlarge, const char* a_AsteroidLargeImageFileName);
+	void Initialise(const char* a_AsteroidLargeImageFileName);
+	void SetSpriteID(int a_id);
 	void Update(oAsteroidLarge& a_asteroidlarge);
 	void CheckSpawnCollision(oAsteroidLarge& a_asteroidlarge);
+
 
 	int iSpriteID = -1;
 

@@ -105,3 +105,8 @@ void oSpaceship::MoveSpaceship(oSpaceship & a_Spaceship)
 
 	
 }
+
+void oSpaceship::SetSpriteID(int a_id)
+{
+	iSpriteID = a_id;
+}

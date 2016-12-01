@@ -1,0 +1,12 @@
+﻿  xcopy "N:\asteroids\scripts\..\Uog\lib\vs2015\x64\Debug\"*.pdb "N:\asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
+  0 File(s) copied
+  position.cpp
+n:\asteroids\source\position.cpp(28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+n:\asteroids\source\position.cpp(29): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  main.cpp
+n:\asteroids\include\spaceship.h(27): warning C4305: 'initializing': truncation from 'double' to 'const float'
+n:\asteroids\include\spaceship.h(28): warning C4305: 'initializing': truncation from 'double' to 'const float'
+  Generating Code...
+  Asteroids.vcxproj -> N:\asteroids\proj\vs2015\..\..\bin\x64\Debug\Asteroids.exe
+  xcopy "N:\asteroids\scripts\..\resources\"*.* "N:\asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
+  0 File(s) copied

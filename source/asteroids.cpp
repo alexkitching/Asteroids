@@ -6,15 +6,20 @@ oAsteroidLarge::oAsteroidLarge()
 
 }
 
-void oAsteroidLarge::Initialise(oAsteroidLarge & a_AsteroidLarge, const char * a_AsteroidLargeImageFileName)
+void oAsteroidLarge::Initialise(const char * a_AsteroidLargeImageFileName)
 {
 
-	a_AsteroidLarge.pos.SetRandom();
-	a_AsteroidLarge.iSpriteID = UG::CreateSprite(a_AsteroidLargeImageFileName, (float)a_AsteroidLarge.iWidth, (float)a_AsteroidLarge.iHeight);
+	pos.SetRandom();
+	iSpriteID = UG::CreateSprite(a_AsteroidLargeImageFileName, (float)iWidth, (float)iHeight);
 	float fX = 0.f, fY = 0.f;
-	a_AsteroidLarge.pos.Get(fX, fY);
-	UG::MoveSprite(a_AsteroidLarge.iSpriteID, fX, fY);
-	
+	pos.Get(fX, fY);
+	UG::DrawSprite(iSpriteID);
+	UG::MoveSprite(iSpriteID, fX, fY);
+}
+
+void oAsteroidLarge::SetSpriteID(int a_id)
+{
+	iSpriteID = a_id;
 }
 
 void oAsteroidLarge::Update(oAsteroidLarge & a_AsteroidLarge)
