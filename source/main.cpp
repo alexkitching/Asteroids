@@ -10,11 +10,13 @@
 #include "GameStates.h"
 #include "menu.h"
 #include "spaceship.h"
+#include "asteroids.h"
 
-void InitialiseGameAssets(oSpaceship& a_spaceship);
+void InitialiseGameAssets(oSpaceship& a_spaceship, oAsteroidLarge& a_asteroidlarge);
 
 int g_iScreenWidth = 0;
 int g_iScreenHeight = 0;
+float g_DeltaTime = 0.0f;
 
 int main(int argv, char* argc[])
 {
@@ -47,11 +49,12 @@ int main(int argv, char* argc[])
 
 				//Create Spaceship Sprite
 				oSpaceship spaceship;
-				InitialiseGameAssets(spaceship);
+				oAsteroidLarge asteroid[4];
+				InitialiseGameAssets(spaceship, asteroid[4]);
 				
 				do
 				{
-
+					g_DeltaTime = UG::GetDeltaTime();
 					spaceship.MoveSpaceship(spaceship);
 					UG::ClearScreen();
 				} while (UG::Process());
@@ -72,13 +75,22 @@ int main(int argv, char* argc[])
 
 
 #pragma region Initialisation - Initialisation of Assets
-void InitialiseGameAssets(oSpaceship& a_spaceship)
+void InitialiseGameAssets(oSpaceship& a_spaceship, oAsteroidLarge& a_AsteroidLarge)
 {
 	//Initialise Spaceship
 	oSpaceship spaceship;
 	spaceship.Initialise(a_spaceship, "./images/Ship.png", g_iScreenWidth * 0.5f, g_iScreenHeight *0.1f);
 	spaceship.SetSpaceshipMovementKeys(a_spaceship, UG::KEY_UP, UG::KEY_DOWN, UG::KEY_LEFT, UG::KEY_RIGHT, UG::KEY_P);
 	UG::DrawSprite(a_spaceship.iSpriteID);
+	//Initialise Large Asteroids
+	oAsteroidLarge asteroid[4];
+	char cSpriteFileName[4][28] = { { "./images/LargeAsteroid1.png" },{ "./images/LargeAsteroid2.png" },{ "./images/LargeAsteroid3.png" },{ "./images/LargeAsteroid4.png" } };
+	for (int i = 0; i < 4; ++i)
+	{
+		
+		asteroid[i].Initialise(a_AsteroidLarge, cSpriteFileName[i]);
+	}
+	
 }
 #pragma endregion
 

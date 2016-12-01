@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\source\asteroids.cpp" />
     <ClCompile Include="..\..\source\main.cpp" />
     <ClCompile Include="..\..\source\menu.cpp" />
     <ClCompile Include="..\..\source\position.cpp" />
     <ClCompile Include="..\..\source\spaceship.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\asteroids.h" />
     <ClInclude Include="..\..\include\GameStates.h" />
     <ClInclude Include="..\..\include\menu.h" />
     <ClInclude Include="..\..\include\position.h" />

@@ -3,35 +3,37 @@
 #define _USE_MATH_DEFINES
 #include "math.h";
 
+extern float g_DeltaTime;
+
 oSpaceship::oSpaceship()
 {
 
 }
 
-void oSpaceship::Initialise(oSpaceship& a_spaceship, const char* a_spaceshipImageFileName, float a_fXPos, float a_fYPos)
+void oSpaceship::Initialise(oSpaceship& a_Spaceship, const char* a_SpaceshipImageFileName, float a_fXPos, float a_fYPos)
 {
-	a_spaceship.pos.Set(a_fXPos, a_fYPos);
-	a_spaceship.iSpriteID = UG::CreateSprite(a_spaceshipImageFileName, (float)a_spaceship.iWidth, (float)a_spaceship.iHeight);
+	a_Spaceship.pos.Set(a_fXPos, a_fYPos);
+	a_Spaceship.iSpriteID = UG::CreateSprite(a_SpaceshipImageFileName, (float)a_Spaceship.iWidth, (float)a_Spaceship.iHeight);
 	float fX = 0.f, fY = 0.f;
-	a_spaceship.pos.Get(fX, fY);
-	UG::MoveSprite(a_spaceship.iSpriteID, fX, fY);
+	a_Spaceship.pos.Get(fX, fY);
+	UG::MoveSprite(a_Spaceship.iSpriteID, fX, fY);
 }
 
-void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_spaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey, short a_breakKey)
+void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_Spaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey, short a_breakKey)
 {
-	a_spaceship.upKey = a_upKey;
-	a_spaceship.downKey = a_downKey;
-	a_spaceship.leftKey = a_leftKey;
-	a_spaceship.rightKey = a_rightKey;
-	a_spaceship.breakKey = a_breakKey;
+	a_Spaceship.upKey = a_upKey;
+	a_Spaceship.downKey = a_downKey;
+	a_Spaceship.leftKey = a_leftKey;
+	a_Spaceship.rightKey = a_rightKey;
+	a_Spaceship.breakKey = a_breakKey;
 
 }
 
-void oSpaceship::MoveSpaceship(oSpaceship & a_spaceship)
+void oSpaceship::MoveSpaceship(oSpaceship & a_Spaceship)
 {
 	int iDirection = 0;
 	float iSpriteTurnRate = 0;
-	if (UG::IsKeyDown(a_spaceship.upKey)) // Accelerate the ship in the current facing direction
+	if (UG::IsKeyDown(a_Spaceship.upKey)) // Accelerate the ship in the current facing direction
 	{
 		ixVelocity += iAcceleration*cos(iMovementAngleRad);
 		iyVelocity += iAcceleration*sin(iMovementAngleRad);
@@ -54,8 +56,9 @@ void oSpaceship::MoveSpaceship(oSpaceship & a_spaceship)
 			ixVelocity = iCurrentVelocity*cos(iFacingAngleRad);
 			iyVelocity = iCurrentVelocity*sin(iFacingAngleRad);
 		}
+		iCurrentVelocity;
 	}
-	if (UG::IsKeyDown(a_spaceship.rightKey))
+	if (UG::IsKeyDown(a_Spaceship.rightKey))
 	{
 		iMovementAngleDeg -= iTurnRate;
 		//Wrap Angle up to 360 if Below 0
@@ -67,7 +70,7 @@ void oSpaceship::MoveSpaceship(oSpaceship & a_spaceship)
 
 		iSpriteTurnRate = -1.0;
 	}
-	if (UG::IsKeyDown(a_spaceship.leftKey))
+	if (UG::IsKeyDown(a_Spaceship.leftKey))
 	{
 		iMovementAngleDeg += iTurnRate;
 		//Wrap Angle down to 0 if above 360
@@ -81,14 +84,13 @@ void oSpaceship::MoveSpaceship(oSpaceship & a_spaceship)
 		iSpriteTurnRate = 1.0;
 	}
 
-	if (UG::IsKeyDown(a_spaceship.breakKey))
+	if (UG::IsKeyDown(a_Spaceship.breakKey))
 	{
 		int testint = 0;
 	}
-	
 
 	float pX = 0.f, pY = 0.f;
-	a_spaceship.pos.Get(pX, pY);
+	a_Spaceship.pos.Get(pX, pY);
 
 
 	float newPositionY = pY + iyVelocity;
@@ -97,9 +99,9 @@ void oSpaceship::MoveSpaceship(oSpaceship & a_spaceship)
 	pY = newPositionY;
 	pX = newPositionX;
 
-	UG::MoveSprite(a_spaceship.iSpriteID, pX, pY);
-	UG::RotateSprite(a_spaceship.iSpriteID,iSpriteTurnRate);
-	a_spaceship.pos.Set(pX, pY);
+	UG::MoveSprite(a_Spaceship.iSpriteID, pX, pY);
+	UG::RotateSprite(a_Spaceship.iSpriteID,iSpriteTurnRate);
+	a_Spaceship.pos.Set(pX, pY);
 
 	
 }

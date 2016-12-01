@@ -7,6 +7,7 @@ public:
 	Position();
 	void Set(float a_fX, float a_fY);
 	void Get(float& a_fX, float& a_fY);
+	void SetRandom();
 private:
 	float fX;
 	float fY;
