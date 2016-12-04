@@ -79,8 +79,9 @@ int main(int argv, char* argc[])
 void InitialiseGameAssets(oSpaceship& a_spaceship, oAsteroidLarge* a_AsteroidLarge)
 {
 	//Initialise Spaceship
+	float fHalfSize = 0.5f;
 	oSpaceship spaceship;
-	spaceship.Initialise(a_spaceship, "./images/Ship.png", g_iScreenWidth * 0.5f, g_iScreenHeight *0.1f);
+	spaceship.Initialise(a_spaceship, "./images/Ship.png", g_iScreenWidth * fHalfSize, g_iScreenHeight *fHalfSize);
 	spaceship.SetSpaceshipMovementKeys(a_spaceship, UG::KEY_UP, UG::KEY_DOWN, UG::KEY_LEFT, UG::KEY_RIGHT, UG::KEY_P);
 	UG::DrawSprite(a_spaceship.iSpriteID);
 

@@ -1,12 +1,24 @@
-﻿  xcopy "N:\asteroids\scripts\..\Uog\lib\vs2015\x64\Debug\"*.pdb "N:\asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
+﻿  xcopy "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\scripts\..\Uog\lib\vs2015\x64\Debug\"*.pdb "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
   0 File(s) copied
-  position.cpp
-n:\asteroids\source\position.cpp(28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-n:\asteroids\source\position.cpp(29): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  spaceship.cpp
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(22): warning C4305: 'initializing': truncation from 'double' to 'const float'
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(28): warning C4305: 'initializing': truncation from 'double' to 'const float'
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(29): warning C4305: 'initializing': truncation from 'double' to 'const float'
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(61): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(113): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(117): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(122): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(126): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(101): warning C4189: 'testint': local variable is initialized but not referenced
   main.cpp
-n:\asteroids\include\spaceship.h(27): warning C4305: 'initializing': truncation from 'double' to 'const float'
-n:\asteroids\include\spaceship.h(28): warning C4305: 'initializing': truncation from 'double' to 'const float'
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(22): warning C4305: 'initializing': truncation from 'double' to 'const float'
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(28): warning C4305: 'initializing': truncation from 'double' to 'const float'
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(29): warning C4305: 'initializing': truncation from 'double' to 'const float'
   Generating Code...
-  Asteroids.vcxproj -> N:\asteroids\proj\vs2015\..\..\bin\x64\Debug\Asteroids.exe
-  xcopy "N:\asteroids\scripts\..\resources\"*.* "N:\asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
+  Asteroids.vcxproj -> C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\Asteroids.exe
+  Asteroids.vcxproj -> ..\..\bin\x64\Debug\Asteroids.pdb (Full PDB)
+  xcopy "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\scripts\..\resources\"*.* "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
   0 File(s) copied

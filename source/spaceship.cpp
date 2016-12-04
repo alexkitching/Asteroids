@@ -4,6 +4,9 @@
 #include "math.h";
 
 extern float g_DeltaTime;
+extern int g_iScreenHeight;
+extern int g_iScreenWidth;
+
 
 oSpaceship::oSpaceship()
 {
@@ -31,57 +34,66 @@ void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_Spaceship, short a_upKe
 
 void oSpaceship::MoveSpaceship(oSpaceship & a_Spaceship)
 {
-	int iDirection = 0;
-	float iSpriteTurnRate = 0;
+	float fVelocityZero = 0.0;
+	fCurrentTurnRate = 0.0;
+
 	if (UG::IsKeyDown(a_Spaceship.upKey)) // Accelerate the ship in the current facing direction
 	{
-		ixVelocity += iAcceleration*cos(iMovementAngleRad);
-		iyVelocity += iAcceleration*sin(iMovementAngleRad);
-		
-		if ((iyVelocity == 0.0) && (ixVelocity == 0.0))
+		VecNew.fX += fAcceleration * cosf(fFacingAngleRad);
+		VecNew.fY += fAcceleration * sinf(fFacingAngleRad);
+
+		fTotalVelocity = VecNew.Magnitude() *g_DeltaTime;
+
+		//Cap Speed at Maximum Velocity
+		if (fTotalVelocity > fMaxVelocity)
 		{
-			iFacingAngleRad = iMovementAngleRad;
-		}
-		else
-		{
-			iFacingAngleRad = atan2(iyVelocity, ixVelocity);
+			fTotalVelocity = fMaxVelocity * g_DeltaTime;
+			VecNew.fX = fTotalVelocity * cosf(fMovementAngleRad);
+			VecNew.fY = fTotalVelocity * sinf(fMovementAngleRad);
 		}
 
-		iCurrentVelocity = sqrt(ixVelocity*ixVelocity + iyVelocity*iyVelocity);
-
-		//Cap Speed
-		if (iCurrentVelocity > iMaxVelocity)
+		if ((VecNew.fX == 0.0) && (VecNew.fY == 0.0)) // If ship is stationary the movement angle is equal to the facing angle.
 		{
-			iCurrentVelocity = iMaxVelocity;
-			ixVelocity = iCurrentVelocity*cos(iFacingAngleRad);
-			iyVelocity = iCurrentVelocity*sin(iFacingAngleRad);
+			fMovementAngleRad = fFacingAngleRad;
 		}
-		iCurrentVelocity;
+		else if ((VecNew.fX != 0.0) && (VecNew.fY != 0.0)) // Else if the ship isn't stationary the movement angle is equal to the inverse tangent of the vector components.
+		{
+			fMovementAngleRad = atan2(VecNew.fX, VecNew.fY);
+		}
+	}
+	else if (UG::IsKeyDown(a_Spaceship.upKey) == false)
+	{
+		if (VecNew.fX > fVelocityZero)
+		{
+			VecNew.fX -= fDrag;
+		}
+		else if (VecNew.fX < fVelocityZero)
+		{
+			VecNew.fX += fDrag;
+		}
+
+		if (VecNew.fY > fVelocityZero)
+		{
+			VecNew.fY -= fDrag;
+		}
+		else if (VecNew.fY < fVelocityZero)
+		{
+			VecNew.fY += fDrag;
+		}
 	}
 	if (UG::IsKeyDown(a_Spaceship.rightKey))
 	{
-		iMovementAngleDeg -= iTurnRate;
-		//Wrap Angle up to 360 if Below 0
-		if (iMovementAngleDeg < 0.0) {
-			iMovementAngleDeg += 360.0*((float)((int)iMovementAngleDeg / 360.0) + 1);
-		}
-		//Angle Recalculation
-		iMovementAngleRad = iMovementAngleDeg *degtorad;
-
-		iSpriteTurnRate = -1.0;
+		fCurrentTurnRate = -fTurnRate;
+		fFacingAngleDeg += fCurrentTurnRate;
+		fFacingAngleDeg = AngleWrap(fFacingAngleDeg);
+		fFacingAngleRad = fFacingAngleDeg * degtorad;
 	}
 	if (UG::IsKeyDown(a_Spaceship.leftKey))
 	{
-		iMovementAngleDeg += iTurnRate;
-		//Wrap Angle down to 0 if above 360
-		if (iMovementAngleDeg >= 360.0)
-		{
-			iMovementAngleDeg -= 360.0*((float)(int)(iMovementAngleDeg / 360.0));
-		}
-		//Angle Recalulation
-		iMovementAngleRad = iMovementAngleDeg*degtorad;
-
-		iSpriteTurnRate = 1.0;
+		fCurrentTurnRate = fTurnRate;
+		fFacingAngleDeg += fCurrentTurnRate;
+		fFacingAngleDeg = AngleWrap(fFacingAngleDeg);
+		fFacingAngleRad = fFacingAngleDeg * degtorad;
 	}
 
 	if (UG::IsKeyDown(a_Spaceship.breakKey))
@@ -91,22 +103,51 @@ void oSpaceship::MoveSpaceship(oSpaceship & a_Spaceship)
 
 	float pX = 0.f, pY = 0.f;
 	a_Spaceship.pos.Get(pX, pY);
+	VecCurrent.fX = pX + VecNew.fX;
+	VecCurrent.fY = pY + VecNew.fY;
+	pX = VecCurrent.fX;
+	pY = VecCurrent.fY;
 
-
-	float newPositionY = pY + iyVelocity;
-	float newPositionX = pX + ixVelocity;
-
-	pY = newPositionY;
-	pX = newPositionX;
-
-	UG::MoveSprite(a_Spaceship.iSpriteID, pX, pY);
-	UG::RotateSprite(a_Spaceship.iSpriteID,iSpriteTurnRate);
-	a_Spaceship.pos.Set(pX, pY);
-
+	if (pY >= g_iScreenHeight + a_Spaceship.iHeight)
+	{
+		pY = (0 * g_iScreenHeight) - a_Spaceship.iHeight;
+	}
+	else if (pY <= -a_Spaceship.iHeight)
+	{
+		pY = (g_iScreenHeight + a_Spaceship.iHeight);
+	}
 	
+	if (pX >= g_iScreenWidth + a_Spaceship.iWidth)
+	{
+		pX = (0 * g_iScreenWidth) - a_Spaceship.iWidth;
+	}
+	else if (pX <= -a_Spaceship.iWidth)
+	{
+		pX = (g_iScreenWidth + a_Spaceship.iWidth);
+	}
+
+
+	UG::MoveSprite(a_Spaceship.iSpriteID, VecCurrent.fX, VecCurrent.fY);
+	UG::RotateSprite(a_Spaceship.iSpriteID, fCurrentTurnRate);
+	a_Spaceship.pos.Set(pX, pY);
+	
+
 }
 
-void oSpaceship::SetSpriteID(int a_id)
+float oSpaceship::AngleWrap(float x)
 {
-	iSpriteID = a_id;
+	float y;
+	y = fmodf(x, 360);
+	if (y < 0)
+	{
+		y += 360;
+		return y;
+	}
+	else if (y > 1)
+	{
+		y -= 360;
+		return y;
+	}
+	return x;
 }
+

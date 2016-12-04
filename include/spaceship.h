@@ -1,6 +1,7 @@
 #ifndef _SPACESHIP_H_
 #define _SPACESHIP_H_
 #include "position.h"
+#include "vector.h"
 #define _USE_MATH_DEFINES
 #include "math.h"
 
@@ -13,32 +14,36 @@ public:
 	void Initialise(oSpaceship& a_Spaceship, const char* a_SpaceshipImageFileName, float a_fXPos, float a_fYPos);
 	void SetSpaceshipMovementKeys(oSpaceship& a_Spaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey, short  a_breakKey);
 	void MoveSpaceship(oSpaceship& a_Spaceship);
-	void SetSpriteID(int a_id);
+	float AngleWrap(float x);
 
 	int iSpriteID = -1;
 
 	//Speed Variables
-	float iAcceleration = 0.01f;
-	float iCurrentVelocity = 0.0f;
-	float iMaxVelocity = 4.0f;
-	float ixVelocity = 0, iyVelocity = 0;
+	float const fAcceleration = 0.03;
+	float const fDrag = 0.01f;
+	float fTotalVelocity = 0.0f;
+	float const fMaxVelocity = 4.0f;
 	
 	//Rotation Variables
 	const float degtorad = M_PI / 180.0; // Converts degrees to radians
 	const float degtoafix = 256.0 / 360.0;
-	float iFacingAngleDeg = 90.0;
-	float iFacingAngleRad = iFacingAngleDeg * degtorad;
-	float iMovementAngleDeg = 90.0;
-	float iMovementAngleRad = iMovementAngleDeg * degtorad;
-	int iSpriteTurnRate = 0;
-	float iTurnRate = 1.0;
-	
+	float fFacingAngleDeg = 90.0;
+	float fFacingAngleRad = fFacingAngleDeg * degtorad;
+	float fMovementAngleDeg = 90.0;
+	float fMovementAngleRad = fMovementAngleDeg * degtorad;
+	float const fTurnRate = 2.0;
+	float fCurrentTurnRate = 0.f;
+
 	//Movement Keys
 	short upKey = -1, downKey = -1, leftKey = -1, rightKey = -1, breakKey = -1;
 private:
 
 	const int iWidth = 18, iHeight = 25;
 
+
+
+	Vector VecCurrent = Vector(0.0f, 0.0f);
+	Vector VecNew = Vector(0.0f, 0.0f);
 	Position pos;
 };
 
