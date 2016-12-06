@@ -15,6 +15,8 @@ public:
 	void Set(float& a_fX, float& a_fY);
 	//Get Values
 	void Get(float& a_fX, float& a_fY);
+	//Set Random
+	void SetRandom(float a_fMin, float a_fMax);
 
 	//Destructor
 	~Vector();
@@ -31,11 +33,9 @@ public:
 	Vector Vector::operator-=(const Vector& a_vec);
 	Vector Vector::operator-=(const float& a_value);
 
+private:
 	float fX;
 	float fY;
-
-private:
-	
 };
 
 #endif // !_VECTOR_H_

@@ -7,6 +7,7 @@ class Menu
 {
 public:
 	Menu();
+	~Menu();
 	GameState Initialise();
 private:
 	bool onMenu;

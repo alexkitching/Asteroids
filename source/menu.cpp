@@ -8,6 +8,10 @@ Menu::Menu()
 	selectedItem = 0;
 }
 
+Menu::~Menu()
+{
+}
+
 GameState Menu::Initialise()
 {
 	while (onMenu == true)
@@ -90,6 +94,8 @@ GameState Menu::Initialise()
 		}
 		Sleep(200);
 	}
+	
 	system("cls");
 	return(newState);
+	Menu::~Menu();
 }

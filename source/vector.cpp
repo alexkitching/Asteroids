@@ -1,5 +1,6 @@
 #include "vector.h"
 #include "math.h"
+#include "stdlib.h"
 
 //Constructor
 Vector::Vector(float a_fX, float a_fY) : fX(a_fX), fY(a_fY)
@@ -33,6 +34,12 @@ void Vector::Get(float & a_fX, float & a_fY)
 {
 	a_fX = fX;
 	a_fY = fY;
+}
+void Vector::SetRandom(float const a_fMin, float const a_fMax)
+{
+	float const fRange = a_fMax - a_fMin;
+	fX = fRange * ((((float)rand()) / (float)RAND_MAX)) + a_fMin;
+	fY = fRange * ((((float)rand()) / (float)RAND_MAX)) + a_fMin;
 }
 //Destructor
 Vector::~Vector()

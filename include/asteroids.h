@@ -1,60 +1,59 @@
 #ifndef _ASTEROIDS_H_
 #define _ASTEROIDS_H_
 #include "position.h"
+#include "spawncontroller.h"
+#include "vector.h"
+class oAsteroid
+{
+public:
+	int iSpriteID = -1;
+	int iQty;
+	oAsteroid();
+protected:
+	int iScore = 0;
+	int iWidth = 0;
+	int iHeight = 0;
 
-class oAsteroidLarge
+	//Speed Variables
+	float const iSpeedMax = 3.0f;
+	float const iSpeedMin = 0.5f;
+	//Rotation Variables
+	int iSpriteTurnRate = 0;
+	//Position Variables
+	float fPosX = 0.f;
+	float fPosY = 0.f;
+	//Vector Variables
+	float fNewVecX = 0.f;
+	float fNewVecY = 0.f;
+	float fCurrentVecX = 0.f;
+	float fCurrentVecY = 0.f;
+	//Death Variables
+	bool bIsDead = false;
+	Position pos;
+	Vector NewVec = Vector(0.0f, 0.0f);
+private:
+	
+};
+class oAsteroidLarge : public oAsteroid
 {
 public:
 	oAsteroidLarge();
-	void Initialise(const char* a_AsteroidLargeImageFileName);
-	void SetSpriteID(int a_id);
+	void Initialise(oSpawnController& a_spawncontroller, int a_AsteroidNumber, const char* a_AsteroidLargeImageFileName);
 	void Update(oAsteroidLarge& a_asteroidlarge);
-	void CheckSpawnCollision(oAsteroidLarge& a_asteroidlarge);
-
-
-	int iSpriteID = -1;
-
-	//Speed Variables
-	float ixSpeedMax = 2.0f, iySpeedMax = 2.0f;
-	float ixSpeed = 0.0f, iySpeed = 0.0f;
-
-	//Rotation Variables
-	int iSpriteTurnRate = 0;
-
-	//Score Variables
-	const int Score = 20;
-	//Death Variables
-	bool bIsDead = false;
-
-private:
-	const int iWidth = 72, iHeight = 72;
-
-	Position pos;
+	void GetDimensions(int a_iWidth, int a_iHeight);
+	void CollisionCheck(oAsteroidLarge* a_asteroidlarge);
+private:	
+	
 };
 
-class oAsteroidSmall
+class oAsteroidSmall : public oAsteroid
 {
 public:
 	oAsteroidSmall();
 	void Initialise(oAsteroidSmall& a_asteroidsmall, const char* a_AsteroidSmallImageFileName);
 	void Update(oAsteroidSmall& a_asteroidsmall);
-
-	int iSpriteID = -1;
-
-	//Speed Variables
-	float ixSpeedMax = 5.0f, iySpeedMax = 5.0f;
-	float ixSpeed = 0, iySpeed = 0;
-
-	//Rotation Variables
-	int iSpriteTurnRate = 0;
-
-	//Score Variables
-	const int Score = 50;
-	//Death Variables
-	bool bIsDead = false;
+	void GetDimensions(int a_iWidth, int a_iHeight);
 
 private:
-	const int iWidth = 36, iHeight = 36;
-	Position pos;
 };
 #endif

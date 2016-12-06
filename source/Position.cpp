@@ -1,6 +1,5 @@
 #include "position.h"
 #include "stdlib.h"
-#include "ctime"
 
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
