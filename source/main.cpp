@@ -52,9 +52,6 @@ int main(int argv, char* argc[])
 
 				oAsteroidLarge asteroid[4];
 				InitialiseGameAssets(spaceship, asteroid);
-				Background background;
-				background.Initialise();
-				background.Draw();
 				do
 				{
 					g_DeltaTime = UG::GetDeltaTime();

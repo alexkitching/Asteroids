@@ -23,10 +23,10 @@ private:
 
 	const int iWidth = 18, iHeight = 25;
 	//Speed Variables
-	float const fAcceleration = 0.03;
-	float const fDrag = 0.01f;
+	float const fAcceleration = 0.03f;
+	float const fDrag = 0.99;
 	float fTotalVelocity = 0.0f;
-	float const fMaxVelocity = 4.0f;
+	float const fMaxVelocity = 4.f;
 	float const fVelocityZero = 0.f;
 
 	//Rotation Variables

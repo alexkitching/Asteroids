@@ -17,25 +17,21 @@ c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and
 c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spawncontroller.cpp(25): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spawncontroller.cpp(26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   spaceship.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(26): warning C4305: 'initializing': truncation from 'double' to 'const float'
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(27): warning C4305: 'initializing': truncation from 'double' to 'const float'
 c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(33): warning C4305: 'initializing': truncation from 'double' to 'const float'
 c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(34): warning C4305: 'initializing': truncation from 'double' to 'const float'
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(20): warning C4458: declaration of 'fPosX' hides class member
-  c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(42): note: see declaration of 'oSpaceship::fPosX'
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(20): warning C4458: declaration of 'fPosY' hides class member
-  c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(43): note: see declaration of 'oSpaceship::fPosY'
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(63): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(118): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(122): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(127): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(131): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(103): warning C4189: 'testint': local variable is initialized but not referenced
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(62): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(96): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(100): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(105): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(109): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(82): warning C4189: 'testint': local variable is initialized but not referenced
   position.cpp
 c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\position.cpp(27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\position.cpp(28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   menu.cpp
   main.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(26): warning C4305: 'initializing': truncation from 'double' to 'const float'
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(27): warning C4305: 'initializing': truncation from 'double' to 'const float'
 c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(33): warning C4305: 'initializing': truncation from 'double' to 'const float'
 c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(34): warning C4305: 'initializing': truncation from 'double' to 'const float'
   background.cpp
