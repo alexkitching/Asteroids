@@ -40,6 +40,22 @@ void Vector::SetRandom(float const a_fMin, float const a_fMax)
 	float const fRange = a_fMax - a_fMin;
 	fX = fRange * ((((float)rand()) / (float)RAND_MAX)) + a_fMin;
 	fY = fRange * ((((float)rand()) / (float)RAND_MAX)) + a_fMin;
+	int iPosNegX = rand() % 2;
+	int iPosNegY = rand() % 2;
+	if (iPosNegX == 0)
+	{
+		fX *= -1;
+	}
+	else if (iPosNegX == 1)
+	{
+	}
+	if (iPosNegY == 0)
+	{
+		fY *= -1;
+	}
+	else if (iPosNegY == 1)
+	{
+	}
 }
 //Destructor
 Vector::~Vector()

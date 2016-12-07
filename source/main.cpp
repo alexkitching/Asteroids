@@ -58,6 +58,7 @@ int main(int argv, char* argc[])
 					spaceship.MoveSpaceship(spaceship);
 					for (int i = 0; i < 4; i++)
 					{
+						asteroid[i].CollisionCheck(asteroid);
 						asteroid[i].Update(asteroid[i]);
 					}
 					UG::ClearScreen();

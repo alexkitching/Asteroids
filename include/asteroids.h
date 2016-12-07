@@ -40,8 +40,9 @@ public:
 	oAsteroidLarge();
 	void Initialise(oSpawnController& a_spawncontroller, int a_AsteroidNumber, const char* a_AsteroidLargeImageFileName);
 	void Update(oAsteroidLarge& a_asteroidlarge);
-	void GetDimensions(int a_iWidth, int a_iHeight);
+	void GetDimensions(int &a_iWidth, int &a_iHeight);
 	void CollisionCheck(oAsteroidLarge* a_asteroidlarge);
+	void SetRotation(int &a_CurrentRotation);
 private:	
 	
 };
