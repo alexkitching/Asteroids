@@ -11,26 +11,24 @@ public:
 	oAsteroid();
 protected:
 	int iScore = 0;
+	//Dimension Variables
 	int iWidth = 0;
 	int iHeight = 0;
-
 	//Speed Variables
-	float const iSpeedMax = 3.0f;
-	float const iSpeedMin = 0.5f;
+	float fSpeedMax = 0.f;
+	float fSpeedMin = 0.f;
 	//Rotation Variables
-	int iSpriteTurnRate = 0;
+	float fSpriteTurnRate = 0.f;
 	//Position Variables
 	float fPosX = 0.f;
 	float fPosY = 0.f;
 	//Vector Variables
-	float fNewVecX = 0.f;
-	float fNewVecY = 0.f;
-	float fCurrentVecX = 0.f;
-	float fCurrentVecY = 0.f;
+	float fVNewX = 0.f;
+	float fVNewY = 0.f;
 	//Death Variables
 	bool bIsDead = false;
 	Position pos;
-	Vector NewVec = Vector(0.0f, 0.0f);
+	Vector vNew = Vector(0.0f, 0.0f);
 private:
 	
 };
@@ -41,8 +39,7 @@ public:
 	void Initialise(oSpawnController& a_spawncontroller, int a_AsteroidNumber, const char* a_AsteroidLargeImageFileName);
 	void Update(oAsteroidLarge& a_asteroidlarge);
 	void GetDimensions(int &a_iWidth, int &a_iHeight);
-	void CollisionCheck(oAsteroidLarge* a_asteroidlarge);
-	void SetRotation(int &a_CurrentRotation);
+	void SetRotation(float &a_CurrentRotation);
 private:	
 	
 };

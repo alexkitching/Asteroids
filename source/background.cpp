@@ -32,7 +32,7 @@ void Background::Draw()
 		float fPosX = 0.f, fPosY = 0.f;
 		stop->Get(fPosX, fPosY);
 
-		UG::DrawLine(fPosX, fPosY - 2, fPosX, fPosY + 2);
+		UG::DrawLine(fPosX, fPosY - 2.f, fPosX, fPosY + 2.f);
 	}
 }
 

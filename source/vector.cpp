@@ -114,5 +114,25 @@ Vector Vector::operator-=(const float & a_value)
 	fY -= a_value;
 	return *this;
 }
+Vector Vector::operator*(const Vector & a_vec)
+{
+	return Vector(fX * a_vec.fX, fY * a_vec.fY);
+}
+Vector Vector::operator*(const float & a_value)
+{
+	return Vector(fX * a_value, fY * a_value);
+}
+Vector Vector::operator*=(const Vector & a_vec)
+{
+	fX *= a_vec.fX;
+	fY *= a_vec.fY;
+	return *this;
+}
+Vector Vector::operator*=(const float & a_value)
+{
+	fX *= a_value;
+	fY *= a_value;
+	return *this;
+}
 ;
 

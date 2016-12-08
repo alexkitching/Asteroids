@@ -32,6 +32,10 @@ public:
 	Vector Vector::operator-(const float& a_value);
 	Vector Vector::operator-=(const Vector& a_vec);
 	Vector Vector::operator-=(const float& a_value);
+	Vector Vector::operator*(const Vector& a_vec);
+	Vector Vector::operator*(const float& a_value);
+	Vector Vector::operator*=(const Vector& a_vec);
+	Vector Vector::operator*=(const float& a_value);
 
 private:
 	float fX;

@@ -7,7 +7,7 @@ public:
 	oSpawnController();
 	void SpawnController(int a_MaxObjects, int a_ObjectWidth, int a_ObjectHeight);
 
-	float iSpawnPosArray[4][2] = { { 0,0 },{ 0,0 },{ 0,0 },{ 0,0 } };
+	float iSpawnPosArray[5][2] = { { 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 } };
 
 private:
 	float fNewPosX = 0.f;

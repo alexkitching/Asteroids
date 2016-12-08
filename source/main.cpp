@@ -9,6 +9,8 @@
 #include "menu.h"
 #include "spaceship.h"
 #include "asteroids.h" 
+#include "bullet.h"
+
 #include "background.h"
 
 void InitialiseGameAssets(oSpaceship& a_spaceship, oAsteroidLarge* a_asteroidlarge);
@@ -40,7 +42,7 @@ int main(int argv, char* argc[])
 
 			
 
-			if (UG::Create(1024, 768, false, "Asteroids", 100, 100))
+			if (UG::Create(800, 600, false, "Asteroids", 100, 100))
 			{
 				UG::GetScreenSize(g_iScreenWidth, g_iScreenHeight);
 
@@ -50,16 +52,24 @@ int main(int argv, char* argc[])
 				//Create Spaceship Sprite
 				oSpaceship spaceship;
 
-				oAsteroidLarge asteroid[4];
+				oAsteroidLarge asteroid[5];
+				oBullet Bullets[6];
 				InitialiseGameAssets(spaceship, asteroid);
 				do
 				{
+					float fSpaceshipXPos = 0.f, fSpaceshipYPos = 0.f;
+					spaceship.pos.Get(fSpaceshipXPos, fSpaceshipYPos);
+
 					g_DeltaTime = UG::GetDeltaTime();
-					spaceship.MoveSpaceship(spaceship);
-					for (int i = 0; i < 4; i++)
+					spaceship.Update(spaceship, Bullets);
+					for (int i = 0; i < 5; i++)
 					{
-						asteroid[i].CollisionCheck(asteroid);
 						asteroid[i].Update(asteroid[i]);
+					}
+					for (int i = 0; i < 6; i++)
+					{
+						Bullets[i].Update(Bullets[i]);
+						Bullets[i].Draw(spaceship);
 					}
 					UG::ClearScreen();
 				} while (UG::Process());
@@ -87,15 +97,16 @@ void InitialiseGameAssets(oSpaceship& a_spaceship, oAsteroidLarge* a_asteroidlar
 	float fHalfSize = 0.5f;
 	oSpaceship spaceship;
 	spaceship.Initialise(a_spaceship, "./images/Ship.png", g_iScreenWidth * fHalfSize, g_iScreenHeight *fHalfSize);
-	spaceship.SetSpaceshipMovementKeys(a_spaceship, UG::KEY_UP, UG::KEY_DOWN, UG::KEY_LEFT, UG::KEY_RIGHT, UG::KEY_P);
+	spaceship.SetSpaceshipMovementKeys(a_spaceship, UG::KEY_UP, UG::KEY_DOWN, UG::KEY_LEFT, UG::KEY_RIGHT, UG::KEY_P, UG::KEY_SPACE);
 	UG::DrawSprite(a_spaceship.iSpriteID);
+
 	//Initialise Each Large Asteroid
-	int const iLargeAsteroidsQty = 4;
+	int const iLargeAsteroidsQty = 5;
 	int iLargeAsteroidHeight = 0, iLargeAsteroidWidth = 0;
 	a_asteroidlarge[1].GetDimensions(iLargeAsteroidWidth, iLargeAsteroidHeight);
 	oSpawnController spawncontroller;
 	spawncontroller.SpawnController(iLargeAsteroidsQty, iLargeAsteroidWidth, iLargeAsteroidHeight);
-	char cSpriteFileName[iLargeAsteroidsQty][28] = { { "./images/LargeAsteroid1.png" },{ "./images/LargeAsteroid2.png" },{ "./images/LargeAsteroid3.png" },{ "./images/LargeAsteroid4.png" } };
+	char cSpriteFileName[iLargeAsteroidsQty][35] = { { "./images/LargeAsteroid1.png" },{ "./images/LargeAsteroid2.png" },{ "./images/LargeAsteroid3.png" },{ "./images/LargeAsteroid4.png" },{ "./images/LargeAsteroid1.png" } };
 	for (int i = 0; i < iLargeAsteroidsQty; ++i)
 	{
 		a_asteroidlarge[i].Initialise(spawncontroller,i, cSpriteFileName[i]);

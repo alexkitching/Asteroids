@@ -24,6 +24,6 @@ void Position::Get(float & a_fX, float & a_fY)
 
 void Position::SetRandom()
 {
-	fX = rand() % (g_iScreenWidth + 1);
-	fY = rand() % (g_iScreenHeight + 1);
+	fX = static_cast <float> (rand()) / static_cast <float> (RAND_MAX / ((float)g_iScreenHeight + 1.f));
+	fY = static_cast <float> (rand()) / static_cast <float> (RAND_MAX / ((float)g_iScreenHeight + 1.f));
 }

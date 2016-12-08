@@ -85,6 +85,7 @@ GameState Menu::Initialise()
 				{
 					newState = GameState::GAMEOVER;
 					onMenu = false;
+					Menu::~Menu();
 					break;
 
 				}
@@ -97,5 +98,4 @@ GameState Menu::Initialise()
 	
 	system("cls");
 	return(newState);
-	Menu::~Menu();
 }

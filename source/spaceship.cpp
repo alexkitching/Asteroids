@@ -2,6 +2,7 @@
 #include "UGFW.h"
 #define _USE_MATH_DEFINES
 #include "math.h"
+#include "bullet.h"
 
 extern float g_DeltaTime;
 extern int g_iScreenHeight;
@@ -21,45 +22,45 @@ void oSpaceship::Initialise(oSpaceship& a_Spaceship, const char* a_SpaceshipImag
 	UG::MoveSprite(a_Spaceship.iSpriteID, a_Spaceship.fPosX, a_Spaceship.fPosY);
 }
 
-void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_Spaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey, short a_breakKey)
+void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_Spaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey, short a_breakKey, short a_fireKey)
 {
 	a_Spaceship.upKey = a_upKey;
 	a_Spaceship.downKey = a_downKey;
 	a_Spaceship.leftKey = a_leftKey;
 	a_Spaceship.rightKey = a_rightKey;
 	a_Spaceship.breakKey = a_breakKey;
-
+	a_Spaceship.fireKey = a_fireKey;
 }
 
-void oSpaceship::MoveSpaceship(oSpaceship & a_Spaceship)
+void oSpaceship::Update(oSpaceship& a_Spaceship, oBullet* a_Bullet)
 {
 	a_Spaceship.fCurrentTurnRate = 0.f;
 	
 	
 	a_Spaceship.pos.Get(a_Spaceship.fPosX, a_Spaceship.fPosY);
-	a_Spaceship.VecNew.Get(a_Spaceship.fNewVecX, a_Spaceship.fNewVecY);
+	a_Spaceship.vNew.Get(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
 	if (UG::IsKeyDown(a_Spaceship.upKey)) // Accelerate the ship in the current facing direction
 	{
-		a_Spaceship.fNewVecX += fAcceleration * cosf(a_Spaceship.fFacingAngleRad);
-		a_Spaceship.fNewVecY += fAcceleration * sinf(a_Spaceship.fFacingAngleRad);
-		a_Spaceship.VecNew.Set(a_Spaceship.fNewVecX, a_Spaceship.fNewVecY);
-		a_Spaceship.fTotalVelocity = a_Spaceship.VecNew.Magnitude();
+		a_Spaceship.fVNewX += fAcceleration * cosf(a_Spaceship.fFacingAngleRad);
+		a_Spaceship.fVNewY += fAcceleration * sinf(a_Spaceship.fFacingAngleRad);
+		a_Spaceship.vNew.Set(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
+		a_Spaceship.fTotalVelocity = a_Spaceship.vNew.Magnitude();
 
 		//Cap Speed at Maximum Velocity
 		if (a_Spaceship.fTotalVelocity > fMaxVelocity)
 		{
 			a_Spaceship.fTotalVelocity = fMaxVelocity;
-			a_Spaceship.fNewVecX = a_Spaceship.fTotalVelocity * cosf(a_Spaceship.fMovementAngleRad);
-			a_Spaceship.fNewVecY = a_Spaceship.fTotalVelocity * sinf(a_Spaceship.fMovementAngleRad);
+			a_Spaceship.fVNewX = a_Spaceship.fTotalVelocity * cosf(a_Spaceship.fMovementAngleRad);
+			a_Spaceship.fVNewY = a_Spaceship.fTotalVelocity * sinf(a_Spaceship.fMovementAngleRad);
 		}
 
-		if ((fNewVecX == 0.0) && (fNewVecY == 0.0)) // If ship is stationary the movement angle is equal to the facing angle.
+		if ((fVNewX == 0.0) && (fVNewY == 0.0)) // If ship is stationary the movement angle is equal to the facing angle.
 		{
 			a_Spaceship.fMovementAngleRad = a_Spaceship.fFacingAngleRad;
 		}
-		else if ((fNewVecX != 0.0) && (fNewVecY != 0.0)) // Else if the ship isn't stationary the movement angle is equal to the inverse tangent of the vector components.
+		else if ((fVNewX != 0.0) && (fVNewY != 0.0)) // Else if the ship isn't stationary the movement angle is equal to the inverse tangent of the vector components.
 		{
-			a_Spaceship.fMovementAngleRad = atan2(a_Spaceship.fNewVecX, a_Spaceship.fNewVecY);
+			a_Spaceship.fMovementAngleRad = atan2f(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
 		}
 	}
 	if (UG::IsKeyDown(a_Spaceship.rightKey))
@@ -81,32 +82,52 @@ void oSpaceship::MoveSpaceship(oSpaceship & a_Spaceship)
 	{
 		int testint = 0;
 	}
-	
-	a_Spaceship.fNewVecX *= fDrag;
-	a_Spaceship.fNewVecY *= fDrag;
-	a_Spaceship.VecNew.Set(a_Spaceship.fNewVecX, a_Spaceship.fNewVecY);
-	a_Spaceship.fCurrentVecX = a_Spaceship.fPosX + a_Spaceship.fNewVecX;
-	a_Spaceship.fCurrentVecY = a_Spaceship.fPosY + a_Spaceship.fNewVecY;
-	a_Spaceship.fPosX = a_Spaceship.fCurrentVecX;
-	a_Spaceship.fPosY = a_Spaceship.fCurrentVecY;
-	
 
+	if (UG::IsKeyDown(a_Spaceship.fireKey))
+	{
+		
+		fFireDelay -= g_DeltaTime;
+		if (fFireDelay < 0.f)
+		{
+			fFireDelay = 0.5f;
+			for (int i = 0; i < 6; i++)
+			{
+				if (!a_Bullet[i].IsActive())
+				{
+					a_Bullet[i].SetActive(true);
+					
+					break;
+				}
+			}
+		}
+	}
+	else
+	{
+		fFireDelay = 0.f;
+	}
+
+	a_Spaceship.fVNewX *= fDrag;
+	a_Spaceship.fVNewY *= fDrag;
+	a_Spaceship.vNew.Set(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
+	a_Spaceship.fPosX = a_Spaceship.fPosX + a_Spaceship.fVNewX;
+	a_Spaceship.fPosY = a_Spaceship.fPosY + a_Spaceship.fVNewY;
+	
 	if (a_Spaceship.fPosY >= g_iScreenHeight + iHeight)
 	{
-		a_Spaceship.fPosY = (0 * g_iScreenHeight) - iHeight;
+		a_Spaceship.fPosY = (0.f * g_iScreenHeight) - iHeight;
 	}
 	else if (a_Spaceship.fPosY <= -iHeight)
 	{
-		a_Spaceship.fPosY = (g_iScreenHeight + iHeight);
+		a_Spaceship.fPosY = ((float) g_iScreenHeight + (float) iHeight);
 	}
 	
 	if (a_Spaceship.fPosX >= g_iScreenWidth + iWidth)
 	{
-		a_Spaceship.fPosX = (0 * g_iScreenWidth) - iWidth;
+		a_Spaceship.fPosX = (0.f * g_iScreenWidth) - iWidth;
 	}
 	else if (a_Spaceship.fPosX <= -iWidth)
 	{
-		a_Spaceship.fPosX = (g_iScreenWidth + iWidth);
+		a_Spaceship.fPosX = ( (float) g_iScreenWidth + (float) iWidth);
 
 	}
 
@@ -134,4 +155,3 @@ float oSpaceship::AngleWrap(float x)
 	}
 	return x;
 }
-
