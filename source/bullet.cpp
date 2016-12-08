@@ -16,9 +16,19 @@ void oBullet::SetActive(bool a_active)
 	bActive = a_active;
 }
 
+void oBullet::SetDrawn(bool a_drawn)
+{
+	bDrawn = a_drawn;
+}
+
 bool oBullet::IsActive()
 {
 	return bActive;
+}
+
+bool oBullet::IsDrawn()
+{
+	return bDrawn;
 }
 
 void oBullet::Update(oBullet & a_Bullet)
@@ -48,19 +58,30 @@ void oBullet::Update(oBullet & a_Bullet)
 		}
 		UG::MoveSprite(a_Bullet.iSpriteID, a_Bullet.fPosX, a_Bullet.fPosY);
 		a_Bullet.pos.Set(a_Bullet.fPosX, a_Bullet.fPosY);
+		a_Bullet.fCurrentDistance += a_Bullet.vNew.Magnitude();
+		if (a_Bullet.fCurrentDistance >= a_Bullet.fMaxDistance)
+		{
+			a_Bullet.bActive = false;
+			a_Bullet.fCurrentDistance = 0.f;
+			UG::DestroySprite(a_Bullet.iSpriteID);
+			a_Bullet.fPosX = 0.f;
+			a_Bullet.fPosY = 0.f;
+		}      
+		
+		
 	}
 }
 
-void oBullet::Draw(oSpaceship& a_spaceship)
+void oBullet::Draw(float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpaceshipPosY)
 {
 	if (bActive)
 	{
 		//Direction of Bullet = Direction Ship is Facing
-		fVNewX = cosf(a_spaceship.fFacingAngleRad);
-		fVNewY = sinf(a_spaceship.fFacingAngleRad);
+		fVNewX = cosf(fSpaceshipFacingAngle);
+		fVNewY = sinf(fSpaceshipFacingAngle);
 		// Set Initial Position of Bullet
-		fPosX = a_spaceship.fPosX;
-		fPosY = a_spaceship.fPosY;
+		fPosX = fSpaceshipPosX;
+		fPosY = fSpaceshipPosY;
 		//Move Bullet in front of ship
 		fPosX += fVNewX * 20;
 		fPosY += fVNewY * 20;

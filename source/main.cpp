@@ -53,23 +53,18 @@ int main(int argv, char* argc[])
 				oSpaceship spaceship;
 
 				oAsteroidLarge asteroid[5];
-				oBullet Bullets[6];
+				
+				float fSpaceshipFacingAngle = 0.f;
 				InitialiseGameAssets(spaceship, asteroid);
 				do
 				{
 					float fSpaceshipXPos = 0.f, fSpaceshipYPos = 0.f;
 					spaceship.pos.Get(fSpaceshipXPos, fSpaceshipYPos);
-
 					g_DeltaTime = UG::GetDeltaTime();
-					spaceship.Update(spaceship, Bullets);
+					spaceship.Update(spaceship);
 					for (int i = 0; i < 5; i++)
 					{
 						asteroid[i].Update(asteroid[i]);
-					}
-					for (int i = 0; i < 6; i++)
-					{
-						Bullets[i].Update(Bullets[i]);
-						Bullets[i].Draw(spaceship);
 					}
 					UG::ClearScreen();
 				} while (UG::Process());

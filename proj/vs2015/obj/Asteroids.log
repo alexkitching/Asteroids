@@ -1,27 +1,12 @@
 ﻿  xcopy "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\scripts\..\Uog\lib\vs2015\x64\Debug\"*.pdb "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
   0 File(s) copied
-  vector.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(67): warning C4553: '==': operator has no effect; did you intend '='?
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(68): warning C4553: '==': operator has no effect; did you intend '='?
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(69): warning C4800: 'Vector *const ': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(73): warning C4552: '!=': operator has no effect; expected operator with side-effect
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(74): warning C4552: '!=': operator has no effect; expected operator with side-effect
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(75): warning C4800: 'Vector *const ': forcing value to bool 'true' or 'false' (performance warning)
-  spawncontroller.cpp
-  spaceship.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(14): error C2061: syntax error: identifier 'oSpaceship'
-  position.cpp
-  menu.cpp
-  main.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(14): error C2061: syntax error: identifier 'oSpaceship'
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\main.cpp(72): error C2660: 'oBullet::Draw': function does not take 1 arguments
   bullet.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\spaceship.h(18): error C2061: syntax error: identifier 'oBullet'
-  background.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\background.cpp(22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\background.cpp(35): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\background.cpp(41): warning C4189: 'stop': local variable is initialized but not referenced
-  asteroids.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\asteroids.cpp(1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\asteroids.cpp(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(25): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
   Generating Code...
+  Skipping... (no relevant changes detected)
+  spaceship.cpp
+  main.cpp
+  Asteroids.vcxproj -> C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\Asteroids.exe
+  Asteroids.vcxproj -> ..\..\bin\x64\Debug\Asteroids.pdb (Full PDB)
+  xcopy "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\scripts\..\resources\"*.* "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
+  0 File(s) copied

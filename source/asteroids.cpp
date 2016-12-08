@@ -57,7 +57,6 @@ void oAsteroidLarge::Update(oAsteroidLarge & a_AsteroidLarge)
 	{
 		a_AsteroidLarge.fPosX = ((float) g_iScreenWidth + (float) a_AsteroidLarge.iWidth);
 	}
-
 	UG::MoveSprite(a_AsteroidLarge.iSpriteID, a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
 	UG::RotateSprite(a_AsteroidLarge.iSpriteID, a_AsteroidLarge.fSpriteTurnRate);
 	a_AsteroidLarge.pos.Set(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);

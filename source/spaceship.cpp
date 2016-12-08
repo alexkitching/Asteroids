@@ -7,11 +7,10 @@
 extern float g_DeltaTime;
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
-
+oBullet bullet[6];
 
 oSpaceship::oSpaceship()
 {
-
 }
 
 void oSpaceship::Initialise(oSpaceship& a_Spaceship, const char* a_SpaceshipImageFileName, float a_fXPos, float a_fYPos)
@@ -32,8 +31,9 @@ void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_Spaceship, short a_upKe
 	a_Spaceship.fireKey = a_fireKey;
 }
 
-void oSpaceship::Update(oSpaceship& a_Spaceship, oBullet* a_Bullet)
+void oSpaceship::Update(oSpaceship& a_Spaceship)
 {
+	
 	a_Spaceship.fCurrentTurnRate = 0.f;
 	
 	
@@ -85,17 +85,17 @@ void oSpaceship::Update(oSpaceship& a_Spaceship, oBullet* a_Bullet)
 
 	if (UG::IsKeyDown(a_Spaceship.fireKey))
 	{
-		
+
 		fFireDelay -= g_DeltaTime;
 		if (fFireDelay < 0.f)
 		{
 			fFireDelay = 0.5f;
 			for (int i = 0; i < 6; i++)
 			{
-				if (!a_Bullet[i].IsActive())
+				if (!bullet[i].IsActive())
 				{
-					a_Bullet[i].SetActive(true);
-					
+					bullet[i].SetActive(true);
+					bullet[i].Draw(a_Spaceship.fFacingAngleRad, a_Spaceship.fPosX, a_Spaceship.fPosY);
 					break;
 				}
 			}
@@ -104,6 +104,10 @@ void oSpaceship::Update(oSpaceship& a_Spaceship, oBullet* a_Bullet)
 	else
 	{
 		fFireDelay = 0.f;
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		bullet[i].Update(bullet[i]);
 	}
 
 	a_Spaceship.fVNewX *= fDrag;

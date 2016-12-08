@@ -4,8 +4,8 @@
 #include "vector.h"
 #define _USE_MATH_DEFINES
 #include "math.h"
-#include "bullet.h"
 #include "spaceship.h"
+#include "bullet.h"
 
 extern float g_DeltaTime;
 
@@ -15,11 +15,10 @@ public:
 	oSpaceship();
 	void Initialise(oSpaceship& a_Spaceship, const char* a_SpaceshipImageFileName, float a_fXPos, float a_fYPos);
 	void SetSpaceshipMovementKeys(oSpaceship& a_Spaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey, short  a_breakKey, short a_fireKey);
-	void Update(oSpaceship& a_Spaceship, oBullet* a_Bullet);
+	void Update(oSpaceship& a_Spaceship);
 	float AngleWrap(float x);
 	int iSpriteID = -1;
 	Position pos;
-	friend class oBullet;
 private:
 	//Dimension Variables
 
@@ -53,6 +52,5 @@ private:
 
 
 	Vector vNew = Vector(0.0f, 0.0f);
-	
 };
 #endif
