@@ -61,7 +61,7 @@ int main(int argv, char* argc[])
 					float fSpaceshipXPos = 0.f, fSpaceshipYPos = 0.f;
 					spaceship.pos.Get(fSpaceshipXPos, fSpaceshipYPos);
 					g_DeltaTime = UG::GetDeltaTime();
-					spaceship.Update(spaceship);
+					spaceship.Update(spaceship, asteroid);
 					for (int i = 0; i < 5; i++)
 					{
 						asteroid[i].Update(asteroid[i]);

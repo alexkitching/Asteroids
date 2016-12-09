@@ -15,6 +15,7 @@ oAsteroidLarge::oAsteroidLarge()
 	iScore = 20;
 	iWidth = 72;
 	iHeight = 72;
+	iRadius = 36;
 	iQty = 4; 
 	fSpeedMax = 1.0f;
 	fSpeedMin = 0.15f;
@@ -36,36 +37,53 @@ void oAsteroidLarge::Initialise(oSpawnController& a_spawncontroller, int a_Aster
 
 void oAsteroidLarge::Update(oAsteroidLarge & a_AsteroidLarge)
 {
-	a_AsteroidLarge.pos.Get(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
-	a_AsteroidLarge.vNew.Get(a_AsteroidLarge.fVNewX, a_AsteroidLarge.fVNewY);
-	a_AsteroidLarge.fPosX = a_AsteroidLarge.fPosX + a_AsteroidLarge.fVNewX;
-	a_AsteroidLarge.fPosY = a_AsteroidLarge.fPosY + a_AsteroidLarge.fVNewY;
-	if (a_AsteroidLarge.fPosY >= g_iScreenHeight + a_AsteroidLarge.iHeight)
+	if (!a_AsteroidLarge.bIsDead)
 	{
-		a_AsteroidLarge.fPosY = (0.f * (float) g_iScreenHeight) - (float) a_AsteroidLarge.iHeight;
-	}
-	else if (a_AsteroidLarge.fPosY <= -a_AsteroidLarge.iHeight)
-	{
-		a_AsteroidLarge.fPosY = ((float) g_iScreenHeight + (float) a_AsteroidLarge.iHeight);
-	}
+		a_AsteroidLarge.pos.Get(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
+		a_AsteroidLarge.vNew.Get(a_AsteroidLarge.fVNewX, a_AsteroidLarge.fVNewY);
+		a_AsteroidLarge.fPosX = a_AsteroidLarge.fPosX + a_AsteroidLarge.fVNewX;
+		a_AsteroidLarge.fPosY = a_AsteroidLarge.fPosY + a_AsteroidLarge.fVNewY;
+		if (a_AsteroidLarge.fPosY >= g_iScreenHeight + a_AsteroidLarge.iHeight)
+		{
+			a_AsteroidLarge.fPosY = (0.f * (float)g_iScreenHeight) - (float)a_AsteroidLarge.iHeight;
+		}
+		else if (a_AsteroidLarge.fPosY <= -a_AsteroidLarge.iHeight)
+		{
+			a_AsteroidLarge.fPosY = ((float)g_iScreenHeight + (float)a_AsteroidLarge.iHeight);
+		}
 
-	if (a_AsteroidLarge.fPosX >= g_iScreenWidth + a_AsteroidLarge.iWidth)
-	{
-		a_AsteroidLarge.fPosX = (0.f * (float) g_iScreenWidth) - (float) a_AsteroidLarge.iWidth;
+		if (a_AsteroidLarge.fPosX >= g_iScreenWidth + a_AsteroidLarge.iWidth)
+		{
+			a_AsteroidLarge.fPosX = (0.f * (float)g_iScreenWidth) - (float)a_AsteroidLarge.iWidth;
+		}
+		else if (a_AsteroidLarge.fPosX <= -a_AsteroidLarge.iWidth)
+		{
+			a_AsteroidLarge.fPosX = ((float)g_iScreenWidth + (float)a_AsteroidLarge.iWidth);
+		}
+		UG::MoveSprite(a_AsteroidLarge.iSpriteID, a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
+		UG::RotateSprite(a_AsteroidLarge.iSpriteID, a_AsteroidLarge.fSpriteTurnRate);
+		a_AsteroidLarge.pos.Set(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
 	}
-	else if (a_AsteroidLarge.fPosX <= -a_AsteroidLarge.iWidth)
+	else if (a_AsteroidLarge.bIsDead)
 	{
-		a_AsteroidLarge.fPosX = ((float) g_iScreenWidth + (float) a_AsteroidLarge.iWidth);
+		UG::DestroySprite(a_AsteroidLarge.iSpriteID);
 	}
-	UG::MoveSprite(a_AsteroidLarge.iSpriteID, a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
-	UG::RotateSprite(a_AsteroidLarge.iSpriteID, a_AsteroidLarge.fSpriteTurnRate);
-	a_AsteroidLarge.pos.Set(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
-
 }
 
 void oAsteroidLarge::GetDimensions(int &a_iWidth, int &a_iHeight)
 {
 	a_iWidth = iWidth, a_iHeight = iHeight;
+}
+
+void oAsteroidLarge::GetPos(float & a_PosX, float & a_PosY)
+{
+	a_PosX = fPosX;
+	a_PosY = fPosY;
+}
+
+void oAsteroidLarge::GetRadius(int & a_Radius)
+{
+	a_Radius = iRadius;
 }
 
 void oAsteroidLarge::SetRotation(float &a_CurrentRotation)
@@ -80,7 +98,10 @@ void oAsteroidLarge::SetRotation(float &a_CurrentRotation)
 		a_CurrentRotation = 1.f;
 	}
 }
-
+void oAsteroidLarge::SetIsDead(bool a_IsDead)
+{
+	bIsDead = a_IsDead;
+}
 oAsteroidSmall::oAsteroidSmall()
 {
 	iScore = 50;
@@ -90,6 +111,7 @@ oAsteroidSmall::oAsteroidSmall()
 
 void oAsteroidSmall::Initialise(oAsteroidSmall & a_AsteroidSmall, const char * a_AsteroidSmallImageFileName)
 {
+
 }
 
 void oAsteroidSmall::Update(oAsteroidSmall & a_AsteroidSmall)

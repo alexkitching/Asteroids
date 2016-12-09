@@ -3,6 +3,7 @@
 #include "position.h"
 #include "spawncontroller.h"
 #include "vector.h"
+#include "bullet.h"
 class oAsteroid
 {
 public:
@@ -14,6 +15,7 @@ protected:
 	//Dimension Variables
 	int iWidth = 0;
 	int iHeight = 0;
+	int iRadius = 0;
 	//Speed Variables
 	float fSpeedMax = 0.f;
 	float fSpeedMin = 0.f;
@@ -38,8 +40,11 @@ public:
 	oAsteroidLarge();
 	void Initialise(oSpawnController& a_spawncontroller, int a_AsteroidNumber, const char* a_AsteroidLargeImageFileName);
 	void Update(oAsteroidLarge& a_asteroidlarge);
-	void GetDimensions(int &a_iWidth, int &a_iHeight);
+	void GetDimensions(int& a_iWidth, int& a_iHeight);
+	void GetPos(float& a_PosX, float& a_PosY);
+	void GetRadius(int &a_Radius);
 	void SetRotation(float &a_CurrentRotation);
+	void SetIsDead(bool a_IsDead);
 private:	
 	
 };

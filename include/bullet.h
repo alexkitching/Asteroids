@@ -2,6 +2,7 @@
 #define _BULLET_H_
 #include "position.h"
 #include "spaceship.h"
+#include "asteroids.h"
 #include "vector.h"
 class oBullet
 {
@@ -11,15 +12,16 @@ public:
 	void SetActive(bool a_active);
 	void SetDrawn(bool a_drawn);
 	bool IsActive();
-	bool IsDrawn();
 	void Update(oBullet & a_Bullet);
 	void Draw(float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpaceshipPosY);
+	void CheckAsteroidCollision(oBullet& a_Bullet, oAsteroidLarge* a_AsteroidLarge);
 	int iSpriteID = -1;
 private:
 	bool bDrawn = false;
 	bool bActive = false;
 	int const iHeight = 3;
 	int const iWidth = 3;
+	float const fRadius = 1.5f;
 	float const fSpeed = 2.f;
 	float fCurrentDistance = 0.f;
 	int const fMaxDistance = 400.f;

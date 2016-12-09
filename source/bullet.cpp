@@ -1,5 +1,6 @@
 #include "bullet.h"
 #include "UGFW.h"
+#include "math.h"
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
 
@@ -24,11 +25,6 @@ void oBullet::SetDrawn(bool a_drawn)
 bool oBullet::IsActive()
 {
 	return bActive;
-}
-
-bool oBullet::IsDrawn()
-{
-	return bDrawn;
 }
 
 void oBullet::Update(oBullet & a_Bullet)
@@ -93,6 +89,26 @@ void oBullet::Draw(float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpa
 		iSpriteID = UG::CreateSprite("./images/bullet.png", (float)iWidth, (float)iHeight);
 		UG::DrawSprite(iSpriteID);
 		UG::MoveSprite(iSpriteID, fPosX, fPosY);
+	}
+}
+
+void oBullet::CheckAsteroidCollision(oBullet& a_Bullet, oAsteroidLarge* a_AsteroidLarge)
+{
+	for (int i = 0; i > 4; i++)
+	{
+		int iAsteroidRadius = 0;
+		float fBulletRadius = a_Bullet.fRadius;
+		float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f, fBulletPosX = a_Bullet.fPosX, fBulletPosY = a_Bullet.fPosY;
+		a_AsteroidLarge[i].GetRadius(iAsteroidRadius);
+		a_AsteroidLarge[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+		float fDistanceX = fBulletPosX - fAsteroidPosX;
+		float fDistanceY = fBulletPosY - fAsteroidPosY;
+		float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
+
+		if (fDistanceSquared < fBulletRadius + (float)iAsteroidRadius)
+		{
+			a_AsteroidLarge[i].SetIsDead(true);
+		}
 	}
 }
 

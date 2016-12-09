@@ -5,6 +5,7 @@
 #define _USE_MATH_DEFINES
 #include "math.h"
 #include "spaceship.h"
+#include "asteroids.h"
 #include "bullet.h"
 
 extern float g_DeltaTime;
@@ -15,7 +16,7 @@ public:
 	oSpaceship();
 	void Initialise(oSpaceship& a_Spaceship, const char* a_SpaceshipImageFileName, float a_fXPos, float a_fYPos);
 	void SetSpaceshipMovementKeys(oSpaceship& a_Spaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey, short  a_breakKey, short a_fireKey);
-	void Update(oSpaceship& a_Spaceship);
+	void Update(oSpaceship& a_Spaceship, oAsteroidLarge* a_asteroidlargearray);
 	float AngleWrap(float x);
 	int iSpriteID = -1;
 	Position pos;

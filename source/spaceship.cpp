@@ -31,9 +31,8 @@ void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_Spaceship, short a_upKe
 	a_Spaceship.fireKey = a_fireKey;
 }
 
-void oSpaceship::Update(oSpaceship& a_Spaceship)
+void oSpaceship::Update(oSpaceship& a_Spaceship, oAsteroidLarge* a_asteroidlargearray)
 {
-	
 	a_Spaceship.fCurrentTurnRate = 0.f;
 	
 	
@@ -108,6 +107,8 @@ void oSpaceship::Update(oSpaceship& a_Spaceship)
 	for (int i = 0; i < 6; i++)
 	{
 		bullet[i].Update(bullet[i]);
+		bullet[i].CheckAsteroidCollision(bullet[i], a_asteroidlargearray);
+		
 	}
 
 	a_Spaceship.fVNewX *= fDrag;
