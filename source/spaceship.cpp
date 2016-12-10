@@ -2,12 +2,12 @@
 #include "UGFW.h"
 #define _USE_MATH_DEFINES
 #include "math.h"
-#include "bullet.h"
 
 extern float g_DeltaTime;
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
-oBullet bullet[6];
+
+std::vector<oBullet> bullets;
 
 oSpaceship::oSpaceship()
 {
@@ -34,8 +34,8 @@ void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_Spaceship, short a_upKe
 void oSpaceship::Update(oSpaceship& a_Spaceship, oAsteroidLarge* a_asteroidlargearray)
 {
 	a_Spaceship.fCurrentTurnRate = 0.f;
-	
-	
+
+
 	a_Spaceship.pos.Get(a_Spaceship.fPosX, a_Spaceship.fPosY);
 	a_Spaceship.vNew.Get(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
 	if (UG::IsKeyDown(a_Spaceship.upKey)) // Accelerate the ship in the current facing direction
@@ -81,34 +81,48 @@ void oSpaceship::Update(oSpaceship& a_Spaceship, oAsteroidLarge* a_asteroidlarge
 	{
 		int testint = 0;
 	}
-
 	if (UG::IsKeyDown(a_Spaceship.fireKey))
 	{
-
 		fFireDelay -= g_DeltaTime;
 		if (fFireDelay < 0.f)
 		{
-			fFireDelay = 0.5f;
-			for (int i = 0; i < 6; i++)
+			bullets.push_back(oBullet());
+			for (std::vector<oBullet>::iterator i = bullets.begin(); i != bullets.end();)
 			{
-				if (!bullet[i].IsActive())
+				if (!i->IsDrawn(i))
 				{
-					bullet[i].SetActive(true);
-					bullet[i].Draw(a_Spaceship.fFacingAngleRad, a_Spaceship.fPosX, a_Spaceship.fPosY);
-					break;
+					i->Draw(i, a_Spaceship.fFacingAngleRad, a_Spaceship.fPosX, a_Spaceship.fPosY);
 				}
+				i++;
 			}
+			fFireDelay = 0.5f;
 		}
 	}
 	else
 	{
 		fFireDelay = 0.f;
 	}
-	for (int i = 0; i < 6; i++)
+
+	for (std::vector<oBullet>::iterator i = bullets.begin(); i != bullets.end();)
 	{
-		bullet[i].Update(bullet[i]);
-		bullet[i].CheckAsteroidCollision(bullet[i], a_asteroidlargearray);
-		
+		if (!i->IsActive(i))
+		{
+			UG::StopDrawingSprite(i->iSpriteID);
+			UG::DestroySprite(i->iSpriteID);
+			i = bullets.erase(i);
+		}
+		else
+		{
+			i->Update(bullets, i);
+			for (int j = 0; j < 5; j++)
+			{
+				if (!a_asteroidlargearray[j].IsDead())
+				{
+					i->CheckLargeAsteroidCollision(bullets, i, a_asteroidlargearray[j]);
+				}
+			}
+			++i;
+		}
 	}
 
 	a_Spaceship.fVNewX *= fDrag;
@@ -116,23 +130,23 @@ void oSpaceship::Update(oSpaceship& a_Spaceship, oAsteroidLarge* a_asteroidlarge
 	a_Spaceship.vNew.Set(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
 	a_Spaceship.fPosX = a_Spaceship.fPosX + a_Spaceship.fVNewX;
 	a_Spaceship.fPosY = a_Spaceship.fPosY + a_Spaceship.fVNewY;
-	
+
 	if (a_Spaceship.fPosY >= g_iScreenHeight + iHeight)
 	{
 		a_Spaceship.fPosY = (0.f * g_iScreenHeight) - iHeight;
 	}
 	else if (a_Spaceship.fPosY <= -iHeight)
 	{
-		a_Spaceship.fPosY = ((float) g_iScreenHeight + (float) iHeight);
+		a_Spaceship.fPosY = ((float)g_iScreenHeight + (float)iHeight);
 	}
-	
+
 	if (a_Spaceship.fPosX >= g_iScreenWidth + iWidth)
 	{
 		a_Spaceship.fPosX = (0.f * g_iScreenWidth) - iWidth;
 	}
 	else if (a_Spaceship.fPosX <= -iWidth)
 	{
-		a_Spaceship.fPosX = ( (float) g_iScreenWidth + (float) iWidth);
+		a_Spaceship.fPosX = ((float)g_iScreenWidth + (float)iWidth);
 
 	}
 
@@ -140,7 +154,7 @@ void oSpaceship::Update(oSpaceship& a_Spaceship, oAsteroidLarge* a_asteroidlarge
 	UG::MoveSprite(a_Spaceship.iSpriteID, a_Spaceship.fPosX, a_Spaceship.fPosY);
 	UG::RotateSprite(a_Spaceship.iSpriteID, a_Spaceship.fCurrentTurnRate);
 	a_Spaceship.pos.Set(a_Spaceship.fPosX, a_Spaceship.fPosY);
-	
+
 
 }
 

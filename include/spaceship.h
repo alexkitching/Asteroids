@@ -4,9 +4,9 @@
 #include "vector.h"
 #define _USE_MATH_DEFINES
 #include "math.h"
-#include "spaceship.h"
 #include "asteroids.h"
 #include "bullet.h"
+#include <vector>
 
 extern float g_DeltaTime;
 
