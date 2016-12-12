@@ -28,8 +28,9 @@ void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_Spaceship, short a_upKe
 	a_Spaceship.breakKey = a_breakKey;
 	a_Spaceship.fireKey = a_fireKey;
 }
-void oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidLarge>& a_asteroidarray, oLivesController& a_livescontroller)
+bool oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidLarge>& a_asteroidarray, oLivesController& a_livescontroller)
 {
+	bool Collision = false;
 	for (std::vector<oAsteroidLarge>::iterator i = a_asteroidarray.begin(); i != a_asteroidarray.end();)
 	{
 		if (!i->IsDead())
@@ -43,16 +44,27 @@ void oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oA
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < fRadius + (float)iAsteroidRadius)
 			{
-				bIsDead = true;
-				a_livescontroller.UpdateLives(-1);
-				i->SetIsDead(true);
+				Collision = true;
+				if (bIsDead == false)
+				{
+					bIsDead = true;
+					a_livescontroller.UpdateLives(-1);
+					i->SetIsDead(true);
+				}
+				return Collision;
+			}
+			else
+			{
+				return Collision;
 			}
 		}
 		i++;
 	}
+	return Collision;
 }
-void oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidMedium>& a_asteroidarray, oLivesController& a_livescontroller)
+bool oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidMedium>& a_asteroidarray, oLivesController& a_livescontroller)
 {
+	bool Collision = false;
 	for (std::vector<oAsteroidMedium>::iterator i = a_asteroidarray.begin(); i != a_asteroidarray.end();)
 	{
 		if (!i->IsDead())
@@ -66,16 +78,27 @@ void oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oA
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < fRadius + (float)iAsteroidRadius)
 			{
-				bIsDead = true;
-				a_livescontroller.UpdateLives(-1);
-				i->SetIsDead(true);
+				Collision = true;
+				if (bIsDead == false)
+				{
+					bIsDead = true;
+					a_livescontroller.UpdateLives(-1);
+					i->SetIsDead(true);
+				}
+				return Collision;
+			}
+			else 
+			{
+				return Collision;
 			}
 		}
 		i++;
 	}
+	return Collision;
 }
-void oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidSmall>& a_asteroidarray, oLivesController& a_livescontroller)
+bool oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidSmall>& a_asteroidarray, oLivesController& a_livescontroller)
 {
+	bool Collision = false;
 	for (std::vector<oAsteroidSmall>::iterator i = a_asteroidarray.begin(); i != a_asteroidarray.end();)
 	{
 		if (!i->IsDead())
@@ -89,13 +112,110 @@ void oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oA
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < fRadius + (float)iAsteroidRadius)
 			{
-				bIsDead = true;
-				a_livescontroller.UpdateLives(-1);
-				i->SetIsDead(true);
+				Collision = true;
+				if (bIsDead == false)
+				{
+					bIsDead = true;
+					a_livescontroller.UpdateLives(-1);
+					i->SetIsDead(true);
+				}
+				return Collision;
+			}
+			else
+			{
+				return Collision;
 			}
 		}
 		i++;
 	}
+	return Collision;
+}
+
+bool oSpaceship::CheckSpawnCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidLarge>& a_asteroidarray)
+{
+	bool Collision = false;
+	for (std::vector<oAsteroidLarge>::iterator i = a_asteroidarray.begin(); i != a_asteroidarray.end();)
+	{
+		if (!i->IsDead())
+		{
+			int iAsteroidRadius = 0;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
+			i->GetRadius(iAsteroidRadius);
+			i->GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = fPosX - fAsteroidPosX;
+			float fDistanceY = fPosY - fAsteroidPosY;
+			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
+			if (fDistanceSquared < fSpawnRadius + (float)iAsteroidRadius)
+			{
+				Collision = true;
+				return Collision;
+			}
+			else
+			{
+				return Collision;
+			}
+		}
+		i++;
+	}
+	return Collision;
+}
+
+bool oSpaceship::CheckSpawnCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidMedium>& a_asteroidarray)
+{
+	bool Collision = false;
+	for (std::vector<oAsteroidMedium>::iterator i = a_asteroidarray.begin(); i != a_asteroidarray.end();)
+	{
+		if (!i->IsDead())
+		{
+			int iAsteroidRadius = 0;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
+			i->GetRadius(iAsteroidRadius);
+			i->GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = fPosX - fAsteroidPosX;
+			float fDistanceY = fPosY - fAsteroidPosY;
+			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
+			if (fDistanceSquared < fSpawnRadius + (float)iAsteroidRadius)
+			{
+				Collision = true;
+				return Collision;
+			}
+			else
+			{
+				return Collision;
+			}
+		}
+		i++;
+	}
+	return Collision;
+}
+
+bool oSpaceship::CheckSpawnCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidSmall>& a_asteroidarray)
+{
+	bool Collision = false;
+	for (std::vector<oAsteroidSmall>::iterator i = a_asteroidarray.begin(); i != a_asteroidarray.end();)
+	{
+		if (!i->IsDead())
+		{
+			int iAsteroidRadius = 0;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
+			i->GetRadius(iAsteroidRadius);
+			i->GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = fPosX - fAsteroidPosX;
+			float fDistanceY = fPosY - fAsteroidPosY;
+			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
+			if (fDistanceSquared < fSpawnRadius + (float)iAsteroidRadius)
+			{
+				Collision = true;
+				return Collision;
+			}
+			else
+			{
+				return Collision;
+			}
+		}
+		i++;
+	}
+	return Collision;
 }
 
 void oSpaceship::ResetVars(oSpaceship & a_spaceship)
@@ -108,11 +228,26 @@ void oSpaceship::ResetVars(oSpaceship & a_spaceship)
 	fVNewX = 0.f;
 	fVNewY = 0.f;
 	bIsDead = false;
+	bCollision = false;
 }
 
 void oSpaceship::Respawn(oSpaceship & a_Spaceship)
 {
-	ResetVars();
+	bool bHasSpawned = false;
+	while (bHasSpawned == false)
+	{
+		if (!a_Spaceship.bCollision)
+		{
+			a_Spaceship.bIsDead = false;
+			UG::DrawSprite(a_Spaceship.iSpriteID);
+			UG::MoveSprite(a_Spaceship.iSpriteID, a_Spaceship.fPosX, a_Spaceship.fPosY);
+			bHasSpawned = true;
+		}
+		else if (a_Spaceship.bCollision)
+		{
+			//Do nothing
+		}
+	}
 }
 
 float oSpaceship::AngleWrap(float x)

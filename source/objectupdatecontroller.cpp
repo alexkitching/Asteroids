@@ -8,9 +8,10 @@ void oObjectUpdateController::SpaceshipUpdate(oSpaceship& a_Spaceship, std::vect
 	
 	if (a_Spaceship.bIsDead == false)
 	{
-		a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidlargearray, a_livescontroller);
-		a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidmediumarray, a_livescontroller);
-		a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidsmallarray, a_livescontroller);
+		/*a_Spaceship.bCollision = a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidlargearray, a_livescontroller);
+		a_Spaceship.bCollision = a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidmediumarray, a_livescontroller);
+		a_Spaceship.bCollision = a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidsmallarray, a_livescontroller);
+		*/
 
 		a_Spaceship.fCurrentTurnRate = 0.f;
 		a_Spaceship.pos.Get(a_Spaceship.fPosX, a_Spaceship.fPosY);
@@ -128,6 +129,16 @@ void oObjectUpdateController::SpaceshipUpdate(oSpaceship& a_Spaceship, std::vect
 	if (a_Spaceship.bIsDead == true)
 	{
 		UG::StopDrawingSprite(a_Spaceship.iSpriteID);
+		while (!a_Spaceship.fSpawnTime < 0.f)
+		{
+			a_Spaceship.fSpawnTime -= g_DeltaTime;
+		}
+		a_Spaceship.ResetVars(a_Spaceship);
+		a_Spaceship.bCollision = a_Spaceship.CheckSpawnCollision(a_Spaceship, a_asteroidlargearray);
+		a_Spaceship.bCollision = a_Spaceship.CheckSpawnCollision(a_Spaceship, a_asteroidmediumarray);
+		a_Spaceship.bCollision = a_Spaceship.CheckSpawnCollision(a_Spaceship, a_asteroidsmallarray);
+		bool bCanSpawn = false;
+		a_Spaceship.Respawn(a_Spaceship);
 	}
 }
 

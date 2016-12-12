@@ -1,8 +1,10 @@
-﻿  xcopy "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\New folder\scripts\..\Uog\lib\vs2015\x64\Debug\"*.pdb "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\New folder\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
+﻿  xcopy "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\scripts\..\Uog\lib\vs2015\x64\Debug\"*.pdb "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
   0 File(s) copied
   spaceship.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\new folder\include\bullet.h(28): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  Asteroids.vcxproj -> C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\New folder\proj\vs2015\..\..\bin\x64\Debug\Asteroids.exe
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(28): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(226): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\spaceship.cpp(227): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Asteroids.vcxproj -> C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\Asteroids.exe
   Asteroids.vcxproj -> ..\..\bin\x64\Debug\Asteroids.pdb (Full PDB)
-  xcopy "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\New folder\scripts\..\resources\"*.* "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\New folder\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
+  xcopy "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\scripts\..\resources\"*.* "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
   0 File(s) copied

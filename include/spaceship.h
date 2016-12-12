@@ -17,9 +17,12 @@ public:
 	oSpaceship();
 	void Initialise(oSpaceship& a_Spaceship, const char* a_SpaceshipImageFileName, float a_fXPos, float a_fYPos);
 	void SetSpaceshipMovementKeys(oSpaceship& a_Spaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey, short  a_breakKey, short a_fireKey);
-	void CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidLarge>& a_asteroidarray, oLivesController& a_livescontroller);
-	void CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidMedium>& a_asteroidarray, oLivesController& a_livescontroller);
-	void CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidSmall>& a_asteroidarray, oLivesController& a_livescontroller);
+	bool CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidLarge>& a_asteroidarray, oLivesController& a_livescontroller);
+	bool CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidMedium>& a_asteroidarray, oLivesController& a_livescontroller);
+	bool CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidSmall>& a_asteroidarray, oLivesController& a_livescontroller);
+	bool CheckSpawnCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidLarge>& a_asteroidarray);
+	bool CheckSpawnCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidMedium>& a_asteroidarray);
+	bool CheckSpawnCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidSmall>& a_asteroidarray);
 	void ResetVars(oSpaceship & a_spaceship);
 	void Respawn(oSpaceship& a_Spaceship);
 	float AngleWrap(float x);
@@ -31,6 +34,7 @@ private:
 
 	int const iWidth = 18, iHeight = 25;
 	float const fRadius = 10.5f;
+	float const fSpawnRadius = fRadius * 2;
 	//Speed Variables
 	float const fAcceleration = 0.03f;
 	float const fDrag = 0.99f;
@@ -56,6 +60,8 @@ private:
 	//Firing Varibles 
 	float fFireDelay = 0.f;
 	bool bIsDead = false;
+	bool bCollision = false;
+	float fSpawnTime = 3.0f;
 	//Movement Keys
 	short upKey = -1, downKey = -1, leftKey = -1, rightKey = -1, breakKey = -1, fireKey = -1;
 
