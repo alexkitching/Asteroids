@@ -11,12 +11,12 @@ public:
 	~oBullet();
 	bool IsActive(std::vector<oBullet>::iterator a_Bullet);
 	bool IsDrawn(std::vector<oBullet>::iterator a_Bullet);
-	bool Update(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet);
 	void Draw(std::vector<oBullet>::iterator a_Bullet, float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpaceshipPosY);
-	void CheckLargeAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, oAsteroidLarge& a_AsteroidLarge);
-	void CheckMediumAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, oAsteroidMedium& a_AsteroidMedium);
-	void CheckSmallAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, oAsteroidSmall& a_AsteroidSmall);
+	void CheckLargeAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, std::vector<oAsteroidLarge>& a_asteroidlargearray);
+	void CheckMediumAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, std::vector<oAsteroidMedium>& a_asteroidmediumarray);
+	void CheckSmallAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, std::vector<oAsteroidSmall>& a_asteroidsmallarray);
 	int iSpriteID = -1;
+	friend class oObjectUpdateController;
 private:
 	int iHeight = 3;
 	int iWidth = 3;

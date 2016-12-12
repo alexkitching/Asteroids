@@ -7,8 +7,6 @@ extern float g_DeltaTime;
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
 
-std::vector<oBullet> bullets;
-
 oSpaceship::oSpaceship()
 {
 }
@@ -30,132 +28,91 @@ void oSpaceship::SetSpaceshipMovementKeys(oSpaceship & a_Spaceship, short a_upKe
 	a_Spaceship.breakKey = a_breakKey;
 	a_Spaceship.fireKey = a_fireKey;
 }
-
-void oSpaceship::Update(oSpaceship& a_Spaceship, oAsteroidLarge* a_asteroidlargearray)
+void oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidLarge>& a_asteroidarray, oLivesController& a_livescontroller)
 {
-	a_Spaceship.fCurrentTurnRate = 0.f;
-
-
-	a_Spaceship.pos.Get(a_Spaceship.fPosX, a_Spaceship.fPosY);
-	a_Spaceship.vNew.Get(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
-	if (UG::IsKeyDown(a_Spaceship.upKey)) // Accelerate the ship in the current facing direction
+	for (std::vector<oAsteroidLarge>::iterator i = a_asteroidarray.begin(); i != a_asteroidarray.end();)
 	{
-		a_Spaceship.fVNewX += fAcceleration * cosf(a_Spaceship.fFacingAngleRad);
-		a_Spaceship.fVNewY += fAcceleration * sinf(a_Spaceship.fFacingAngleRad);
-		a_Spaceship.vNew.Set(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
-		a_Spaceship.fTotalVelocity = a_Spaceship.vNew.Magnitude();
-
-		//Cap Speed at Maximum Velocity
-		if (a_Spaceship.fTotalVelocity > fMaxVelocity)
+		if (!i->IsDead())
 		{
-			a_Spaceship.fTotalVelocity = fMaxVelocity;
-			a_Spaceship.fVNewX = a_Spaceship.fTotalVelocity * cosf(a_Spaceship.fMovementAngleRad);
-			a_Spaceship.fVNewY = a_Spaceship.fTotalVelocity * sinf(a_Spaceship.fMovementAngleRad);
-		}
-
-		if ((fVNewX == 0.0) && (fVNewY == 0.0)) // If ship is stationary the movement angle is equal to the facing angle.
-		{
-			a_Spaceship.fMovementAngleRad = a_Spaceship.fFacingAngleRad;
-		}
-		else if ((fVNewX != 0.0) && (fVNewY != 0.0)) // Else if the ship isn't stationary the movement angle is equal to the inverse tangent of the vector components.
-		{
-			a_Spaceship.fMovementAngleRad = atan2f(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
-		}
-	}
-	if (UG::IsKeyDown(a_Spaceship.rightKey))
-	{
-		a_Spaceship.fCurrentTurnRate = -fTurnRate;
-		a_Spaceship.fFacingAngleDeg += a_Spaceship.fCurrentTurnRate;
-		a_Spaceship.fFacingAngleDeg = AngleWrap(a_Spaceship.fFacingAngleDeg);
-		fFacingAngleRad = a_Spaceship.fFacingAngleDeg * degtorad;
-	}
-	if (UG::IsKeyDown(a_Spaceship.leftKey))
-	{
-		a_Spaceship.fCurrentTurnRate = fTurnRate;
-		a_Spaceship.fFacingAngleDeg += a_Spaceship.fCurrentTurnRate;
-		a_Spaceship.fFacingAngleDeg = AngleWrap(a_Spaceship.fFacingAngleDeg);
-		fFacingAngleRad = a_Spaceship.fFacingAngleDeg * degtorad;
-	}
-
-	if (UG::IsKeyDown(a_Spaceship.breakKey))
-	{
-		int testint = 0;
-	}
-	if (UG::IsKeyDown(a_Spaceship.fireKey))
-	{
-		fFireDelay -= g_DeltaTime;
-		if (fFireDelay < 0.f)
-		{
-			bullets.push_back(oBullet());
-			for (std::vector<oBullet>::iterator i = bullets.begin(); i != bullets.end();)
+			int iAsteroidRadius = 0;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
+			i->GetRadius(iAsteroidRadius);
+			i->GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = fPosX - fAsteroidPosX;
+			float fDistanceY = fPosY - fAsteroidPosY;
+			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
+			if (fDistanceSquared < fRadius + (float)iAsteroidRadius)
 			{
-				if (!i->IsDrawn(i))
-				{
-					i->Draw(i, a_Spaceship.fFacingAngleRad, a_Spaceship.fPosX, a_Spaceship.fPosY);
-				}
-				i++;
+				bIsDead = true;
+				a_livescontroller.UpdateLives(-1);
+				i->SetIsDead(true);
 			}
-			fFireDelay = 0.5f;
 		}
+		i++;
 	}
-	else
+}
+void oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidMedium>& a_asteroidarray, oLivesController& a_livescontroller)
+{
+	for (std::vector<oAsteroidMedium>::iterator i = a_asteroidarray.begin(); i != a_asteroidarray.end();)
 	{
-		fFireDelay = 0.f;
-	}
-
-	for (std::vector<oBullet>::iterator i = bullets.begin(); i != bullets.end();)
-	{
-		if (!i->IsActive(i))
+		if (!i->IsDead())
 		{
-			UG::StopDrawingSprite(i->iSpriteID);
-			UG::DestroySprite(i->iSpriteID);
-			i = bullets.erase(i);
-		}
-		else
-		{
-			i->Update(bullets, i);
-			for (int j = 0; j < 5; j++)
+			int iAsteroidRadius = 0;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
+			i->GetRadius(iAsteroidRadius);
+			i->GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = fPosX - fAsteroidPosX;
+			float fDistanceY = fPosY - fAsteroidPosY;
+			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
+			if (fDistanceSquared < fRadius + (float)iAsteroidRadius)
 			{
-				if (!a_asteroidlargearray[j].IsDead())
-				{
-					i->CheckLargeAsteroidCollision(bullets, i, a_asteroidlargearray[j]);
-				}
+				bIsDead = true;
+				a_livescontroller.UpdateLives(-1);
+				i->SetIsDead(true);
 			}
-			++i;
 		}
+		i++;
 	}
-
-	a_Spaceship.fVNewX *= fDrag;
-	a_Spaceship.fVNewY *= fDrag;
-	a_Spaceship.vNew.Set(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
-	a_Spaceship.fPosX = a_Spaceship.fPosX + a_Spaceship.fVNewX;
-	a_Spaceship.fPosY = a_Spaceship.fPosY + a_Spaceship.fVNewY;
-
-	if (a_Spaceship.fPosY >= g_iScreenHeight + iHeight)
+}
+void oSpaceship::CheckAsteroidCollision(oSpaceship & a_Spaceship, std::vector<oAsteroidSmall>& a_asteroidarray, oLivesController& a_livescontroller)
+{
+	for (std::vector<oAsteroidSmall>::iterator i = a_asteroidarray.begin(); i != a_asteroidarray.end();)
 	{
-		a_Spaceship.fPosY = (0.f * g_iScreenHeight) - iHeight;
+		if (!i->IsDead())
+		{
+			int iAsteroidRadius = 0;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
+			i->GetRadius(iAsteroidRadius);
+			i->GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = fPosX - fAsteroidPosX;
+			float fDistanceY = fPosY - fAsteroidPosY;
+			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
+			if (fDistanceSquared < fRadius + (float)iAsteroidRadius)
+			{
+				bIsDead = true;
+				a_livescontroller.UpdateLives(-1);
+				i->SetIsDead(true);
+			}
+		}
+		i++;
 	}
-	else if (a_Spaceship.fPosY <= -iHeight)
-	{
-		a_Spaceship.fPosY = ((float)g_iScreenHeight + (float)iHeight);
-	}
+}
 
-	if (a_Spaceship.fPosX >= g_iScreenWidth + iWidth)
-	{
-		a_Spaceship.fPosX = (0.f * g_iScreenWidth) - iWidth;
-	}
-	else if (a_Spaceship.fPosX <= -iWidth)
-	{
-		a_Spaceship.fPosX = ((float)g_iScreenWidth + (float)iWidth);
+void oSpaceship::ResetVars(oSpaceship & a_spaceship)
+{
+	a_spaceship.fTotalVelocity = 0.f;
+	fFacingAngleDeg = 90.0;
+	fMovementAngleDeg = 90.0;
+	fPosX = g_iScreenHeight * 0.5;
+	fPosY = g_iScreenHeight * 0.5;
+	fVNewX = 0.f;
+	fVNewY = 0.f;
+	bIsDead = false;
+}
 
-	}
-
-
-	UG::MoveSprite(a_Spaceship.iSpriteID, a_Spaceship.fPosX, a_Spaceship.fPosY);
-	UG::RotateSprite(a_Spaceship.iSpriteID, a_Spaceship.fCurrentTurnRate);
-	a_Spaceship.pos.Set(a_Spaceship.fPosX, a_Spaceship.fPosY);
-
-
+void oSpaceship::Respawn(oSpaceship & a_Spaceship)
+{
+	ResetVars();
 }
 
 float oSpaceship::AngleWrap(float x)

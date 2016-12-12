@@ -9,9 +9,10 @@
 #include "menu.h"
 #include "spaceship.h"
 #include "asteroids.h" 
-#include "background.h"
 #include "assetinit.h"
 #include "objectupdatecontroller.h"
+#include "scorecontroller.h"
+#include "livescontroller.h"
 
 int g_iScreenWidth = 0;
 int g_iScreenHeight = 0;
@@ -45,12 +46,14 @@ int main(int argv, char* argc[])
 				UG::GetScreenSize(g_iScreenWidth, g_iScreenHeight);
 
 				UG::SetBackgroundColor(UG::SColour(0x00, 0x00, 0x00, 0xFF));
-				//UG::AddFont("./fonts/pixel.ttf");
-
+				UG::AddFont("./fonts/invaders.fnt");
+				UG::SetFont("./fonts/invaders.fnt");
 				//Create Objects
 				oObjectUpdateController objectupdatecontroller;
+				oScorecontroller scorecontroller;
+				oLivesController livescontroller;
 				oSpaceship spaceship;
-				oAsteroidLarge asteroidlarge[5];
+				std::vector<oAsteroidLarge> asteroidlarge;
 				std::vector<oAsteroidMedium> asteroidmedium;
 				std::vector<oAsteroidSmall> asteroidsmall;
 				
@@ -60,15 +63,21 @@ int main(int argv, char* argc[])
 					float fSpaceshipXPos = 0.f, fSpaceshipYPos = 0.f;
 					spaceship.pos.Get(fSpaceshipXPos, fSpaceshipYPos);
 					g_DeltaTime = UG::GetDeltaTime();
-					spaceship.Update(spaceship, asteroidlarge);
+					objectupdatecontroller.SpaceshipUpdate(spaceship, asteroidlarge, asteroidmedium, asteroidsmall, livescontroller);
 					for (int i = 0; i < 5; i++)
 					{
-						objectupdatecontroller.AsteroidLargeUpdate(asteroidlarge[i], asteroidmedium);
+						objectupdatecontroller.AsteroidLargeUpdate(asteroidlarge[i], asteroidmedium, scorecontroller);
 					}
 					for (std::vector<oAsteroidMedium>::iterator i = asteroidmedium.begin(); i != asteroidmedium.end(); i++)
 					{
-						objectupdatecontroller.AsteroidMediumUpdate(i, asteroidsmall);
+						objectupdatecontroller.AsteroidMediumUpdate(i, asteroidsmall, scorecontroller);
 					}
+					for (std::vector<oAsteroidSmall>::iterator i = asteroidsmall.begin(); i != asteroidsmall.end(); i++)
+					{
+						objectupdatecontroller.AsteroidSmallUpdate(i, scorecontroller);
+					}
+					scorecontroller.DrawScore();
+					livescontroller.DrawLives();
 					UG::ClearScreen();
 				} while (UG::Process());
 			}

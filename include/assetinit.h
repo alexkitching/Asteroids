@@ -4,6 +4,6 @@
 #include "asteroids.h"
 #include "spaceship.h"
 
-void InitialiseGameAssets(oSpaceship& a_spaceship, oAsteroidLarge* a_asteroidlargearray);
+void InitialiseGameAssets(oSpaceship& a_spaceship, std::vector<oAsteroidLarge>& a_asteroidlargearray);
 
 #endif // !_ASSETINIT_H_

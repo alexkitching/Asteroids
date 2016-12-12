@@ -35,11 +35,13 @@ protected:
 	float fVNewX = 0.f;
 	float fVNewY = 0.f;
 	//SpriteFileArray
+	char const cLargeAsteroidFileName[5][35] = { { "./images/LargeAsteroid1.png" },{ "./images/LargeAsteroid2.png" },{ "./images/LargeAsteroid3.png" },{ "./images/LargeAsteroid4.png" },{ "./images/LargeAsteroid1.png" } };
 	char const cMediumAsteroidFileName[3][35] = { { "./images/MediumAsteroid1.png" }, { "./images/MediumAsteroid2.png" }, { "./images/MediumAsteroid3.png" } };
 	char const cSmallAsteroidFileName[3][35] = { { "./images/SmallAsteroid1.png" }, { "./images/SmallAsteroid2.png" }, { "./images/SmallAsteroid3.png" } };
 	//Death Variables
 	bool bShattered = false;
 	bool bIsDead = false;
+	bool bScoreUpdated = false;
 	Position pos;
 	Vector vNew = Vector(0.0f, 0.0f);
 private:
@@ -48,10 +50,9 @@ private:
 class oAsteroidLarge : public oAsteroid
 {
 public:
-	oAsteroidLarge();
-	void Initialise(oSpawnController& a_spawncontroller, int a_AsteroidNumber, const char* a_AsteroidLargeImageFileName);
+	oAsteroidLarge(oSpawnController& a_spawncontroller, int a_currentAsteroid);
+	void Initialise(oSpawnController& a_spawncontroller, const char* a_AsteroidLargeImageFileName, int a_currentAsteroid);
 private:	
-	
 };
 
 class oAsteroidMedium : public oAsteroid
@@ -67,8 +68,6 @@ class oAsteroidSmall : public oAsteroid
 public:
 	oAsteroidSmall(float a_AsteroidMediumPosX, float a_AsteroidMediumPosY, int a_currentAsteroid);
 	void Initialise(const char * a_AsteroidSmallImageFileName, float a_oAsteroidMediumPosX, float a_oAsteroidMediumPosY);
-	void Update(oAsteroidSmall& a_asteroidsmall);
-
 private:
 };
 #endif
