@@ -19,6 +19,11 @@ void oLivesController::DrawLives()
 	UG::DrawString(cCurrentLives, 10, g_iScreenHeight - 40);
 }
 
+int oLivesController::CurrentLives()
+{
+	return iCurrentLives;
+}
+
 void oLivesController::UpdateLives(int a_inewlives)
 {
 	iCurrentLives += a_inewlives;

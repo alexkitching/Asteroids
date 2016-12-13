@@ -2,14 +2,20 @@
 #define NOMINMAX
 #include "algorithm"
 
-oSpawnController::oSpawnController()
-{
-}
-
 void oSpawnController::SpawnController(int a_MaxObjects, int a_ObjectWidth, int a_ObjectHeight)
 {
 	iObjectWidth = a_ObjectWidth;
 	iObjectHeight = a_ObjectHeight;
+	float fNewPosX = 0.f;
+	float fNewPosY = 0.f;
+	float fOldXPosMax = 0.f;
+	float fOldXPosMin = 0.f;
+	float fNewXPosMax = 0.f;
+	float fNewXPosMin = 0.f;
+	float fOldYPosMax = 0.f;
+	float fOldYPosMin = 0.f;
+	float fNewYPosMax = 0.f;
+	float fNewYPosMin = 0.f;
 	for (int i = 0; i < 5;)
 	{
 		pos.SetRandom();

@@ -1,126 +1,176 @@
 #include "bullet.h"
 #include "UGFW.h"
 #include "math.h"
-#include <vector>
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
 
-oBullet::oBullet()
+bool oBullet::IsActive(oBullet& a_Bullet)
 {
-
+	return a_Bullet.bIsActive;
 }
 
-oBullet::~oBullet()
+bool oBullet::IsDrawn(oBullet& a_Bullet)
 {
+	return a_Bullet.bIsDrawn;
 }
 
-bool oBullet::IsActive(std::vector<oBullet>::iterator a_Bullet)
+bool oBullet::HasExpired(oBullet & a_Bullet)
 {
-	return a_Bullet->bIsActive;
+	return a_Bullet.bHasExpired;
 }
 
-bool oBullet::IsDrawn(std::vector<oBullet>::iterator a_Bullet)
+void oBullet::SetIsActive(bool a_IsActive)
 {
-	return a_Bullet->bIsDrawn;
+	bIsActive = a_IsActive;
 }
 
-void oBullet::Draw(std::vector<oBullet>::iterator a_Bullet, float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpaceshipPosY)
+void oBullet::SetIsDrawn(bool a_IsDrawn)
 {
-	a_Bullet->bIsDrawn = true;
-	a_Bullet->bIsActive = true;
+	bIsDrawn = a_IsDrawn;
+}
+
+void oBullet::SetHasExpired(bool a_HasExpired)
+{
+	bHasExpired = a_HasExpired;
+}
+
+void oBullet::Draw(oBullet& a_Bullet, float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpaceshipPosY)
+{
+	a_Bullet.bIsDrawn = true;
+	a_Bullet.bIsActive = true;
+	a_Bullet.bHasExpired = false;
 	//Direction of Bullet = Direction Ship is Facing
-	a_Bullet->fVNewX = cosf(fSpaceshipFacingAngle);
-	a_Bullet->fVNewY = sinf(fSpaceshipFacingAngle);
+	a_Bullet.fVNewX = cosf(fSpaceshipFacingAngle);
+	a_Bullet.fVNewY = sinf(fSpaceshipFacingAngle);
 	// Set Initial Position of Bullet
-	a_Bullet->fPosX = fSpaceshipPosX;
-	a_Bullet->fPosY = fSpaceshipPosY;
+	a_Bullet.fPosX = fSpaceshipPosX;
+	a_Bullet.fPosY = fSpaceshipPosY;
 	//Move Bullet in front of ship
-	a_Bullet->fPosX += fVNewX * 20;
-	a_Bullet->fPosY += fVNewY * 20;
-	a_Bullet->pos.Set(a_Bullet->fPosX, a_Bullet->fPosY);
+	a_Bullet.fPosX += fVNewX * 20;
+	a_Bullet.fPosY += fVNewY * 20;
+	a_Bullet.pos.Set(a_Bullet.fPosX, a_Bullet.fPosY);
 	//Set Bullet Speed
-	a_Bullet->fVNewX *= 5;
-	a_Bullet->fVNewY *= 5;
-	a_Bullet->vNew.Set(a_Bullet->fVNewX, a_Bullet->fVNewY);
-	a_Bullet->iSpriteID = UG::CreateSprite("./images/bullet.png", (float)a_Bullet->iWidth, (float)a_Bullet->iHeight);
-	UG::DrawSprite(a_Bullet->iSpriteID);
-	UG::MoveSprite(a_Bullet->iSpriteID, a_Bullet->fPosX, a_Bullet->fPosY);
+	a_Bullet.fVNewX *= 5;
+	a_Bullet.fVNewY *= 5;
+	a_Bullet.vNew.Set(a_Bullet.fVNewX, a_Bullet.fVNewY);
+	a_Bullet.iSpriteID = UG::CreateSprite("./images/bullet.png", (float)a_Bullet.iWidth, (float)a_Bullet.iHeight);
+	UG::DrawSprite(a_Bullet.iSpriteID);
+	UG::MoveSprite(a_Bullet.iSpriteID, a_Bullet.fPosX, a_Bullet.fPosY);
 }
 
-void oBullet::CheckLargeAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, std::vector<oAsteroidLarge>& a_asteroidlargearray)
+void oBullet::Destroy(oBullet & a_Bullet)
 {
-	for (std::vector<oAsteroidLarge>::iterator i = a_asteroidlargearray.begin(); i != a_asteroidlargearray.end();)
+	fCurrentDistance = 0.f;
+	fPosX = 0.f;
+	fPosY = 0.f;
+	fVNewX = 0.f;
+	fVNewY = 0.f;
+	pos.Set(fPosX, fPosY);
+	vNew = Vector(0.0f, 0.0f);
+	a_Bullet.SetIsDrawn(false);
+	a_Bullet.SetIsActive(false);
+	a_Bullet.SetHasExpired(true);
+	UG::StopDrawingSprite(a_Bullet.iSpriteID);
+	UG::DestroySprite(a_Bullet.iSpriteID);
+	a_Bullet.iSpriteID = -1;
+}
+
+void oBullet::CheckAsteroidCollision(oBullet & a_Bullet, oAsteroidLarge * a_asteroidlargearray, oAsteroidMedium * a_asteroidmediumarray, oAsteroidSmall * a_asteroidsmallarray, int& a_asteroidlargedeathcount, int& a_asteroidmediumdeathcount, int& a_asteroidsmalldeathcount)
+{
+	//Check Large Asteroid Collision
+	for (int i = 0; i < 5; ++i)
 	{
-		if (!i->IsDead())
+		if (a_asteroidlargearray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
-			float fBulletRadius = a_Bullet->fRadius;
-			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f, fBulletPosX = a_Bullet->fPosX, fBulletPosY = a_Bullet->fPosY;
-			i->GetRadius(iAsteroidRadius);
-			i->GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fBulletRadius = 0.f;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f, fBulletPosX = 0.f, fBulletPosY = 0.f;
+
+			a_Bullet.GetRadius(fBulletRadius);
+			a_asteroidlargearray[i].GetRadius(iAsteroidRadius);
+			a_Bullet.GetPos(fBulletPosX, fBulletPosY);
+			a_asteroidlargearray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
 			float fDistanceX = fBulletPosX - fAsteroidPosX;
 			float fDistanceY = fBulletPosY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 
 			if (fDistanceSquared < fBulletRadius + (float)iAsteroidRadius)
 			{
-				a_Bullet->bIsDrawn = false;
-				a_Bullet->bIsActive = false;
-				i->SetIsDead(true);
+				if (a_Bullet.bIsDrawn)
+				{
+					a_Bullet.Destroy(a_Bullet);
+				}
+				a_asteroidlargearray[i].Destroy(a_asteroidlargearray[i]);
+				++a_asteroidlargedeathcount;
 			}
 		}
-		i++;
 	}
-
-}
-
-void oBullet::CheckMediumAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, std::vector<oAsteroidMedium>& a_asteroidmediumarray)
-{
-	for (std::vector<oAsteroidMedium>::iterator i = a_asteroidmediumarray.begin(); i != a_asteroidmediumarray.end();)
+	//Check Medium Asteroid Collision
+	for (int i = 0; i < 15; ++i)
 	{
-		if (!i->IsDead())
+		if (a_asteroidmediumarray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
-			float fBulletRadius = a_Bullet->fRadius;
-			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f, fBulletPosX = a_Bullet->fPosX, fBulletPosY = a_Bullet->fPosY;
-			i->GetRadius(iAsteroidRadius);
-			i->GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fBulletRadius = 0.f;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f, fBulletPosX = 0.f, fBulletPosY = 0.f;
+			a_Bullet.GetRadius(fBulletRadius);
+			a_asteroidmediumarray[i].GetRadius(iAsteroidRadius);
+			a_Bullet.GetPos(fBulletPosX, fBulletPosY);
+			a_asteroidmediumarray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
 			float fDistanceX = fBulletPosX - fAsteroidPosX;
 			float fDistanceY = fBulletPosY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < fBulletRadius + (float)iAsteroidRadius)
 			{
-				a_Bullet->bIsDrawn = false;
-				a_Bullet->bIsActive = false;
-				i->SetIsDead(true);
+				if (a_Bullet.bIsDrawn)
+				{
+					a_Bullet.Destroy(a_Bullet);
+				}
+				a_asteroidmediumarray[i].Destroy(a_asteroidmediumarray[i]);
+				++a_asteroidmediumdeathcount;
 			}
 		}
-		i++;
 	}
-}
-
-void oBullet::CheckSmallAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, std::vector<oAsteroidSmall>& a_asteroidsmallarray)
-{
-	for (std::vector<oAsteroidSmall>::iterator i = a_asteroidsmallarray.begin(); i != a_asteroidsmallarray.end();)
+	//Check Small Asteroid Collision
+	for (int i = 0; i < 45; ++i)
 	{
-		if (!i->IsDead())
+		if (a_asteroidsmallarray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
-			float fBulletRadius = a_Bullet->fRadius;
-			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f, fBulletPosX = a_Bullet->fPosX, fBulletPosY = a_Bullet->fPosY;
-			i->GetRadius(iAsteroidRadius);
-			i->GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fBulletRadius = 0.f;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f, fBulletPosX = 0.f, fBulletPosY = 0.f;
+			a_Bullet.GetRadius(fBulletRadius);
+			a_asteroidsmallarray[i].GetRadius(iAsteroidRadius);
+			a_Bullet.GetPos(fBulletPosX, fBulletPosY);
+			a_asteroidsmallarray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
 			float fDistanceX = fBulletPosX - fAsteroidPosX;
 			float fDistanceY = fBulletPosY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < fBulletRadius + (float)iAsteroidRadius)
 			{
-				a_Bullet->bIsDrawn = false;
-				a_Bullet->bIsActive = false;
-				i->SetIsDead(true);
+				if (a_Bullet.bIsDrawn)
+				{
+					a_Bullet.Destroy(a_Bullet);
+				}
+				a_asteroidsmallarray[i].Destroy(a_asteroidsmallarray[i]);
+				++a_asteroidsmalldeathcount;
 			}
-
 		}
-		i++;
 	}
+}
+
+void oBullet::GetDimensions(int & a_iWidth, int & a_iHeight)
+{
+	a_iWidth = iWidth, a_iHeight = iHeight;
+}
+
+void oBullet::GetPos(float & a_PosX, float & a_PosY)
+{
+	a_PosX = fPosX;
+	a_PosY = fPosY;
+}
+
+void oBullet::GetRadius(float & a_fRadius)
+{
+	a_fRadius = fRadius;
 }

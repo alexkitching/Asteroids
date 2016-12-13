@@ -31,6 +31,7 @@
     <ClCompile Include="..\..\source\scorecontroller.cpp" />
     <ClCompile Include="..\..\source\spaceship.cpp" />
     <ClCompile Include="..\..\source\spawncontroller.cpp" />
+    <ClCompile Include="..\..\source\ufo.cpp" />
     <ClCompile Include="..\..\source\vector.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +47,7 @@
     <ClInclude Include="..\..\include\scorecontroller.h" />
     <ClInclude Include="..\..\include\spaceship.h" />
     <ClInclude Include="..\..\include\spawncontroller.h" />
+    <ClInclude Include="..\..\include\ufo.h" />
     <ClInclude Include="..\..\include\vector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

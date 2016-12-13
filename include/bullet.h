@@ -3,24 +3,30 @@
 #include "position.h"
 #include "asteroids.h"
 #include "vector.h"
-#include <vector>
 class oBullet
 {
 public:
-	oBullet();
-	~oBullet();
-	bool IsActive(std::vector<oBullet>::iterator a_Bullet);
-	bool IsDrawn(std::vector<oBullet>::iterator a_Bullet);
-	void Draw(std::vector<oBullet>::iterator a_Bullet, float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpaceshipPosY);
-	void CheckLargeAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, std::vector<oAsteroidLarge>& a_asteroidlargearray);
-	void CheckMediumAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, std::vector<oAsteroidMedium>& a_asteroidmediumarray);
-	void CheckSmallAsteroidCollision(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet, std::vector<oAsteroidSmall>& a_asteroidsmallarray);
+	oBullet() {};
+	~oBullet() {};
+	bool IsActive(oBullet& a_Bullet);
+	bool IsDrawn(oBullet& a_Bullet);
+	bool HasExpired(oBullet& a_Bullet);
+	void SetIsActive(bool a_IsActive);
+	void SetIsDrawn(bool a_IsDrawn);
+	void SetHasExpired(bool a_HasExpired);
+	void Draw(oBullet& a_Bullet, float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpaceshipPosY);
+	void Destroy(oBullet& a_Bullet);
+	void CheckAsteroidCollision(oBullet& a_Bullet, oAsteroidLarge* a_asteroidlargearray, oAsteroidMedium* a_asteroidmediumarray, oAsteroidSmall* a_asteroidsmallarray, int& a_asteroidlargedeathcount, int& a_asteroidmediumdeathcount, int& a_asteroidsmalldeathcount);
+	void GetDimensions(int& a_iWidth, int& a_iHeight);
+	void GetPos(float& a_PosX, float& a_PosY);
+	void GetRadius(float &a_fRadius);
 	int iSpriteID = -1;
 	friend class oObjectUpdateController;
 private:
 	int iHeight = 3;
 	int iWidth = 3;
 	bool bIsActive = false;
+	bool bHasExpired = false;
 	bool bIsDrawn = false;
 	float fRadius = 1.5f;
 	float fSpeed = 2.f;
@@ -32,6 +38,5 @@ private:
 	float fVNewY = 0.f;
 	Vector vNew = Vector(0.0f, 0.0f);
 	Position pos;
-
 };
 #endif

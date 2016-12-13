@@ -3,16 +3,23 @@
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
 
-void oObjectUpdateController::SpaceshipUpdate(oSpaceship& a_Spaceship, std::vector<oAsteroidLarge>& a_asteroidlargearray, std::vector<oAsteroidMedium>& a_asteroidmediumarray, std::vector<oAsteroidSmall>& a_asteroidsmallarray, oLivesController& a_livescontroller)
-{
-	
-	if (a_Spaceship.bIsDead == false)
-	{
-		/*a_Spaceship.bCollision = a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidlargearray, a_livescontroller);
-		a_Spaceship.bCollision = a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidmediumarray, a_livescontroller);
-		a_Spaceship.bCollision = a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidsmallarray, a_livescontroller);
-		*/
+oBullet bulletarray[2];
 
+GameState oObjectUpdateController::Spaceship(oSpaceship& a_Spaceship, oAsteroidLarge* a_asteroidlargearray, oAsteroidMedium* a_asteroidmediumarray, oAsteroidSmall* a_asteroidsmallarray, oLivesController& a_livescontroller)
+{
+	//a_Spaceship.CheckAsteroidCollision(a_Spaceship, a_asteroidlargearray, a_asteroidmediumarray, a_asteroidsmallarray, a_livescontroller, iAsteroidLargeDeathCount, iAsteroidMediumDeathCount, iAsteroidSmallDeathCount);
+	if (AsteroidCheck())
+	{
+		ResetAsteroidSpawnCount();
+		for (int i = 0; i < 5; ++i)
+		{
+			a_asteroidlargearray[i].Respawn(a_asteroidlargearray[i], i);
+		}
+		ReinitialiseAsteroids(a_asteroidmediumarray, a_asteroidsmallarray);
+		bAllDead = false;
+	}
+	if (a_Spaceship.bIsActive == true)
+	{
 		a_Spaceship.fCurrentTurnRate = 0.f;
 		a_Spaceship.pos.Get(a_Spaceship.fPosX, a_Spaceship.fPosY);
 		a_Spaceship.vNew.Get(a_Spaceship.fVNewX, a_Spaceship.fVNewY);
@@ -65,14 +72,13 @@ void oObjectUpdateController::SpaceshipUpdate(oSpaceship& a_Spaceship, std::vect
 			a_Spaceship.fFireDelay -= g_DeltaTime;
 			if (a_Spaceship.fFireDelay < 0.f)
 			{
-				a_Spaceship.bullets.push_back(oBullet());
-				for (std::vector<oBullet>::iterator i = a_Spaceship.bullets.begin(); i != a_Spaceship.bullets.end();)
+				for (int i = 0; i <2; ++i)
 				{
-					if (!i->IsDrawn(i))
+					if (!bulletarray[i].IsDrawn(bulletarray[i]))
 					{
-						i->Draw(i, a_Spaceship.fFacingAngleRad, a_Spaceship.fPosX, a_Spaceship.fPosY);
+						bulletarray[i].Draw(bulletarray[i], a_Spaceship.fFacingAngleRad, a_Spaceship.fPosX, a_Spaceship.fPosY);
+						break;
 					}
-					i++;
 				}
 				a_Spaceship.fFireDelay = 0.5f;
 			}
@@ -80,24 +86,6 @@ void oObjectUpdateController::SpaceshipUpdate(oSpaceship& a_Spaceship, std::vect
 		else
 		{
 			a_Spaceship.fFireDelay = 0.f;
-		}
-		for (std::vector<oBullet>::iterator i = a_Spaceship.bullets.begin(); i != a_Spaceship.bullets.end();)
-		{
-			if (!i->IsActive(i))
-			{
-				UG::StopDrawingSprite(i->iSpriteID);
-				UG::DestroySprite(i->iSpriteID);
-				i = a_Spaceship.bullets.erase(i);
-			}
-			else
-			{
-				BulletUpdate(a_Spaceship.bullets, i);
-
-				i->CheckLargeAsteroidCollision(a_Spaceship.bullets, i, a_asteroidlargearray);
-				i->CheckMediumAsteroidCollision(a_Spaceship.bullets, i, a_asteroidmediumarray);
-				i->CheckSmallAsteroidCollision(a_Spaceship.bullets, i, a_asteroidsmallarray);
-				++i;
-			}
 		}
 		a_Spaceship.fVNewX *= a_Spaceship.fDrag;
 		a_Spaceship.fVNewY *= a_Spaceship.fDrag;
@@ -126,59 +114,88 @@ void oObjectUpdateController::SpaceshipUpdate(oSpaceship& a_Spaceship, std::vect
 		a_Spaceship.pos.Set(a_Spaceship.fPosX, a_Spaceship.fPosY);
 	}
 	
-	if (a_Spaceship.bIsDead == true)
+	if (a_Spaceship.bIsActive == false)
 	{
-		UG::StopDrawingSprite(a_Spaceship.iSpriteID);
-		while (!a_Spaceship.fSpawnTime < 0.f)
+		if (a_livescontroller.CurrentLives() > 0)
 		{
-			a_Spaceship.fSpawnTime -= g_DeltaTime;
+			if (a_Spaceship.fSpawnTime > a_Spaceship.fMaxSpawnTime)
+			{
+				a_Spaceship.CheckSpawnCollision(a_Spaceship, a_asteroidlargearray, a_asteroidmediumarray, a_asteroidsmallarray);
+				if (a_Spaceship.bCollision == false)
+				{
+					a_Spaceship.Respawn(a_Spaceship);
+				}
+				else if (a_Spaceship.bCollision == true)
+				{
+					a_Spaceship.fSpawnTime = 0.f;
+				}
+			}
+			a_Spaceship.fSpawnTime += g_DeltaTime;
 		}
-		a_Spaceship.ResetVars(a_Spaceship);
-		a_Spaceship.bCollision = a_Spaceship.CheckSpawnCollision(a_Spaceship, a_asteroidlargearray);
-		a_Spaceship.bCollision = a_Spaceship.CheckSpawnCollision(a_Spaceship, a_asteroidmediumarray);
-		a_Spaceship.bCollision = a_Spaceship.CheckSpawnCollision(a_Spaceship, a_asteroidsmallarray);
-		bool bCanSpawn = false;
-		a_Spaceship.Respawn(a_Spaceship);
+		else if (a_livescontroller.CurrentLives() == 0)
+		{
+			UG::DrawString("GAME OVER, PRESS ESCAPE TO EXIT", g_iScreenWidth * 0.18, g_iScreenHeight * 0.55);
+			if (UG::IsKeyDown(a_Spaceship.exitKey))
+			{
+				GameState newState = GameState::GAMEOVER;
+				return newState;
+			}
+		}
+	}
+
+	for (int i = 0; i < 2; ++i)
+	{
+		if (bulletarray[i].IsActive(bulletarray[i]))
+		{
+			Bullet(bulletarray[i], a_asteroidlargearray, a_asteroidmediumarray, a_asteroidsmallarray);
+		}
+		else
+		{
+			//Do Nothing
+		}
 	}
 }
 
-bool oObjectUpdateController::BulletUpdate(std::vector<oBullet>& a_bulletarray, std::vector<oBullet>::iterator a_Bullet)
+bool oObjectUpdateController::Bullet(oBullet& a_bullet, oAsteroidLarge* a_asteroidlargearray, oAsteroidMedium* a_asteroidmediumarray, oAsteroidSmall* a_asteroidsmallarray)
 {
-	a_Bullet->pos.Get(a_Bullet->fPosX, a_Bullet->fPosY);
-	a_Bullet->vNew.Get(a_Bullet->fVNewX, a_Bullet->fVNewY);
-	a_Bullet->fPosX = a_Bullet->fPosX + a_Bullet->fVNewX;
-	a_Bullet->fPosY = a_Bullet->fPosY + a_Bullet->fVNewY;
-	if (a_Bullet->fPosY >= g_iScreenHeight + a_Bullet->iHeight)
+	a_bullet.pos.Get(a_bullet.fPosX, a_bullet.fPosY);
+	a_bullet.vNew.Get(a_bullet.fVNewX, a_bullet.fVNewY);
+	a_bullet.fPosX = a_bullet.fPosX + a_bullet.fVNewX;
+	a_bullet.fPosY = a_bullet.fPosY + a_bullet.fVNewY;
+	if (a_bullet.fPosY >= g_iScreenHeight + a_bullet.iHeight)
 	{
-		a_Bullet->fPosY = (0.f * (float)g_iScreenHeight) - (float)a_Bullet->iHeight;
+		a_bullet.fPosY = (0.f * (float)g_iScreenHeight) - (float)a_bullet.iHeight;
 	}
-	else if (a_Bullet->fPosY <= -a_Bullet->iHeight)
+	else if (a_bullet.fPosY <= -a_bullet.iHeight)
 	{
-		a_Bullet->fPosY = ((float)g_iScreenHeight + (float)a_Bullet->iHeight);
+		a_bullet.fPosY = ((float)g_iScreenHeight + (float)a_bullet.iHeight);
 	}
 
-	if (a_Bullet->fPosX >= g_iScreenWidth + a_Bullet->iWidth)
+	if (a_bullet.fPosX >= g_iScreenWidth + a_bullet.iWidth)
 	{
-		a_Bullet->fPosX = (0.f * (float)g_iScreenWidth) - (float)a_Bullet->iWidth;
+		a_bullet.fPosX = (0.f * (float)g_iScreenWidth) - (float)a_bullet.iWidth;
 	}
-	else if (a_Bullet->fPosX <= -a_Bullet->iWidth)
+	else if (a_bullet.fPosX <= -a_bullet.iWidth)
 	{
-		a_Bullet->fPosX = ((float)g_iScreenWidth + (float)a_Bullet->iWidth);
+		a_bullet.fPosX = ((float)g_iScreenWidth + (float)a_bullet.iWidth);
 	}
-	UG::MoveSprite(a_Bullet->iSpriteID, a_Bullet->fPosX, a_Bullet->fPosY);
-	a_Bullet->pos.Set(a_Bullet->fPosX, a_Bullet->fPosY);
-	a_Bullet->fCurrentDistance += a_Bullet->vNew.Magnitude();
-	if (a_Bullet->fCurrentDistance >= a_Bullet->fMaxDistance)
+	UG::MoveSprite(a_bullet.iSpriteID, a_bullet.fPosX, a_bullet.fPosY);
+	a_bullet.pos.Set(a_bullet.fPosX, a_bullet.fPosY);
+	a_bullet.fCurrentDistance += a_bullet.vNew.Magnitude();
+	if (a_bullet.fCurrentDistance >= a_bullet.fMaxDistance)
 	{
-		a_Bullet->bIsDrawn = false;
-		a_Bullet->bIsActive = false;
+		a_bullet.Destroy(a_bullet);
+		return a_bullet.bIsActive;
 	}
-	return a_Bullet->bIsActive;
+
+	a_bullet.CheckAsteroidCollision(a_bullet, a_asteroidlargearray, a_asteroidmediumarray, a_asteroidsmallarray, iAsteroidLargeDeathCount, iAsteroidMediumDeathCount, iAsteroidSmallDeathCount);
+
+	return a_bullet.bIsActive;
 }
 
-void oObjectUpdateController::AsteroidLargeUpdate(oAsteroidLarge & a_AsteroidLarge, std::vector<oAsteroidMedium>& a_asteroidmediumarray, oScorecontroller& a_scorecontroller)
+void oObjectUpdateController::AsteroidLarge(oAsteroidLarge & a_AsteroidLarge, oAsteroidMedium* a_asteroidmediumarray, oScorecontroller& a_scorecontroller)
 {
-	if (!a_AsteroidLarge.bIsDead)
+	if (!a_AsteroidLarge.HasCollided())
 	{
 		a_AsteroidLarge.pos.Get(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
 		a_AsteroidLarge.vNew.Get(a_AsteroidLarge.fVNewX, a_AsteroidLarge.fVNewY);
@@ -205,118 +222,182 @@ void oObjectUpdateController::AsteroidLargeUpdate(oAsteroidLarge & a_AsteroidLar
 		UG::RotateSprite(a_AsteroidLarge.iSpriteID, a_AsteroidLarge.fSpriteTurnRate);
 		a_AsteroidLarge.pos.Set(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
 	}
-	else if (a_AsteroidLarge.bIsDead)
+	else if (a_AsteroidLarge.HasCollided())
 	{
+		a_AsteroidLarge.bIsActive = false;
 		if (!a_AsteroidLarge.bShattered)
 		{
 			for (int i = 0; i < 3; i++)
 			{
-				a_asteroidmediumarray.push_back(oAsteroidMedium(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY, i));
+				a_asteroidmediumarray[iAsteroidMediumSpawnCount].Draw(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
+				++iAsteroidMediumSpawnCount;
 			}
+			a_AsteroidLarge.ResetVars(a_AsteroidLarge);
 			a_AsteroidLarge.bShattered = true;
 		}
 		if (!a_AsteroidLarge.bScoreUpdated)
 		{
-
-	 		Explosion explosion;
-			explosion.Update(a_AsteroidLarge.fPosX, a_AsteroidLarge.fPosY);
-			ScoreUpdate(a_scorecontroller, a_AsteroidLarge.iScore);
+			Score(a_scorecontroller, a_AsteroidLarge.iScore);
 			a_AsteroidLarge.bScoreUpdated = true;
 		}
-		UG::StopDrawingSprite(a_AsteroidLarge.iSpriteID);
 	}
 }
 
-void oObjectUpdateController::AsteroidMediumUpdate(std::vector<oAsteroidMedium>::iterator a_AsteroidMedium, std::vector<oAsteroidSmall>& a_asteroidsmallarray, oScorecontroller& a_scorecontroller)
+void oObjectUpdateController::AsteroidMedium(oAsteroidMedium& a_AsteroidMedium, oAsteroidSmall* a_asteroidsmallarray, oScorecontroller& a_scorecontroller)
 {
-	if (!a_AsteroidMedium->bIsDead)
+	if (!a_AsteroidMedium.HasCollided())
 	{
-		a_AsteroidMedium->pos.Get(a_AsteroidMedium->fPosX, a_AsteroidMedium->fPosY);
-		a_AsteroidMedium->vNew.Get(a_AsteroidMedium->fVNewX, a_AsteroidMedium->fVNewY);
-		a_AsteroidMedium->fPosX = a_AsteroidMedium->fPosX + a_AsteroidMedium->fVNewX;
-		a_AsteroidMedium->fPosY = a_AsteroidMedium->fPosY + a_AsteroidMedium->fVNewY;
-		if (a_AsteroidMedium->fPosY >= g_iScreenHeight + a_AsteroidMedium->iHeight)
+		a_AsteroidMedium.pos.Get(a_AsteroidMedium.fPosX, a_AsteroidMedium.fPosY);
+		a_AsteroidMedium.vNew.Get(a_AsteroidMedium.fVNewX, a_AsteroidMedium.fVNewY);
+		a_AsteroidMedium.fPosX = a_AsteroidMedium.fPosX + a_AsteroidMedium.fVNewX;
+		a_AsteroidMedium.fPosY = a_AsteroidMedium.fPosY + a_AsteroidMedium.fVNewY;
+		if (a_AsteroidMedium.fPosY >= g_iScreenHeight + a_AsteroidMedium.iHeight)
 		{
-			a_AsteroidMedium->fPosY = (0.f * (float)g_iScreenHeight) - (float)a_AsteroidMedium->iHeight;
+			a_AsteroidMedium.fPosY = (0.f * (float)g_iScreenHeight) - (float)a_AsteroidMedium.iHeight;
 		}
-		else if (a_AsteroidMedium->fPosY <= -a_AsteroidMedium->iHeight)
+		else if (a_AsteroidMedium.fPosY <= -a_AsteroidMedium.iHeight)
 		{
-			a_AsteroidMedium->fPosY = ((float)g_iScreenHeight + (float)a_AsteroidMedium->iHeight);
+			a_AsteroidMedium.fPosY = ((float)g_iScreenHeight + (float)a_AsteroidMedium.iHeight);
 		}
 
-		if (a_AsteroidMedium->fPosX >= g_iScreenWidth + a_AsteroidMedium->iWidth)
+		if (a_AsteroidMedium.fPosX >= g_iScreenWidth + a_AsteroidMedium.iWidth)
 		{
-			a_AsteroidMedium->fPosX = (0.f * (float)g_iScreenWidth) - (float)a_AsteroidMedium->iWidth;
+			a_AsteroidMedium.fPosX = (0.f * (float)g_iScreenWidth) - (float)a_AsteroidMedium.iWidth;
 		}
-		else if (a_AsteroidMedium->fPosX <= -a_AsteroidMedium->iWidth)
+		else if (a_AsteroidMedium.fPosX <= -a_AsteroidMedium.iWidth)
 		{
-			a_AsteroidMedium->fPosX = ((float)g_iScreenWidth + (float)a_AsteroidMedium->iWidth);
+			a_AsteroidMedium.fPosX = ((float)g_iScreenWidth + (float)a_AsteroidMedium.iWidth);
 		}
-		UG::MoveSprite(a_AsteroidMedium->iSpriteID, a_AsteroidMedium->fPosX, a_AsteroidMedium->fPosY);
-		UG::RotateSprite(a_AsteroidMedium->iSpriteID, a_AsteroidMedium->fSpriteTurnRate);
-		a_AsteroidMedium->pos.Set(a_AsteroidMedium->fPosX, a_AsteroidMedium->fPosY);
+		UG::MoveSprite(a_AsteroidMedium.iSpriteID, a_AsteroidMedium.fPosX, a_AsteroidMedium.fPosY);
+		UG::RotateSprite(a_AsteroidMedium.iSpriteID, a_AsteroidMedium.fSpriteTurnRate);
+		a_AsteroidMedium.pos.Set(a_AsteroidMedium.fPosX, a_AsteroidMedium.fPosY);
 	}
-	else if (a_AsteroidMedium->bIsDead)
+	else if (a_AsteroidMedium.HasCollided())
 	{
-		if (!a_AsteroidMedium->bShattered)
+		a_AsteroidMedium.bIsActive = false;
+		if (!a_AsteroidMedium.bShattered)
 		{
 			for (int i = 0; i < 3; i++)
 			{
-				a_asteroidsmallarray.push_back(oAsteroidSmall(a_AsteroidMedium->fPosX, a_AsteroidMedium->fPosY, i));
+				a_asteroidsmallarray[iAsteroidSmallSpawnCount].Draw(a_AsteroidMedium.fPosX, a_AsteroidMedium.fPosY);
+				++iAsteroidSmallSpawnCount;
 			}
-			a_AsteroidMedium->bShattered = true;
+			a_AsteroidMedium.ResetVars(a_AsteroidMedium);
+			a_AsteroidMedium.bShattered = true;
 		}
-		if (!a_AsteroidMedium->bScoreUpdated)
+		if (!a_AsteroidMedium.bScoreUpdated)
 		{
-
-			ScoreUpdate(a_scorecontroller, a_AsteroidMedium->iScore);
-			a_AsteroidMedium->bScoreUpdated = true;
+			Score(a_scorecontroller, a_AsteroidMedium.iScore);
+			a_AsteroidMedium.bScoreUpdated = true;
 		}
-		UG::StopDrawingSprite(a_AsteroidMedium->iSpriteID);
 	}
 }
 
-void oObjectUpdateController::AsteroidSmallUpdate(std::vector<oAsteroidSmall>::iterator a_AsteroidSmall, oScorecontroller& a_scorecontroller)
+void oObjectUpdateController::AsteroidSmall(oAsteroidSmall& a_AsteroidSmall, oScorecontroller& a_scorecontroller)
 {
-	if (!a_AsteroidSmall->bIsDead)
+	if (!a_AsteroidSmall.HasCollided())
 	{
-		a_AsteroidSmall->pos.Get(a_AsteroidSmall->fPosX, a_AsteroidSmall->fPosY);
-		a_AsteroidSmall->vNew.Get(a_AsteroidSmall->fVNewX, a_AsteroidSmall->fVNewY);
-		a_AsteroidSmall->fPosX = a_AsteroidSmall->fPosX + a_AsteroidSmall->fVNewX;
-		a_AsteroidSmall->fPosY = a_AsteroidSmall->fPosY + a_AsteroidSmall->fVNewY;
-		if (a_AsteroidSmall->fPosY >= g_iScreenHeight + a_AsteroidSmall->iHeight)
+		a_AsteroidSmall.pos.Get(a_AsteroidSmall.fPosX, a_AsteroidSmall.fPosY);
+		a_AsteroidSmall.vNew.Get(a_AsteroidSmall.fVNewX, a_AsteroidSmall.fVNewY);
+		a_AsteroidSmall.fPosX = a_AsteroidSmall.fPosX + a_AsteroidSmall.fVNewX;
+		a_AsteroidSmall.fPosY = a_AsteroidSmall.fPosY + a_AsteroidSmall.fVNewY;
+		if (a_AsteroidSmall.fPosY >= g_iScreenHeight + a_AsteroidSmall.iHeight)
 		{
-			a_AsteroidSmall->fPosY = (0.f * (float)g_iScreenHeight) - (float)a_AsteroidSmall->iHeight;
+			a_AsteroidSmall.fPosY = (0.f * (float)g_iScreenHeight) - (float)a_AsteroidSmall.iHeight;
 		}
-		else if (a_AsteroidSmall->fPosY <= -a_AsteroidSmall->iHeight)
+		else if (a_AsteroidSmall.fPosY <= -a_AsteroidSmall.iHeight)
 		{
-			a_AsteroidSmall->fPosY = ((float)g_iScreenHeight + (float)a_AsteroidSmall->iHeight);
+			a_AsteroidSmall.fPosY = ((float)g_iScreenHeight + (float)a_AsteroidSmall.iHeight);
 		}
 
-		if (a_AsteroidSmall->fPosX >= g_iScreenWidth + a_AsteroidSmall->iWidth)
+		if (a_AsteroidSmall.fPosX >= g_iScreenWidth + a_AsteroidSmall.iWidth)
 		{
-			a_AsteroidSmall->fPosX = (0.f * (float)g_iScreenWidth) - (float)a_AsteroidSmall->iWidth;
+			a_AsteroidSmall.fPosX = (0.f * (float)g_iScreenWidth) - (float)a_AsteroidSmall.iWidth;
 		}
-		else if (a_AsteroidSmall->fPosX <= -a_AsteroidSmall->iWidth)
+		else if (a_AsteroidSmall.fPosX <= -a_AsteroidSmall.iWidth)
 		{
-			a_AsteroidSmall->fPosX = ((float)g_iScreenWidth + (float)a_AsteroidSmall->iWidth);
+			a_AsteroidSmall.fPosX = ((float)g_iScreenWidth + (float)a_AsteroidSmall.iWidth);
 		}
-		UG::MoveSprite(a_AsteroidSmall->iSpriteID, a_AsteroidSmall->fPosX, a_AsteroidSmall->fPosY);
-		UG::RotateSprite(a_AsteroidSmall->iSpriteID, a_AsteroidSmall->fSpriteTurnRate);
-		a_AsteroidSmall->pos.Set(a_AsteroidSmall->fPosX, a_AsteroidSmall->fPosY);
+		UG::MoveSprite(a_AsteroidSmall.iSpriteID, a_AsteroidSmall.fPosX, a_AsteroidSmall.fPosY);
+		UG::RotateSprite(a_AsteroidSmall.iSpriteID, a_AsteroidSmall.fSpriteTurnRate);
+		a_AsteroidSmall.pos.Set(a_AsteroidSmall.fPosX, a_AsteroidSmall.fPosY);
 	}
-	else if (a_AsteroidSmall->bIsDead)
+	else if (a_AsteroidSmall.HasCollided())
 	{
-		if (!a_AsteroidSmall->bScoreUpdated)
+		a_AsteroidSmall.bIsActive = false;
+		a_AsteroidSmall.ResetVars(a_AsteroidSmall);
+		if (!a_AsteroidSmall.bScoreUpdated)
 		{
-			ScoreUpdate(a_scorecontroller, a_AsteroidSmall->iScore);
-			a_AsteroidSmall->bScoreUpdated = true;
+			Score(a_scorecontroller, a_AsteroidSmall.iScore);
+			a_AsteroidSmall.bScoreUpdated = true;
 		}
-		UG::StopDrawingSprite(a_AsteroidSmall->iSpriteID);
 	}
 }
 
-void oObjectUpdateController::ScoreUpdate(oScorecontroller & a_scorecontroller, int a_inewscore)
+void oObjectUpdateController::ReinitialiseAsteroids(oAsteroidMedium * a_asteroidmediumarray, oAsteroidSmall * a_asteroidsmallarray)
+{
+	int iCycle = 0;
+	//Initialise Medium Asteroids
+	for (int i = 0; i < 15; i++)
+	{
+		if (iCycle == 0)
+		{
+			a_asteroidmediumarray[i].Initialise(a_asteroidmediumarray[i].cMediumAsteroidFileName[iCycle]);
+			iCycle = 1;
+		}
+		else if (iCycle == 1)
+		{
+			a_asteroidmediumarray[i].Initialise(a_asteroidmediumarray[i].cMediumAsteroidFileName[iCycle]);
+			iCycle = 2;
+		}
+		else if (iCycle == 2)
+		{
+			a_asteroidmediumarray[i].Initialise(a_asteroidmediumarray[i].cMediumAsteroidFileName[iCycle]);
+			iCycle = 0;
+		}
+	}
+
+	//Initialise Small Asteroids
+	for (int i = 0; i < 45; i++)
+	{
+		if (iCycle == 0)
+		{
+			a_asteroidsmallarray[i].Initialise(a_asteroidsmallarray[i].cSmallAsteroidFileName[iCycle]);
+			iCycle = 1;
+		}
+		else if (iCycle == 1)
+		{
+			a_asteroidsmallarray[i].Initialise(a_asteroidsmallarray[i].cSmallAsteroidFileName[iCycle]);
+			iCycle = 2;
+		}
+		else if (iCycle == 2)
+		{
+			a_asteroidsmallarray[i].Initialise(a_asteroidsmallarray[i].cSmallAsteroidFileName[iCycle]);
+			iCycle = 0;
+		}
+	}
+}
+
+void oObjectUpdateController::ResetAsteroidSpawnCount()
+{
+	iAsteroidLargeSpawnCount = 0;
+	iAsteroidLargeDeathCount = 0;
+	iAsteroidMediumSpawnCount = 0;
+	iAsteroidMediumDeathCount = 0;
+	iAsteroidSmallSpawnCount = 0;
+	iAsteroidSmallDeathCount = 0;
+}
+
+bool oObjectUpdateController::AsteroidCheck()
+{
+	if (iAsteroidLargeDeathCount == 5 && iAsteroidMediumDeathCount == 15 && iAsteroidSmallDeathCount == 45)
+	{
+		bAllDead = true;
+	}
+	return bAllDead;
+}
+
+void oObjectUpdateController::Score(oScorecontroller & a_scorecontroller, int a_inewscore)
 {
 	a_scorecontroller.iCurrentScore += a_inewscore;
 }

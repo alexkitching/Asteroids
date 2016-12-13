@@ -5,6 +5,7 @@ typedef enum GameStates
 {
 	MENU,
 	GAMEPLAY,
+	PAUSE,
 	GAMEOVER
 }GameState;
 

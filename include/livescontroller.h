@@ -6,6 +6,7 @@ class oLivesController
 public:
 	oLivesController();
 	void DrawLives();
+	int CurrentLives();
 	void UpdateLives(int a_inewlives);
 	
 	friend class oObjectController;

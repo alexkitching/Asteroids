@@ -3,71 +3,80 @@
 #include "position.h"
 #include "spawncontroller.h"
 #include "vector.h"
-#include <vector>
 class oAsteroid
 {
 public:
-	int iSpriteID = -1;
-	int iQty;
-	oAsteroid();
+	oAsteroid() {};
+	int iSpriteID;
 	void GetDimensions(int& a_iWidth, int& a_iHeight);
 	void GetPos(float& a_PosX, float& a_PosY);
 	void GetRadius(int &a_Radius);
 	void SetRotation(float &a_CurrentRotation);
-	void SetIsDead(bool a_IsDead);
-	bool IsDead();
+	void SetIsActive(bool a_IsActive);
+	void SetHasCollied(bool a_HasCollided);
+	bool HasCollided();
+	bool IsActive();
 	friend class oObjectUpdateController;
-protected:
-	int iScore = 0;
-	//Dimension Variables
-	int iWidth = 0;
-	int iHeight = 0;
-	int iRadius = 0;
-	//Speed Variables
-	float fSpeedMax = 0.f;
-	float fSpeedMin = 0.f;
-	//Rotation Variables
-	float fSpriteTurnRate = 0.f;
-	//Position Variables
-	float fPosX = 0.f;
-	float fPosY = 0.f;
-	//Vector Variables
-	float fVNewX = 0.f;
-	float fVNewY = 0.f;
 	//SpriteFileArray
 	char const cLargeAsteroidFileName[5][35] = { { "./images/LargeAsteroid1.png" },{ "./images/LargeAsteroid2.png" },{ "./images/LargeAsteroid3.png" },{ "./images/LargeAsteroid4.png" },{ "./images/LargeAsteroid1.png" } };
-	char const cMediumAsteroidFileName[3][35] = { { "./images/MediumAsteroid1.png" }, { "./images/MediumAsteroid2.png" }, { "./images/MediumAsteroid3.png" } };
-	char const cSmallAsteroidFileName[3][35] = { { "./images/SmallAsteroid1.png" }, { "./images/SmallAsteroid2.png" }, { "./images/SmallAsteroid3.png" } };
+	char const cMediumAsteroidFileName[3][35] = { { "./images/MediumAsteroid1.png" },{ "./images/MediumAsteroid2.png" },{ "./images/MediumAsteroid3.png" } };
+	char const cSmallAsteroidFileName[3][35] = { { "./images/SmallAsteroid1.png" },{ "./images/SmallAsteroid2.png" },{ "./images/SmallAsteroid3.png" } };
+	float const fLargeAsteroidRespawnPosArray[5][2] = { {872.f, 300.f}, {400.f, -72.f}, {-72, 300}, {200, 672}, {600, 672} };
+
+protected:
+	int iScore;
+	//Dimension Variables
+	int iWidth;
+	int iHeight;
+	int iRadius;
+	//Speed Variables
+	float fSpeedMax;
+	float fSpeedMin;
+	//Rotation Variables
+	float fSpriteTurnRate;
+	//Position Variables
+	float fPosX;
+	float fPosY;
+	//Vector Variables
+	float fVNewX;
+	float fVNewY;
+
 	//Death Variables
-	bool bShattered = false;
-	bool bIsDead = false;
-	bool bScoreUpdated = false;
+	bool bHasCollided;
+	bool bShattered;
+	bool bIsActive;
+	bool bScoreUpdated;
 	Position pos;
-	Vector vNew = Vector(0.0f, 0.0f);
-private:
-	
+	Vector vNew;
 };
 class oAsteroidLarge : public oAsteroid
 {
 public:
-	oAsteroidLarge(oSpawnController& a_spawncontroller, int a_currentAsteroid);
-	void Initialise(oSpawnController& a_spawncontroller, const char* a_AsteroidLargeImageFileName, int a_currentAsteroid);
-private:	
+	oAsteroidLarge();
+	void Initialise(const char* a_AsteroidLargeImageFileName);
+	void Draw(oSpawnController& a_spawncontroller, int a_currentAsteroid);
+	void Destroy(oAsteroidLarge& a_asteroidlarge);
+	void ResetVars(oAsteroidLarge& a_asteroidlarge);
+	void Respawn(oAsteroidLarge& a_asteroidlarge, int a_currentAsteroid);
 };
 
 class oAsteroidMedium : public oAsteroid
 {
 public:
-	oAsteroidMedium(float a_AsteroidLargePosX, float a_AsteroidlargePosY, int a_currentAsteroid);
-	void Initialise(const char * oAsteroidMediumImageFileName, float a_AsteroidLargePosX, float a_AsteroidlargePosY);
-private:
+	oAsteroidMedium();
+	void Initialise(const char * oAsteroidMediumImageFileName);
+	void Draw(float a_AsteroidLargePosX, float a_AsteroidLargePosY);
+	void Destroy(oAsteroidMedium& a_asteroidmedium);
+	void ResetVars(oAsteroidMedium& a_asteroidmedium);
 };
 
 class oAsteroidSmall : public oAsteroid
 {
 public:
-	oAsteroidSmall(float a_AsteroidMediumPosX, float a_AsteroidMediumPosY, int a_currentAsteroid);
-	void Initialise(const char * a_AsteroidSmallImageFileName, float a_oAsteroidMediumPosX, float a_oAsteroidMediumPosY);
-private:
+	oAsteroidSmall();
+	void Initialise(const char * a_AsteroidSmallImageFileName);
+	void Draw(float a_AsteroidMediumPosX, float a_AsteroidMediumPosY);
+	void Destroy(oAsteroidSmall& a_asteroidsmall);
+	void ResetVars(oAsteroidSmall& a_asteroidsmall);
 };
 #endif

@@ -4,7 +4,6 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-#include <vector>
 #include "GameStates.h"
 #include "menu.h"
 #include "spaceship.h"
@@ -37,10 +36,6 @@ int main(int argv, char* argc[])
 		case GAMEPLAY:
 		{
 			//Screen Dimensions
-			
-
-			
-
 			if (UG::Create(800, 600, false, "Asteroids", 100, 100))
 			{
 				UG::GetScreenSize(g_iScreenWidth, g_iScreenHeight);
@@ -53,32 +48,46 @@ int main(int argv, char* argc[])
 				oScorecontroller scorecontroller;
 				oLivesController livescontroller;
 				oSpaceship spaceship;
-				std::vector<oAsteroidLarge> asteroidlarge;
-				std::vector<oAsteroidMedium> asteroidmedium;
-				std::vector<oAsteroidSmall> asteroidsmall;
+				oAsteroidLarge asteroidlargearray[5];
+				oAsteroidMedium asteroidmediumarray[15];
+				oAsteroidSmall asteroidsmallarray[45];
 				
-				InitialiseGameAssets(spaceship, asteroidlarge);
+				InitialiseGameAssets(spaceship, asteroidlargearray, asteroidmediumarray, asteroidsmallarray, objectupdatecontroller);
 				do
 				{
+					UG::ClearScreen();
 					float fSpaceshipXPos = 0.f, fSpaceshipYPos = 0.f;
 					spaceship.pos.Get(fSpaceshipXPos, fSpaceshipYPos);
 					g_DeltaTime = UG::GetDeltaTime();
-					objectupdatecontroller.SpaceshipUpdate(spaceship, asteroidlarge, asteroidmedium, asteroidsmall, livescontroller);
+					currentState = objectupdatecontroller.Spaceship(spaceship, asteroidlargearray, asteroidmediumarray, asteroidsmallarray, livescontroller);
+					if (currentState == GAMEOVER)
+					{
+						break;
+					}
 					for (int i = 0; i < 5; i++)
 					{
-						objectupdatecontroller.AsteroidLargeUpdate(asteroidlarge[i], asteroidmedium, scorecontroller);
+						if (asteroidlargearray[i].IsActive())
+						{
+							objectupdatecontroller.AsteroidLarge(asteroidlargearray[i], asteroidmediumarray, scorecontroller);
+						}
 					}
-					for (std::vector<oAsteroidMedium>::iterator i = asteroidmedium.begin(); i != asteroidmedium.end(); i++)
+					for (int i = 0; i < 15; i++)
 					{
-						objectupdatecontroller.AsteroidMediumUpdate(i, asteroidsmall, scorecontroller);
+						if (asteroidmediumarray[i].IsActive())
+						{
+							objectupdatecontroller.AsteroidMedium(asteroidmediumarray[i], asteroidsmallarray, scorecontroller);
+						}
 					}
-					for (std::vector<oAsteroidSmall>::iterator i = asteroidsmall.begin(); i != asteroidsmall.end(); i++)
+					for (int i = 0; i < 45; i++)
+
 					{
-						objectupdatecontroller.AsteroidSmallUpdate(i, scorecontroller);
+						if (asteroidsmallarray[i].IsActive())
+						{
+							objectupdatecontroller.AsteroidSmall(asteroidsmallarray[i], scorecontroller);
+						}
 					}
 					scorecontroller.DrawScore();
 					livescontroller.DrawLives();
-					UG::ClearScreen();
 				} while (UG::Process());
 			}
 			UG::Dispose();
