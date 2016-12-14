@@ -1,8 +1,15 @@
-#include "spawncontroller.h"
-#define NOMINMAX
-#include "algorithm"
+////////////////////////////////////////////////////////////////////
+// File: <Spawncontroller.cpp>
+// Author: <Alex Kitching>
+// Date Created: <6/12/16>
+// Brief: <Source file for the Spawn Controller Class.>
+////////////////////////////////////////////////////////////////////
 
-void oSpawnController::SpawnController(int a_MaxObjects, int a_ObjectWidth, int a_ObjectHeight)
+#include "Spawncontroller.h"
+#define NOMINMAX
+#include <algorithm>
+
+void oSpawncontroller::Spawncontroller(int a_MaxObjects, const int a_ObjectWidth, const int a_ObjectHeight)
 {
 	iObjectWidth = a_ObjectWidth;
 	iObjectHeight = a_ObjectHeight;
@@ -18,37 +25,54 @@ void oSpawnController::SpawnController(int a_MaxObjects, int a_ObjectWidth, int 
 	float fNewYPosMin = 0.f;
 	for (int i = 0; i < 5;)
 	{
-		pos.SetRandom();
+		pos.SetRandomAsteroidSpawn();
 		pos.Get(fNewPosX, fNewPosY);
 		if (i > 0)
 		{
-			fOldXPosMax = (iSpawnPosArray[i - 1][0] + 0.5f*iObjectWidth);
-			fOldXPosMin = (iSpawnPosArray[i - 1][0] - 0.5f*iObjectWidth);
+			fOldXPosMax = (afSpawnPosArray[i - 1][0] + 0.5f*iObjectWidth);
+			fOldXPosMin = (afSpawnPosArray[i - 1][0] - 0.5f*iObjectWidth);
 			fNewXPosMax = (fNewPosX + 0.5f*iObjectWidth);
 			fNewXPosMin = (fNewPosX - 0.5f*iObjectWidth);
-			fOldYPosMax = (iSpawnPosArray[i - 1][1] + 0.5f*iObjectHeight);
-			fOldYPosMin = (iSpawnPosArray[i - 1][1] - 0.5f*iObjectHeight);
+			fOldYPosMax = (afSpawnPosArray[i - 1][1] + 0.5f*iObjectHeight);
+			fOldYPosMin = (afSpawnPosArray[i - 1][1] - 0.5f*iObjectHeight);
 			fNewYPosMax = (fNewPosY + 0.5f*iObjectHeight);
 			fNewYPosMin = (fNewPosY - 0.5f*iObjectHeight);
 
 			//Checks for Overlap between the widths and heights of asteroids
 			if (std::max(fOldXPosMax, fNewXPosMax) - std::min(fOldXPosMin, fNewXPosMin) < (fOldXPosMax - fOldXPosMin) + (fNewXPosMax - fNewXPosMin) && std::max(fOldYPosMax, fNewYPosMax) - std::min(fOldYPosMin, fNewYPosMin) < (fOldYPosMax - fOldYPosMin) + (fNewYPosMax - fNewYPosMin))
 			{
-			//Do Nothing
+				//Do Nothing
 			}
 			else if (std::max(fOldXPosMax, fNewXPosMax) - std::min(fOldXPosMin, fNewXPosMin) > (fOldXPosMax - fOldXPosMin) + (fNewXPosMax - fNewXPosMin) && std::max(fOldYPosMax, fNewYPosMax) - std::min(fOldYPosMin, fNewYPosMin) > (fOldYPosMax - fOldYPosMin) + (fNewYPosMax - fNewYPosMin))
 			{
-				iSpawnPosArray[i][0] = fNewPosX;
-				iSpawnPosArray[i][1] = fNewPosY;
+				afSpawnPosArray[i][0] = fNewPosX;
+				afSpawnPosArray[i][1] = fNewPosY;
 				i++;
 			}
 		}
 		else if (i == 0)
 		{
-			iSpawnPosArray[i][0] = fNewPosX;
-			iSpawnPosArray[i][1] = fNewPosY;
+			afSpawnPosArray[i][0] = fNewPosX;
+			afSpawnPosArray[i][1] = fNewPosY;
 			i++;
 		}
 
 	}
+}
+
+void oSpawncontroller::UFOSpawncontroller(oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, oScorecontroller& a_Scorecontroller)
+{
+	
+	if (a_Scorecontroller.RoundScore() > 1200 && a_UFOEasy.CanSpawn())
+	{
+			a_UFOEasy.Draw();
+			a_UFOEasy.SetCanSpawn(false);
+	}
+	if (a_Scorecontroller.RoundScore() > 2200 && a_UFOHard.CanSpawn())
+	{
+		a_UFOHard.Draw();
+		a_UFOHard.SetCanSpawn(false);
+	}
+
+	
 }

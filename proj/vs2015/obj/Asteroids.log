@@ -1,40 +1,61 @@
 ﻿  xcopy "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\scripts\..\Uog\lib\vs2015\x64\Debug\"*.pdb "C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\proj\vs2015\..\..\bin\x64\Debug\" /s /y /d /r 
   0 File(s) copied
   vector.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(67): warning C4553: '==': operator has no effect; did you intend '='?
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(68): warning C4553: '==': operator has no effect; did you intend '='?
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(69): warning C4800: 'Vector *const ': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(73): warning C4552: '!=': operator has no effect; expected operator with side-effect
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(74): warning C4552: '!=': operator has no effect; expected operator with side-effect
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(75): warning C4800: 'Vector *const ': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(81): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(82): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(83): warning C4800: 'Vector *const ': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(87): warning C4552: '!=': operator has no effect; expected operator with side-effect
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(88): warning C4552: '!=': operator has no effect; expected operator with side-effect
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\vector.cpp(89): warning C4800: 'Vector *const ': forcing value to bool 'true' or 'false' (performance warning)
   ufo.cpp
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(47): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(51): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(63): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(82): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(94): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(114): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(115): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(198): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(230): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(231): warning C4101: 'bUpDown': unreferenced local variable
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(249): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\ufo.cpp(261): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
   spawncontroller.cpp
   spaceship.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(34): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   scorecontroller.cpp
+  scoreboard.cpp
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\scoreboard.cpp(126): warning C4456: declaration of 'i' hides previous local declaration
+  c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\scoreboard.cpp(116): note: see declaration of 'i'
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\scoreboard.cpp(142): warning C4456: declaration of 'i' hides previous local declaration
+  c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\scoreboard.cpp(116): note: see declaration of 'i'
   position.cpp
   menu.cpp
   main.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(34): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  explosion.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\explosion.cpp(31): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\explosion.cpp(32): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\explosion.cpp(33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\explosion.cpp(34): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(52): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(69): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   bullet.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(34): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(52): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(69): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\bullet.cpp(360): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
   asteroids.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\asteroids.cpp(1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\asteroids.cpp(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\asteroids.cpp(8): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\asteroids.cpp(9): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   assetinit.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(34): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(52): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(69): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\assetinit.cpp(23): warning C4228: nonstandard extension used: qualifiers after comma in declarator list are ignored
   objectupdatecontroller.cpp
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(34): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\objectupdatecontroller.cpp(137): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\objectupdatecontroller.cpp(68): warning C4189: 'testint': local variable is initialized but not referenced
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(52): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\include\bullet.h(69): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\objectupdatecontroller.cpp(155): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\objectupdatecontroller.cpp(394): warning C4239: nonstandard extension used: 'argument': conversion from 'Vector' to 'Vector &'
+  c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\objectupdatecontroller.cpp(394): note: A non-const reference may only be bound to an lvalue
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\objectupdatecontroller.cpp(476): warning C4239: nonstandard extension used: 'argument': conversion from 'Vector' to 'Vector &'
+  c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\objectupdatecontroller.cpp(476): note: A non-const reference may only be bound to an lvalue
   livescontroller.cpp
+  howtoplay.cpp
   Generating Code...
-c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\objectupdatecontroller.cpp(157): warning C4715: 'oObjectUpdateController::Spaceship': not all control paths return a value
+c:\users\sgtmo\onedrive - university of gloucestershire\ct4019 - programming and mathematics for games\assignment 1\asteroids\source\objectupdatecontroller.cpp(170): warning C4715: 'oObjectUpdateController::Spaceship': not all control paths return a value
 UG Basic Framework.lib(stb_image_aug.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'UG Basic Framework.lib(stb_image_aug.obj)' or at 'C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\bin\x64\Debug\SOIL.pdb'; linking object as if no debug info
 UG Basic Framework.lib(SOIL.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'UG Basic Framework.lib(SOIL.obj)' or at 'C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\bin\x64\Debug\SOIL.pdb'; linking object as if no debug info
 UG Basic Framework.lib(image_helper.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'UG Basic Framework.lib(image_helper.obj)' or at 'C:\Users\sgtmo\OneDrive - University of Gloucestershire\CT4019 - Programming and Mathematics for Games\Assignment 1\Asteroids\bin\x64\Debug\SOIL.pdb'; linking object as if no debug info

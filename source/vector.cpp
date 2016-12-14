@@ -1,7 +1,16 @@
-#include "vector.h"
-#include "math.h"
-#include "stdlib.h"
+////////////////////////////////////////////////////////////////////
+// File: <vector.cpp>
+// Author: <Alex Kitching>
+// Date Created: <04/12/16>
+// Brief: <Source file for the Vector Class.>
+////////////////////////////////////////////////////////////////////
 
+#include "vector.h"
+#include <math.h>
+#include <stdlib.h>
+
+extern int g_iScreenWidth;
+extern int g_iScreenHeight;
 //Constructor
 Vector::Vector(float a_fX, float a_fY) : fX(a_fX), fY(a_fY)
 {
@@ -56,6 +65,11 @@ void Vector::SetRandom(float const a_fMin, float const a_fMax)
 	else if (iPosNegY == 1)
 	{
 	}
+}
+void Vector::SetRandomAsteroidSpawn()
+{
+	fX = static_cast <float> (rand()) / static_cast <float> (RAND_MAX / ((float)g_iScreenWidth + 1.f));
+	fY = static_cast <float> (rand()) / static_cast <float> (RAND_MAX / ((float)g_iScreenHeight + 1.f));
 }
 //Destructor
 Vector::~Vector()

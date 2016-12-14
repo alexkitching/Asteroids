@@ -1,4 +1,11 @@
-#include "livescontroller.h"
+////////////////////////////////////////////////////////////////////
+// File: <Livescontroller.cpp>
+// Author: <Alex Kitching>
+// Date Created: <12/12/16>
+// Brief: <Source file for the Lives Controller Class.>
+////////////////////////////////////////////////////////////////////
+
+#include "Livescontroller.h"
 #include "UGFW.h"
 #include <sstream>
 #include <cstring>
@@ -6,11 +13,7 @@
 
 extern int g_iScreenHeight;
 
-oLivesController::oLivesController()
-{
-}
-
-void oLivesController::DrawLives()
+void oLivescontroller::DrawLives()
 {
 	std::stringstream str;
 	str << iCurrentLives;
@@ -19,12 +22,17 @@ void oLivesController::DrawLives()
 	UG::DrawString(cCurrentLives, 10, g_iScreenHeight - 40);
 }
 
-int oLivesController::CurrentLives()
+int oLivescontroller::CurrentLives()
 {
 	return iCurrentLives;
 }
 
-void oLivesController::UpdateLives(int a_inewlives)
+void oLivescontroller::UpdateLives(int a_inewlives)
 {
 	iCurrentLives += a_inewlives;
+}
+
+void oLivescontroller::ExtraLife()
+{
+	++iCurrentLives;
 }

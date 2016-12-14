@@ -1,20 +1,24 @@
+////////////////////////////////////////////////////////////////////
+// File: <menu.cpp>
+// Author: <Alex Kitching>
+// Date Created: <30/11/16>
+// Brief: <Source file for the Menu Class.>
+////////////////////////////////////////////////////////////////////
+
 #include "menu.h"
 #include <iostream>
 #include <string>
 #include <windows.h>
+
 Menu::Menu()
 {
-	onMenu = true;
-	selectedItem = 0;
-}
-
-Menu::~Menu()
-{
+	bActive = true;
+	iSelectedItem = 0;
 }
 
 GameState Menu::Initialise()
 {
-	while (onMenu == true)
+	while (bActive == true)
 	{
 		system("cls"); // Resets Console Window
 
@@ -27,9 +31,9 @@ GameState Menu::Initialise()
 		std::cout << " /  _____  \\  .----)   |      |  |     |  |____ |  |\\  \\----.|  `--'  | |  | |  '--'  |.----)   |   \n";
 		std::cout << "/__/     \\__\\ |_______/       |__|     |_______|| _| `._____| \\______/  |__| |_______/ |_______/    \n\n";
 
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 4; ++i)
 		{
-			if (i == selectedItem) // Hightlights selected Item
+			if (i == iSelectedItem) // Hightlights selected Item
 			{
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
 				std::cout << menuItem[i] << std::endl;
@@ -41,53 +45,65 @@ GameState Menu::Initialise()
 			}
 		}
 
-		while (onMenu == true)
+		while (bActive == true)
 		{
 			if (GetAsyncKeyState(VK_UP) != 0)
 			{
-				selectedItem -= 1;
-				if (selectedItem == -1)
+				iSelectedItem -= 1;
+				if (iSelectedItem == -1)
 				{
-					selectedItem = 2;
+					iSelectedItem = 3;
 				}
 				break;
 			}
 
 			else if (GetAsyncKeyState(VK_DOWN) != 0)
 			{
-				selectedItem += 1;
-				if (selectedItem == 3)
+				iSelectedItem += 1;
+				if (iSelectedItem == 4)
 				{
-					selectedItem = 0;
+					iSelectedItem = 0;
 				}
 				break;
 			}
 
-			else if (GetAsyncKeyState(VK_RETURN) != 0)
+			else if (GetAsyncKeyState(VK_SPACE) != 0)
 			{
-				switch (selectedItem)
+				switch (iSelectedItem)
 				{
 				case 0:
 				{
 					std::cout << "\n\n\nPrepare your thrusters! - Starting Game";
 					Sleep(1000);
-					newState = GameState::GAMEPLAY;
-					onMenu = false;
+					gsNewState = GameState::GAMEPLAY;
+					bActive = false;
+					Menu::~Menu();
 					break;
 				}
 				case 1:
 				{
-					std::cout << "Options Menu test...";
+					std::cout << "Loading How to Play...";
 					Sleep(1000);
+					gsNewState = GameState::HOWTOPLAY;
+					bActive = false;
+					Menu::~Menu();
 					break;
 				}
 				case 2:
 				{
-					newState = GameState::GAMEOVER;
-					onMenu = false;
+					std::cout << "Loading Scoreboard...";
+					Sleep(1000);
+					gsNewState = GameState::SCOREBOARD;
+					bActive = false;
 					Menu::~Menu();
 					break;
-
+				}
+				case 3:
+				{
+					gsNewState = GameState::GAMEOVER;
+					bActive = false;
+					Menu::~Menu();
+					break;
 				}
 				}
 				break;
@@ -97,5 +113,5 @@ GameState Menu::Initialise()
 	}
 	
 	system("cls");
-	return(newState);
+	return(gsNewState);
 }

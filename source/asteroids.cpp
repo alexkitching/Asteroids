@@ -1,7 +1,14 @@
+////////////////////////////////////////////////////////////////////////////
+// File: <asteroids.cpp>
+// Author: <Alex Kitching>
+// Date Created: <01/12/16>
+// Brief: <Source file for all Asteroid classes and functions.>
+///////////////////////////////////////////////////////////////////////////
+
 #include "asteroids.h";
 #include "UGFW.h";
-#include "algorithm"
-#include "iostream"
+#include <algorithm>
+#include <iostream>
 
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
@@ -11,15 +18,15 @@ void oAsteroid::GetDimensions(int &a_iWidth, int &a_iHeight)
 	a_iWidth = iWidth, a_iHeight = iHeight;
 }
 
-void oAsteroid::GetPos(float & a_PosX, float & a_PosY)
-{
-	a_PosX = fPosX;
-	a_PosY = fPosY;
-}
-
 void oAsteroid::GetRadius(int & a_Radius)
 {
 	a_Radius = iRadius;
+}
+
+void oAsteroid::GetPos(float & a_fPosX, float & a_fPosY)
+{
+	a_fPosX = fPosX;
+	a_fPosY = fPosY;
 }
 
 void oAsteroid::SetRotation(float &a_CurrentRotation)
@@ -45,6 +52,16 @@ void oAsteroid::SetHasCollied(bool a_HasCollided)
 	bHasCollided = a_HasCollided;
 }
 
+void oAsteroid::SetScoreUpdated(bool a_ScoreUpdated)
+{
+	bScoreUpdated = a_ScoreUpdated;
+}
+
+bool oAsteroid::ScoreUpdated()
+{
+	return bScoreUpdated;
+}
+
 bool oAsteroid::HasCollided()
 {
 	return bHasCollided;
@@ -62,8 +79,8 @@ oAsteroidLarge::oAsteroidLarge()
 	iWidth = 72;
 	iHeight = 72;
 	iRadius = 36;
-	fSpeedMax = 1.0f;
-	fSpeedMin = 0.15f;
+	c_fSpeedMax = 0.5f;
+	c_fSpeedMin = 0.15f;
 	fSpriteTurnRate = 0.f;
 	fPosX = 0.f;
 	fPosY = 0.f;
@@ -73,23 +90,23 @@ oAsteroidLarge::oAsteroidLarge()
 	bIsActive = false;
 	bHasCollided = false;
 	bScoreUpdated = false;
-	vNew = Vector(0.0f, 0.0f);
+	vNew = (0.0f, 0.0f);
 }
 
 void oAsteroidLarge::Initialise(const char* a_AsteroidLargeImageFileName)
 {
 	iSpriteID = UG::CreateSprite(a_AsteroidLargeImageFileName, (float)iWidth, (float)iHeight);
-	vNew.SetRandom(fSpeedMin, fSpeedMax);
+	vNew.SetRandom(c_fSpeedMin, c_fSpeedMax);
 	SetRotation(fSpriteTurnRate);
 }
 
-void oAsteroidLarge::Draw(oSpawnController& a_spawncontroller, int a_currentAsteroid)
+void oAsteroidLarge::Draw(oSpawncontroller& a_Spawncontroller, int a_currentAsteroid)
 {
 	bHasCollided = false;
 	bIsActive = true;
 	bShattered = false;
 	bScoreUpdated = false;
-	pos.Set(a_spawncontroller.iSpawnPosArray[a_currentAsteroid][0], a_spawncontroller.iSpawnPosArray[a_currentAsteroid][1]);
+	pos.Set(a_Spawncontroller.afSpawnPosArray[a_currentAsteroid][0], a_Spawncontroller.afSpawnPosArray[a_currentAsteroid][1]);
 	pos.Get(fPosX, fPosY);
 	UG::DrawSprite(iSpriteID);
 	UG::MoveSprite(iSpriteID, fPosX, fPosY);
@@ -97,7 +114,7 @@ void oAsteroidLarge::Draw(oSpawnController& a_spawncontroller, int a_currentAste
 
 void oAsteroidLarge::Destroy(oAsteroidLarge& a_asteroidlarge)
 {
-
+	a_asteroidlarge.bShattered = false;
 	a_asteroidlarge.bHasCollided = true;
 	UG::StopDrawingSprite(a_asteroidlarge.iSpriteID);
 	UG::DestroySprite(a_asteroidlarge.iSpriteID);
@@ -111,20 +128,27 @@ void oAsteroidLarge::ResetVars(oAsteroidLarge & a_asteroidlarge)
 	a_asteroidlarge.fPosY = 0.f;
 	a_asteroidlarge.fVNewX = 0.f;
 	a_asteroidlarge.fVNewY = 0.f;
-	a_asteroidlarge.vNew = Vector(0.0f, 0.0f);
+	a_asteroidlarge.vNew = (0.0f, 0.0f);
+	a_asteroidlarge.bHasCollided = false;
+	a_asteroidlarge.bShattered = false;
+	a_asteroidlarge.bScoreUpdated = false;
 }
 
 void oAsteroidLarge::Respawn(oAsteroidLarge& a_asteroidlarge,int a_currentAsteroid)
 {
-	a_asteroidlarge.Initialise(cLargeAsteroidFileName[a_currentAsteroid]);
+	a_asteroidlarge.Initialise(c_cLargeAsteroidFileName[a_currentAsteroid]);
 	a_asteroidlarge.bHasCollided = false;
 	a_asteroidlarge.bIsActive = true;
 	a_asteroidlarge.bShattered = false;
 	a_asteroidlarge.bScoreUpdated = false;
 	a_asteroidlarge.pos.Set(a_asteroidlarge.fLargeAsteroidRespawnPosArray[a_currentAsteroid][0], a_asteroidlarge.fLargeAsteroidRespawnPosArray[a_currentAsteroid][1]);
-	a_asteroidlarge.pos.Get(a_asteroidlarge.fPosX, a_asteroidlarge.fPosY);
 	UG::DrawSprite(a_asteroidlarge.iSpriteID);
 	UG::MoveSprite(a_asteroidlarge.iSpriteID, a_asteroidlarge.fPosX, a_asteroidlarge.fPosY);
+}
+
+int oAsteroidLarge::Score(oAsteroidLarge& a_asteroidlarge)
+{
+	return a_asteroidlarge.iScore;
 }
 
 oAsteroidMedium::oAsteroidMedium()
@@ -134,8 +158,8 @@ oAsteroidMedium::oAsteroidMedium()
 	iWidth = 36;
 	iHeight = 36;
 	iRadius = 18;
-	fSpeedMax = 1.2f;
-	fSpeedMin = 0.25f;
+	c_fSpeedMax = 0.7f;
+	c_fSpeedMin = 0.25f;
 	fSpriteTurnRate = 0.f;
 	fPosX = 0.f;
 	fPosY = 0.f;
@@ -151,7 +175,7 @@ oAsteroidMedium::oAsteroidMedium()
 void oAsteroidMedium::Initialise(const char * a_AsteroidMediumImageFileName)
 {
 	iSpriteID = UG::CreateSprite(a_AsteroidMediumImageFileName, (float)iWidth, (float)iHeight);
-	vNew.SetRandom(fSpeedMin, fSpeedMax);
+	vNew.SetRandom(c_fSpeedMin, c_fSpeedMax);
 	SetRotation(fSpriteTurnRate);
 }
 
@@ -171,7 +195,6 @@ void oAsteroidMedium::Destroy(oAsteroidMedium& a_asteroidmedium)
 	UG::StopDrawingSprite(a_asteroidmedium.iSpriteID);
 	UG::DestroySprite(a_asteroidmedium.iSpriteID);
 	a_asteroidmedium.iSpriteID = -1;
-
 }
 
 void oAsteroidMedium::ResetVars(oAsteroidMedium & a_asteroidmedium)
@@ -181,10 +204,15 @@ void oAsteroidMedium::ResetVars(oAsteroidMedium & a_asteroidmedium)
 	a_asteroidmedium.fPosY = 0.f;
 	a_asteroidmedium.fVNewX = 0.f;
 	a_asteroidmedium.fVNewY = 0.f;
-	a_asteroidmedium.vNew = Vector(0.0f, 0.0f);
+	a_asteroidmedium.vNew = (0.0f, 0.0f);
 	a_asteroidmedium.bHasCollided = false;
 	a_asteroidmedium.bShattered = false;
 	a_asteroidmedium.bScoreUpdated = false;
+}
+
+int oAsteroidMedium::Score(oAsteroidMedium& a_asteroidmedium)
+{
+	return a_asteroidmedium.iScore;
 }
 
 oAsteroidSmall::oAsteroidSmall()
@@ -194,8 +222,8 @@ oAsteroidSmall::oAsteroidSmall()
 	iWidth = 18;
 	iHeight = 18;
 	iRadius = 9;
-	fSpeedMax = 1.3f;
-	fSpeedMin = 0.35f;
+	c_fSpeedMax = 0.8f;
+	c_fSpeedMin = 0.35f;
 	fSpriteTurnRate = 0.f;
 	fPosX = 0.f;
 	fPosY = 0.f;
@@ -205,15 +233,14 @@ oAsteroidSmall::oAsteroidSmall()
 	bHasCollided = false;
 	bIsActive = false;
 	bScoreUpdated = false; 
-	vNew = Vector(0.0f, 0.0f);
+	vNew = (0.0f, 0.0f);
 }
 
 void oAsteroidSmall::Initialise(const char * a_AsteroidSmallImageFileName)
 {
 	iSpriteID = UG::CreateSprite(a_AsteroidSmallImageFileName, (float)iWidth, (float)iHeight);
-	vNew.SetRandom(fSpeedMin, fSpeedMax);
+	vNew.SetRandom(c_fSpeedMin, c_fSpeedMax);
 	SetRotation(fSpriteTurnRate);
-	
 }
 
 void oAsteroidSmall::Draw(float a_AsteroidMediumPosX, float a_AsteroidMediumPosY)
@@ -241,8 +268,13 @@ void oAsteroidSmall::ResetVars(oAsteroidSmall & a_asteroidsmall)
 	a_asteroidsmall.fPosY = 0.f;
 	a_asteroidsmall.fVNewX = 0.f;
 	a_asteroidsmall.fVNewY = 0.f;
-	a_asteroidsmall.vNew = Vector(0.0f, 0.0f);
+	a_asteroidsmall.vNew = (0.0f, 0.0f);
 	a_asteroidsmall.bHasCollided = false;
 	a_asteroidsmall.bShattered = false;
 	a_asteroidsmall.bScoreUpdated = false;
+}
+
+int oAsteroidSmall::Score(oAsteroidSmall & a_asteroidsmall)
+{
+	return a_asteroidsmall.iScore;
 }

@@ -1,5 +1,12 @@
+////////////////////////////////////////////////////////////////////
+// File: <vector.h>
+// Author: <Alex Kitching>
+// Date Created: <04/12/16>
+// Brief: <Header file for the Vector Class.>
+////////////////////////////////////////////////////////////////////
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
+
 class Vector
 {
 public: 
@@ -17,6 +24,8 @@ public:
 	void Get(float& a_fX, float& a_fY);
 	//Set Random
 	void SetRandom(float a_fMin, float a_fMax);
+	//Set Random Asteroid Large Spawn
+	void SetRandomAsteroidSpawn();
 
 	//Destructor
 	~Vector();
@@ -37,9 +46,11 @@ public:
 	Vector Vector::operator*=(const Vector& a_vec);
 	Vector Vector::operator*=(const float& a_value);
 
-private:
 	float fX;
 	float fY;
+
+private:
+	
 };
 
 #endif // !_VECTOR_H_

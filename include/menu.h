@@ -1,5 +1,12 @@
+////////////////////////////////////////////////////////////////////
+// File: <menu.h>
+// Author: <Alex Kitching>
+// Date Created: <30/11/16>
+// Brief: <Header file for the Menu Class.>
+////////////////////////////////////////////////////////////////////
 #ifndef _MENU_H_
 #define _MENU_H_
+
 #include <string>
 #include "GameStates.h"
 
@@ -7,14 +14,14 @@ class Menu
 {
 public:
 	Menu();
-	~Menu();
+	~Menu() {};
 	GameState Initialise();
 private:
-	bool onMenu;
-	int selectedItem;
-	GameState newState;
-	std::string menuItem[3] = { "[Play Game]", "[Options]", "[Exit Game]" };
+	bool bActive;
+	int iSelectedItem;
+	GameState gsNewState;
+	std::string menuItem[4] = { " [Play Game]", " [How to Play]", " [Scoreboard]", " [Exit Game]" };
 
 };
 
-#endif
+#endif // !_MENU_H_

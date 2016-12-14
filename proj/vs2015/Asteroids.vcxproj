@@ -19,15 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\source\howtoplay.cpp" />
     <ClCompile Include="..\..\source\livescontroller.cpp" />
     <ClCompile Include="..\..\source\objectupdatecontroller.cpp" />
     <ClCompile Include="..\..\source\assetinit.cpp" />
     <ClCompile Include="..\..\source\asteroids.cpp" />
     <ClCompile Include="..\..\source\bullet.cpp" />
-    <ClCompile Include="..\..\source\explosion.cpp" />
     <ClCompile Include="..\..\source\main.cpp" />
     <ClCompile Include="..\..\source\menu.cpp" />
     <ClCompile Include="..\..\source\position.cpp" />
+    <ClCompile Include="..\..\source\scoreboard.cpp" />
     <ClCompile Include="..\..\source\scorecontroller.cpp" />
     <ClCompile Include="..\..\source\spaceship.cpp" />
     <ClCompile Include="..\..\source\spawncontroller.cpp" />
@@ -38,12 +39,13 @@
     <ClInclude Include="..\..\include\assetinit.h" />
     <ClInclude Include="..\..\include\asteroids.h" />
     <ClInclude Include="..\..\include\bullet.h" />
-    <ClInclude Include="..\..\include\explosion.h" />
     <ClInclude Include="..\..\include\GameStates.h" />
+    <ClInclude Include="..\..\include\howtoplay.h" />
     <ClInclude Include="..\..\include\livescontroller.h" />
     <ClInclude Include="..\..\include\menu.h" />
     <ClInclude Include="..\..\include\objectupdatecontroller.h" />
     <ClInclude Include="..\..\include\position.h" />
+    <ClInclude Include="..\..\include\scoreboard.h" />
     <ClInclude Include="..\..\include\scorecontroller.h" />
     <ClInclude Include="..\..\include\spaceship.h" />
     <ClInclude Include="..\..\include\spawncontroller.h" />
