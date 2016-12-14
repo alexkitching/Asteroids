@@ -47,9 +47,9 @@ GameState Menu::Initialise()
 
 		while (bActive == true)
 		{
-			if (GetAsyncKeyState(VK_UP) != 0)
+			if (GetAsyncKeyState(VK_UP) != 0) //Key Up Pressed
 			{
-				iSelectedItem -= 1;
+				iSelectedItem -= 1; //Scroll Through Items
 				if (iSelectedItem == -1)
 				{
 					iSelectedItem = 3;
@@ -57,7 +57,7 @@ GameState Menu::Initialise()
 				break;
 			}
 
-			else if (GetAsyncKeyState(VK_DOWN) != 0)
+			else if (GetAsyncKeyState(VK_DOWN) != 0) //Key Down Pressed
 			{
 				iSelectedItem += 1;
 				if (iSelectedItem == 4)
@@ -67,7 +67,7 @@ GameState Menu::Initialise()
 				break;
 			}
 
-			else if (GetAsyncKeyState(VK_SPACE) != 0)
+			else if (GetAsyncKeyState(VK_SPACE) != 0) //Key Space Pressed
 			{
 				switch (iSelectedItem)
 				{
@@ -75,7 +75,7 @@ GameState Menu::Initialise()
 				{
 					std::cout << "\n\n\nPrepare your thrusters! - Starting Game";
 					Sleep(1000);
-					gsNewState = GameState::GAMEPLAY;
+					gsNewState = GameState::GAMEPLAY; // Load Game
 					bActive = false;
 					Menu::~Menu();
 					break;
@@ -84,7 +84,7 @@ GameState Menu::Initialise()
 				{
 					std::cout << "Loading How to Play...";
 					Sleep(1000);
-					gsNewState = GameState::HOWTOPLAY;
+					gsNewState = GameState::HOWTOPLAY; // Load How to Play Menu
 					bActive = false;
 					Menu::~Menu();
 					break;
@@ -93,14 +93,14 @@ GameState Menu::Initialise()
 				{
 					std::cout << "Loading Scoreboard...";
 					Sleep(1000);
-					gsNewState = GameState::SCOREBOARD;
+					gsNewState = GameState::SCOREBOARD; // Load Scoreboard
 					bActive = false;
 					Menu::~Menu();
 					break;
 				}
 				case 3:
 				{
-					gsNewState = GameState::GAMEOVER;
+					gsNewState = GameState::GAMEOVER; //Quit Game
 					bActive = false;
 					Menu::~Menu();
 					break;

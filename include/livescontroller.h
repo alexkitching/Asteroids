@@ -10,14 +10,22 @@
 class oLivescontroller
 {
 public:
-	oLivescontroller() {};
-	~oLivescontroller() {};
+
+	oLivescontroller() {}; //Constructor
+	~oLivescontroller() {}; //Destructor
+
+	//Functions
 	void DrawLives();
 	int CurrentLives();
-	void UpdateLives(int a_inewlives);
+	void UpdateLives(int a_iNewLives);
 	void ExtraLife();
+
+	//Friend Classes
 	friend class oObjectUpdateController;
+
 private:
+
+	//Variables
 	int iCurrentLives = 3;
 };
 #endif // !_Livescontroller_H_

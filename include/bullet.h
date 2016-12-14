@@ -15,23 +15,36 @@
 class oBullet
 {
 public:
-	oBullet() {};
-	~oBullet() {};
-	void SetIsActive(bool a_IsActive);
-	void SetIsDrawn(bool a_IsDrawn);
-	void SetHasExpired(bool a_HasExpired);
-	void GetDimensions(int& a_iWidth, int& a_iHeight);
-	void GetPos(float& a_PosX, float& a_PosY);
-	void GetRadius(float &a_fRadius);
+
+	oBullet() {}; //Constructor
+	~oBullet() {}; // Destructor
+
+	//Functions
+	void SetIsActive(bool a_bIsActive);
+	void SetIsDrawn(bool a_bIsDrawn);
+	void SetHasExpired(bool a_bHasExpired);
+	void GetDimensions(int& a_riWidth, int& a_riHeight);
+	void GetPos(float& a_rfPosX, float& a_rfPosY);
+	void GetRadius(float &a_rfRadius);
+
+	//General Variables
 	int iSpriteID = -1;
+
+	//Friend Classes
 	friend class oObjectUpdateController;
 protected:
+
+	//Dimension Variables
 	int iHeight = 3;
 	int iWidth = 3;
 	float fRadius = 1.5f;
+
+	//Status Variables
 	bool bIsActive = false;
 	bool bHasExpired = true;
 	bool bIsDrawn = false;
+
+	//Movement Variables
 	Vector vNew;
 	Vector pos;
 };
@@ -39,33 +52,49 @@ protected:
 class oSpaceshipBullet : public oBullet
 {
 public:
-	oSpaceshipBullet() {};
-	~oSpaceshipBullet() {};
-	void Draw(oSpaceshipBullet& a_SpaceshipBullet, float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpaceshipPosY);
-	void CheckCollision(oSpaceshipBullet& a_SpaceshipBullet, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, int& a_asteroidlargedeathcount, int& a_asteroidmediumdeathcount, int& a_asteroidsmalldeathcount, int& a_UFOEasydeathcount, int& a_UFOHarddeathcount, oScorecontroller & a_Scorecontroller);
-	bool IsActive(oSpaceshipBullet& a_SpaceshipBullet);
-	bool IsDrawn(oSpaceshipBullet& a_SpaceshipBullet);
-	bool HasExpired(oSpaceshipBullet& a_SpaceshipBullet);
-	void Destroy(oSpaceshipBullet& a_SpaceshipBullet);
+
+	oSpaceshipBullet() {}; //Constructor
+	~oSpaceshipBullet() {};//Destructor
+
+	//Functions
+	void Draw(oSpaceshipBullet& a_rSpaceshipBullet, float a_fSpaceshipFacingAngle, float a_fSpaceshipPosX, float a_fSpaceshipPosY);
+	void CheckCollision(oSpaceshipBullet& a_rSpaceshipBullet, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray,
+		                oAsteroidSmall* a_paAsteroidSmallArray, oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, int& a_rAsteroidLargedeathcount,
+		                int& a_rAsteroidMediumdeathcount, int& a_rAsteroidSmalldeathcount, int& a_rUFOEasydeathcount, int& a_rUFOHarddeathcount,
+		                oScorecontroller & a_rScorecontroller);
+	bool IsActive(oSpaceshipBullet& a_rSpaceshipBullet);
+	bool IsDrawn(oSpaceshipBullet& a_rSpaceshipBullet);
+	bool HasExpired(oSpaceshipBullet& a_rSpaceshipBullet);
+	void Destroy(oSpaceshipBullet& a_rSpaceshipBullet);
+
+	//Speed Variables
 	const float c_fSpeed = 2.f;
 	float fCurrentDistance = 0.f;
-	const int c_fMaxDistance = 400.f;
+	const float c_fMaxDistance = 400.f;
 };
 
 class oUFOBullet : public oBullet
 {
 public:
-	oUFOBullet() {};
-	~oUFOBullet() {};
-	void Draw(oUFOBullet& a_UFOBullet, float fUFOPosX, float fUFOPosY, Vector& a_velocity);
-	void CheckCollision(oUFOBullet& a_SpaceshipBullet,oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oLivescontroller a_Livescontroller, int& a_asteroidlargedeathcount, int& a_asteroidmediumdeathcount, int& a_asteroidsmalldeathcount);
-	Vector NewFireDirection(oUFOHard& a_UFOHard, oSpaceship& a_Spaceship);
-	bool IsActive(oUFOBullet& a_SpaceshipBullet);
-	bool IsDrawn(oUFOBullet& a_SpaceshipBullet);
-	bool HasExpired(oUFOBullet& a_SpaceshipBullet);
-	void Destroy(oUFOBullet& a_SpaceshipBullet);
+
+	oUFOBullet() {}; //Constructor
+	~oUFOBullet() {}; //Destructor
+
+	//Functions
+	void Draw(oUFOBullet& a_rUFOBullet, float fUFOPosX, float fUFOPosY, Vector a_velocity);
+	void CheckCollision(oUFOBullet& a_rSpaceshipBullet,oSpaceship& a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray,
+		                oAsteroidMedium* a_paAsteroidMediumArray, oAsteroidSmall* a_paAsteroidSmallArray,
+		                oLivescontroller a_rLivescontroller, int& a_rAsteroidLargedeathcount, int& a_rAsteroidMediumdeathcount,
+		                int& a_rAsteroidSmalldeathcount);
+	Vector NewFireDirection(oUFOHard& a_rUFOHard, oSpaceship& a_rSpaceship);
+	bool IsActive(oUFOBullet& a_rSpaceshipBullet);
+	bool IsDrawn(oUFOBullet& a_rSpaceshipBullet);
+	bool HasExpired(oUFOBullet& a_rSpaceshipBullet);
+	void Destroy(oUFOBullet& a_rSpaceshipBullet);
+
+	//Speed Variables
 	float c_fSpeed = 2.f;
 	float fCurrentDistance = 0.f;
-	int c_fMaxDistance = 300.f;
+	float const c_fMaxDistance = 300.f;
 };
 #endif // !_BULLET_H_

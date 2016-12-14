@@ -13,7 +13,7 @@
 
 extern int g_iScreenHeight;
 
-void oScorecontroller::DrawScore()
+void oScorecontroller::DrawScore() //Draw Score in Top Left Corner of Screen
 {
 	std::stringstream str;
 	str << iCurrentScore;
@@ -22,34 +22,34 @@ void oScorecontroller::DrawScore()
 	UG::DrawString(cCurrentScore, 10 , g_iScreenHeight - 10);
 }
 
-void oScorecontroller::UpdateScore(int a_inewscore)
+void oScorecontroller::UpdateScore(int a_inewscore) //Update Scores
 {
 	iCurrentScore += a_inewscore;
 	iRoundScore += a_inewscore;
 	iLivesScore += a_inewscore;
 }
 
-void oScorecontroller::ResetRoundScore()
+void oScorecontroller::ResetRoundScore() //Reset Round Score
 {
 	iRoundScore = 0;
 }
 
-void oScorecontroller::ResetLivesScore()
+void oScorecontroller::ResetLivesScore() //Reset Lives Score
 {
 	iLivesScore = 0;
 }
 
-int oScorecontroller::CurrentScore()
+int oScorecontroller::CurrentScore() //Get Current Score
 {
 	return iCurrentScore;
 }
 
-int oScorecontroller::RoundScore()
+int oScorecontroller::RoundScore() //Get Round Score
 {
 	return iRoundScore;
 }
 
-int oScorecontroller::LivesScore()
+int oScorecontroller::LivesScore() //Get Lives Score
 {
 	return iLivesScore;
 }

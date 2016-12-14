@@ -15,27 +15,34 @@
 class oScoreboard
 {
 public:
-	oScoreboard() { bActive = true; };
-	~oScoreboard() {};
+	oScoreboard() { bActive = true; }; //Constructor
+	~oScoreboard() {}; //Destructor
+
 	GameState Initialise(int a_iNewScore);
+
 private:
+
+	//Status Variables
 	bool bActive;
 	bool bIsSorted;
 	bool bReadSuccess;
 	bool bWriteSuccess;
+	
+	//Score Variables
 	int iNewScore;
 	int iScoreQty = 0;
 	std::string sFileName = "Scoreboardfile";
+
 	GameState gsNewState;
 
-	typedef std::pair<int, std::string> score;
+	typedef std::pair<int, std::string> score; //Scoreboard Item Type
 
 	std::string sNewName;
-	std::vector<score> scoreboard = std::vector<score>(9);
+	std::vector<score> scoreboard = std::vector<score>(9); //Scoreboard Vector
 
 	struct SortAscending 
 	{
-		bool operator()(const score& a_Pair1, const score& a_Pair2) const;
+		bool operator()(const score& a_Pair1, const score& a_Pair2) const; 
 	};
 	struct SortDecending
 	{

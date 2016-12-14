@@ -20,47 +20,47 @@ GameState oScoreboard::Initialise(int a_iNewScore)
 	while (bActive == true)
 	{
 		bIsSorted = false;
-		iNewScore = a_iNewScore;
+		iNewScore = a_iNewScore; // Sets Possible New Score to Function Parameter Input
 		ClearScreen(); //Resets Screen
-		bReadSuccess = ReadVectorFromFile();
+		bReadSuccess = ReadVectorFromFile(); //Read Scoreboardfile
 		std::vector<score>::iterator Iter; //Declare Iterator
 		for (Iter = scoreboard.begin(); Iter < scoreboard.end(); ++Iter)
 		{
 			if (!Iter->first == 0)
 			{
-				iScoreQty++;
+				iScoreQty++; //Count Quantity of Elements
 			}
 		}
-		if (iNewScore >= 0) //If New Score
+		if (iNewScore >= 0) //If New Score (Greater than or Equal to 0)
 		{
 			std::cout << "New Score: " << iNewScore << "!" << std::endl;
 			std::cout << "Please Enter Your Name:" << std::endl;
-			std::cin >> sNewName;
+			std::cin >> sNewName; //Stores New Name
 			ClearScreen(); //Resets Screen
 			if (iScoreQty == 9)
 			{
 				int iSmallestScore;
-				std::sort(scoreboard.begin(), scoreboard.end(), SortAscending());
+				std::sort(scoreboard.begin(), scoreboard.end(), SortAscending()); //Sort Scoreboard by Ascending
 				iSmallestScore = scoreboard.back().first;
-				if (iNewScore > iSmallestScore)
+				if (iNewScore > iSmallestScore) //If New Score is Greater than Smallest Score
 				{
 					score NewPair(iNewScore, sNewName);
-					scoreboard.back().swap(NewPair);
+					scoreboard.back().swap(NewPair); //Swap Scores
 				}
 				else
 				{
 					std::cout << "No Highscore Set, Better Luck Next Time!" << std::endl;
 					iNewScore = 0;
-					sNewName = "";
+					sNewName = ""; 
 					system("PAUSE");
 				}
 			}
 			else
 			{
-				scoreboard[iScoreQty] = std::make_pair(iNewScore, sNewName);
+				scoreboard[iScoreQty] = std::make_pair(iNewScore, sNewName); //Add New Score to Vector
 				++iScoreQty;
 			}
-			std::sort(scoreboard.begin(), scoreboard.end(), SortDecending());
+			std::sort(scoreboard.begin(), scoreboard.end(), SortDecending()); //Sort Descending Order
 			bIsSorted = true;
 		}
 		if (!bIsSorted) //If Not Sorted
@@ -82,10 +82,10 @@ GameState oScoreboard::Initialise(int a_iNewScore)
 				std::cout << " " << i + 1 << "              Score not set" << std::endl;
 			}
 		}
-		bWriteSuccess = WriteVectorToFile();
-		system("pause");
+		bWriteSuccess = WriteVectorToFile(); //Write to File
+		system("pause"); //User Presses Enter
 		Sleep(2000);
-		gsNewState = GameState::MENU;
+		gsNewState = GameState::MENU; //Returns to Menu
 		bActive = false;
 	}
 	system("cls");
@@ -100,32 +100,32 @@ void oScoreboard::ClearScreen()
 
 bool oScoreboard::SortAscending::operator()(const score& a_Pair1, const score& a_Pair2) const
 {
-	return a_Pair1.first < a_Pair2.first;
+	return a_Pair1.first < a_Pair2.first; //Sorts Vector by Ascending Scores
 }
 
 bool oScoreboard::SortDecending::operator()(const score& a_Pair1, const score& a_Pair2) const
 {
-	return a_Pair1.first > a_Pair2.first;
+	return a_Pair1.first > a_Pair2.first; //Sorts Descending by Ascending Scores
 }
 
-bool oScoreboard::WriteVectorToFile()
+bool oScoreboard::WriteVectorToFile() //Writes Scores to File
 {
-	std::string Names[9];
-	int Scores[9];
+	std::string Names[9];  //Create Name Array
+	int iScores[9];  //Create Scores Array
 	std::vector<score>::iterator Iter;
 	int i = 0;
-	for (Iter = scoreboard.begin(); Iter < scoreboard.end(); ++Iter, ++i)
+	for (Iter = scoreboard.begin(); Iter < scoreboard.end(); ++Iter, ++i) //Iterates through Scoreboard Vector
 	{
-		Names[i] = Iter->second;
-		Scores[i] = Iter->first;
+		Names[i] = Iter->second;  //Adds Names to Array
+		iScores[i] = Iter->first; //Adds Scores to Array
 	}
 	std::fstream file;
-	file.open("Names.txt", std::ios_base::out);
+	file.open("Names.txt", std::ios_base::out); //Open File
 	if (file.is_open())
 	{
-		for (int i = 0; i < 9; ++i)
+		for (int j = 0; j < 9; ++j)
 		{
-			file << Names[i] << std::endl;
+			file << Names[j] << std::endl; //Input Names
 		}
 	}
 	else
@@ -133,15 +133,15 @@ bool oScoreboard::WriteVectorToFile()
 		return false;
 	}
 	file.sync();
-	file.close();
+	file.close(); //Close File
 	file.clear();
 
-	file.open("Scores.txt", std::ios_base::out);
+	file.open("Scores.txt", std::ios_base::out); //Open File
 	if (file.is_open())
 	{
-		for (int i = 0; i < 9; ++i)
+		for (int k = 0; k < 9; ++k)
 		{
-			file << Scores[i] << std::endl;
+			file << iScores[k] << std::endl; //Input Scores
 		}
 	}
 	else
@@ -149,22 +149,22 @@ bool oScoreboard::WriteVectorToFile()
 		return false;
 	}
 	file.sync();
-	file.close();
+	file.close(); //Close File
 	file.clear();
 	return true;
 }
 
-bool oScoreboard::ReadVectorFromFile()
+bool oScoreboard::ReadVectorFromFile() //Reads Scores from File
 {
-	std::string Names[9];
-	int Scores[9];
+	std::string Names[9]; //Create Name Array
+	int iScores[9];  //Create Scores Array
 	std::fstream file;
-	file.open("Names.txt", std::ios_base::in);
+	file.open("Names.txt", std::ios_base::in); //Open File
 	if (file.is_open())
 	{
 		for (int i = 0; i < 9; ++i)
 		{
-			std::getline(file, Names[i]);
+			std::getline(file, Names[i]); //Read File Items to Array
 		}
 	}
 	else
@@ -172,14 +172,14 @@ bool oScoreboard::ReadVectorFromFile()
 		return false;
 	}
 	file.sync();
-	file.close();
+	file.close(); // Close File
 	file.clear();
-	file.open("Scores.txt", std::ios_base::in);
+	file.open("Scores.txt", std::ios_base::in); // Open File
 	if (file.is_open())
 	{
 		for (int i = 0; i < 9; ++i)
 		{
-			file >> Scores[i];
+			file >> iScores[i]; // Read File Items to Array
 		}
 	}
 	else
@@ -187,15 +187,15 @@ bool oScoreboard::ReadVectorFromFile()
 		return false;
 	}
 	file.sync();
-	file.close();
+	file.close(); // Close File
 	file.clear();
 
 	std::vector<score>::iterator Iter;
 	int i = 0;
-	for (Iter = scoreboard.begin(); Iter < scoreboard.end(); ++Iter, ++i)
+	for (Iter = scoreboard.begin(); Iter < scoreboard.end(); ++Iter, ++i)	//Iterate through scoreboard vector
 	{
-		score NewPair(Scores[i], Names[i]);
-		Iter->swap(NewPair);
+		score NewPair(iScores[i], Names[i]);	//Add Scores to Pair
+		Iter->swap(NewPair); // Replace Vector with new Pairs
 	}
 
 	return true;

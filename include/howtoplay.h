@@ -14,12 +14,17 @@
 class Howtoplay
 {
 public:
-	Howtoplay() { bActive = true; iiSelectedItem = 1; }
-	~Howtoplay() {};
+
+	Howtoplay() { bActive = true; iSelectedItem = 1; } //Constructor
+	~Howtoplay() {}; //Destructor
+
 	GameState Initialise();
+
 private:
+
+	//Variables
 	bool bActive;
-	int iiSelectedItem;
+	int iSelectedItem;
 	GameState gsNewState;
 	std::string menuItem[4] = { " [Controls]", " [Goal]", " [Enemies]", " [Back to Menu]" };
 	void ClearScreen();

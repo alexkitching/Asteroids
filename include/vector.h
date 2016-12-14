@@ -6,24 +6,30 @@
 ////////////////////////////////////////////////////////////////////
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
-
 class Vector
 {
 public: 
 	//Constructor
 	Vector(float a_fX = 0.f, float a_fY = 0.f);
+
 	//Copy Constructor
 	Vector(const Vector& a_vec);
+
 	//Magnitude
 	float const Magnitude();
+
 	//Normalisation
 	void const Normalise();
+
 	//Set Values
-	void Set(float& a_fX, float& a_fY);
+	void Set(float& a_rfX, float& a_rfY);
+
 	//Get Values
-	void Get(float& a_fX, float& a_fY);
+	void Get(float& a_rfX, float& a_rfY);
+
 	//Set Random
 	void SetRandom(float a_fMin, float a_fMax);
+
 	//Set Random Asteroid Large Spawn
 	void SetRandomAsteroidSpawn();
 

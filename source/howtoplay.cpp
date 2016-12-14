@@ -17,7 +17,7 @@ GameState Howtoplay::Initialise()
 
 		for (int i = 0; i < 4; ++i)
 		{
-			if (i == iiSelectedItem) // Hightlights selected Item
+			if (i == iSelectedItem) // Hightlights selected Item
 			{
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
 				std::cout << menuItem[i] << std::endl;
@@ -30,33 +30,33 @@ GameState Howtoplay::Initialise()
 		}
 		while (bActive == true)
 		{
-			if (GetAsyncKeyState(VK_UP) != 0)
+			if (GetAsyncKeyState(VK_UP) != 0) //Key Up Pressed
 			{
-				iiSelectedItem -= 1;
-				if (iiSelectedItem == -1)
+				iSelectedItem -= 1; //Scroll Through Items
+				if (iSelectedItem == -1)
 				{
-					iiSelectedItem = 3;
+					iSelectedItem = 3;
 				}
 				break;
 			}
 
-			else if (GetAsyncKeyState(VK_DOWN) != 0)
+			else if (GetAsyncKeyState(VK_DOWN) != 0) //Key Down Pressed
 			{
-				iiSelectedItem += 1;
-				if (iiSelectedItem == 4)
+				iSelectedItem += 1; //Scroll Through Items
+				if (iSelectedItem == 4)
 				{
-					iiSelectedItem = 0;
+					iSelectedItem = 0;
 				}
 				break;
 			}
 
-			else if (GetAsyncKeyState(VK_SPACE) != 0)
+			else if (GetAsyncKeyState(VK_SPACE) != 0) //Key Space Pressed
 			{
-				switch (iiSelectedItem)
+				switch (iSelectedItem)
 				{
 				case 0:
 				{
-					ClearScreen();
+					ClearScreen(); // Print Controls
 					std::cout << "Controls:" << std::endl;
 					std::cout << "Accelerate - Up Arrow Key" << std::endl;
 					std::cout << "Turn Left and Right - Left and Right Arrow Keys" << std::endl;
@@ -68,7 +68,7 @@ GameState Howtoplay::Initialise()
 				}
 				case 1:
 				{
-					ClearScreen();
+					ClearScreen(); // Print Goal
 					std::cout << "Goal:" << std::endl;
 					std::cout << "The Aim of the Game is to Reach the Highest Score and Beat Your Friends!" << std::endl;
 					std::cout << "Shoot the Various Enemies to Gain Points." << std::endl;
@@ -80,7 +80,7 @@ GameState Howtoplay::Initialise()
 				}
 				case 2:
 				{
-					ClearScreen();
+					ClearScreen(); // Print Enemies
 					std::cout << "Enemies:" << std::endl;
 					std::cout << "Asteroids:" << std::endl;
 					std::cout << "Large Asteroids - Slow Speed, Worth 20 Points, Shatter into 3 Medium Asteroids." << std::endl;
@@ -100,7 +100,7 @@ GameState Howtoplay::Initialise()
 				}
 				case 3:
 				{
-					gsNewState = GameState::MENU;
+					gsNewState = GameState::MENU; //Return to Menu
 					bActive = false;
 					Howtoplay::~Howtoplay();
 					break;

@@ -13,44 +13,57 @@ class oUFO
 {
 public:
 
-	oUFO() {};
-	~oUFO() {};
+	oUFO() {}; //Constructor
+	~oUFO() {}; //Destructor
+
+	//General Variables
 	int iSpriteID;
-	void GetDimensions(int& a_iWidth, int& a_iHeight);
-	void GetPos(float& a_PosX, float& a_PosY);
-	void SetIsActive(bool a_IsActive);
+
+	//Functions
+	void GetDimensions(int& a_riWidth, int& a_riHeight);
+	void GetPos(float& a_rfPosX, float& a_rfPosY);
+	void SetIsActive(bool a_bIsActive);
 	void SetCanSpawn(bool a_CanSpawn);
-	void SetHasCollied(bool a_HasCollided);
-	void SetScoreUpdated(bool a_ScoreUpdated);
+	void SetHasCollied(bool a_bHasCollided);
+	void SetScoreUpdated(bool a_bScoreUpdated);
 	bool ScoreUpdated();
 	bool HasCollided();
 	bool IsActive();
 	bool CanSpawn();
-	int BulletSpeed();
+	float BulletSpeed();
+
+	//Friend Classes
 	friend class oObjectUpdateController;
 	friend class oUFOBullet;
+
+	//File Name
 	char const cUFOFileName[2][23] = { "./images/UFO.png", "./images/UFOsmall.png" };
 
 protected:
+
+	//Score Variables
 	int iScore;
+
 	//Dimension Variables
 	int iWidth;
 	int iHeight;
+
 	//Speed Variables
 	float fSpeed;
-	bool bDirection;
+	int iDirection;
 	float fMaxThinkingTime;
 	float fThinkingTime;
 	float fMaxShootingDelay;
 	float fShootingDelay;
 	float fBulletSpeed;
+
 	//Death Variables
 	bool bHasCollided;
 	bool bIsActive;
 	bool bCanSpawn;
 	bool bScoreUpdated;
 
-
+	//Vector Variables
 	Vector pos;
 	Vector posLeftTop;
 	Vector posLeftBottom;
@@ -68,14 +81,18 @@ protected:
 class oUFOEasy : public oUFO
 {
 public:
-	oUFOEasy();
-	~oUFOEasy() {};
+
+	oUFOEasy(); //Constructor
+	~oUFOEasy() {}; //Destructor
+
+	//Functions
 	void Initialise(const char* a_UFOImageFileName);
 	void Draw();
 	Vector NewFireDirection();
-	void Destroy(oUFOEasy& a_UFOEasy);
-	void ResetVars(oUFOEasy& a_UFOEasy);
-	int Score(oUFOEasy& a_UFOEasy);
+	void Destroy(oUFOEasy& a_rUFOEasy);
+	void ResetVars(oUFOEasy& a_rUFOEasy);
+	int Score(oUFOEasy& a_rUFOEasy);
+
 private:
 
 };
@@ -83,13 +100,17 @@ private:
 class oUFOHard : public oUFO
 {
 public:
-	oUFOHard();
-	~oUFOHard() {};
+
+	oUFOHard(); //Constructor
+	~oUFOHard() {}; //Destructor
+
+	//Functions
 	void Initialise(const char* a_UFOImageFileName);
 	void Draw();
-	void Destroy(oUFOHard& a_UFOHard);
-	void ResetVars(oUFOHard& a_UFOHard);
-	int Score(oUFOHard& a_UFOHard);
+	void Destroy(oUFOHard& a_rUFOHard);
+	void ResetVars(oUFOHard& a_rUFOHard);
+	int Score(oUFOHard& a_rUFOHard);
+
 private:
 };
 #endif // !_UFO_H_

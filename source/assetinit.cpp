@@ -12,22 +12,25 @@
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
 
-void InitialiseGameAssets(oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, oObjectUpdateController& a_ObjectUpdateController, oSpawncontroller a_Spawncontroller)
+void InitialiseGameAssets(oSpaceship& a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray,
+						  oAsteroidMedium* a_paAsteroidMediumArray, oAsteroidSmall* a_paAsteroidSmallArray,
+						  oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, oObjectUpdateController& a_rObjectUpdateController,
+	                      oSpawncontroller& a_rSpawncontroller)
 {
 	//Initialise Spaceship
-	a_Spaceship.Initialise(a_Spaceship, a_Spaceship.c_cSpaceshipFileName);
-	a_Spaceship.Draw(a_Spaceship, g_iScreenWidth * 0.5f, g_iScreenHeight * 0.5f);
-	a_Spaceship.SetSpaceshipMovementKeys(a_Spaceship, UG::KEY_UP, UG::KEY_DOWN, UG::KEY_LEFT, UG::KEY_RIGHT, UG::KEY_SPACE, UG::KEY_ESCAPE);
+	a_rSpaceship.Initialise(a_rSpaceship, a_rSpaceship.c_cSpaceshipFileName);
+	a_rSpaceship.Draw(a_rSpaceship, g_iScreenWidth * 0.5f, g_iScreenHeight * 0.5f);
+	a_rSpaceship.SetSpaceshipMovementKeys(a_rSpaceship, UG::KEY_UP, UG::KEY_DOWN, UG::KEY_LEFT, UG::KEY_RIGHT, UG::KEY_SPACE, UG::KEY_ESCAPE);
 
 	//Initialise Large Asteroids
-	const int c_iLargeAsteroidHeight = 32, const c_iLargeAsteroidWidth = 32;
-	a_Spawncontroller.Spawncontroller(5, c_iLargeAsteroidWidth, c_iLargeAsteroidHeight);
+	const int c_iLargeAsteroidHeight = 32, c_iLargeAsteroidWidth = 32;
+	a_rSpawncontroller.Spawncontroller(5, c_iLargeAsteroidWidth, c_iLargeAsteroidHeight);
 	for (int i = 0; i < 5; ++i)
 	{
-		a_aAsteroidLargeArray[i].Initialise(a_aAsteroidLargeArray[i].c_cLargeAsteroidFileName[i]);
+		a_paAsteroidLargeArray[i].Initialise(a_paAsteroidLargeArray[i].c_acLargeAsteroidFileName[i]);
 		// Draw Large Asteroids
-		a_aAsteroidLargeArray[i].Draw(a_Spawncontroller, i);
-		++a_ObjectUpdateController.iAsteroidLargeSpawnCount;
+		a_paAsteroidLargeArray[i].Draw(a_rSpawncontroller, i);
+		++a_rObjectUpdateController.iAsteroidLargeSpawnCount;
 	}
 
 	int iCycle = 0;
@@ -36,17 +39,17 @@ void InitialiseGameAssets(oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLa
 	{
 		if (iCycle == 0)
 		{
-			a_aAsteroidMediumArray[i].Initialise(a_aAsteroidMediumArray[i].c_cMediumAsteroidFileName[iCycle]);
+			a_paAsteroidMediumArray[i].Initialise(a_paAsteroidMediumArray[i].c_acMediumAsteroidFileName[iCycle]);
 			iCycle = 1;
 		}
 		else if (iCycle == 1)
 		{
-			a_aAsteroidMediumArray[i].Initialise(a_aAsteroidMediumArray[i].c_cMediumAsteroidFileName[iCycle]);
+			a_paAsteroidMediumArray[i].Initialise(a_paAsteroidMediumArray[i].c_acMediumAsteroidFileName[iCycle]);
 			iCycle = 2;
 		}
 		else if (iCycle == 2)
 		{
-			a_aAsteroidMediumArray[i].Initialise(a_aAsteroidMediumArray[i].c_cMediumAsteroidFileName[iCycle]);
+			a_paAsteroidMediumArray[i].Initialise(a_paAsteroidMediumArray[i].c_acMediumAsteroidFileName[iCycle]);
 			iCycle = 0;
 		}
 	}
@@ -56,22 +59,22 @@ void InitialiseGameAssets(oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLa
 	{
 		if (iCycle == 0)
 		{
-			a_aAsteroidSmallArray[i].Initialise(a_aAsteroidSmallArray[i].c_cSmallAsteroidFileName[iCycle]);
+			a_paAsteroidSmallArray[i].Initialise(a_paAsteroidSmallArray[i].c_acSmallAsteroidFileName[iCycle]);
 			iCycle = 1;
 		}
 		else if (iCycle == 1)
 		{
-			a_aAsteroidSmallArray[i].Initialise(a_aAsteroidSmallArray[i].c_cSmallAsteroidFileName[iCycle]);
+			a_paAsteroidSmallArray[i].Initialise(a_paAsteroidSmallArray[i].c_acSmallAsteroidFileName[iCycle]);
 			iCycle = 2;
 		}
 		else if (iCycle == 2)
 		{
-			a_aAsteroidSmallArray[i].Initialise(a_aAsteroidSmallArray[i].c_cSmallAsteroidFileName[iCycle]);
+			a_paAsteroidSmallArray[i].Initialise(a_paAsteroidSmallArray[i].c_acSmallAsteroidFileName[iCycle]);
 			iCycle = 0;
 		}
 	}
 
 	//Initialise UFOs
-	a_UFOEasy.Initialise(a_UFOEasy.cUFOFileName[0]);
-	a_UFOHard.Initialise(a_UFOHard.cUFOFileName[1]);
+	a_rUFOEasy.Initialise(a_rUFOEasy.cUFOFileName[0]);
+	a_rUFOHard.Initialise(a_rUFOHard.cUFOFileName[1]);
 }

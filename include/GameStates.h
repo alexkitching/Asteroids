@@ -14,6 +14,7 @@ typedef enum GameStates
 	HOWTOPLAY,
 	GAMEPLAY,
 	GAMEOVER
+
 }GameState;
 
 #endif // !_GAMESTATES_H_

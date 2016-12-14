@@ -14,303 +14,313 @@ extern float g_fDeltaTime;
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
 
-void oSpaceship::Initialise(oSpaceship& a_Spaceship, const char* a_SpaceshipImageFileName)
+void oSpaceship::Initialise(oSpaceship& a_rSpaceship, const char* a_rSpaceshipImageFileName)
 {
-	a_Spaceship.fTotalVelocity = 0.f;
-	a_Spaceship.fCurrentTurnRate = 0.f;
-	a_Spaceship.fPosX = 0.f;
-	a_Spaceship.fPosY = 0.f;
-	a_Spaceship.fVNewX = 0.f;
-	a_Spaceship.fVNewY = 0.f;
-	a_Spaceship.fFireDelay = 0.f;
-	a_Spaceship.bIsActive = false;
-	a_Spaceship.bCollision = false;
-	a_Spaceship.fSpawnTime = 3.f;
-	a_Spaceship.vNew = (0.f, 0.f);
-	a_Spaceship.iSpriteID = UG::CreateSprite(a_SpaceshipImageFileName, (float)a_Spaceship.c_iWidth, (float)a_Spaceship.c_iHeight);
+	a_rSpaceship.fTotalVelocity = 0.f;	//Initialise Variables
+	a_rSpaceship.fCurrentTurnRate = 0.f;
+	a_rSpaceship.fPosX = 0.f;
+	a_rSpaceship.fPosY = 0.f;
+	a_rSpaceship.fVNewX = 0.f;
+	a_rSpaceship.fVNewY = 0.f;
+	a_rSpaceship.fFireDelay = 0.f;
+	a_rSpaceship.bIsActive = false;
+	a_rSpaceship.bCollision = false;
+	a_rSpaceship.fSpawnTime = 3.f;
+	a_rSpaceship.vNew = (0.f, 0.f);
+	a_rSpaceship.iSpriteID = UG::CreateSprite(a_rSpaceshipImageFileName, (float)a_rSpaceship.c_iWidth, (float)a_rSpaceship.c_iHeight); //Create Sprite
 
 }
 
-void oSpaceship::Draw(oSpaceship& a_Spaceship, float a_fXPos, float a_fYPos)
+void oSpaceship::Draw(oSpaceship& a_rSpaceship, float a_fXPos, float a_fYPos) 
 {
-	a_Spaceship.bIsActive = true;
-	a_Spaceship.pos.Set(a_fXPos, a_fYPos);
-	UG::DrawSprite(a_Spaceship.iSpriteID);
-	UG::MoveSprite(a_Spaceship.iSpriteID, a_Spaceship.fPosX, a_Spaceship.fPosY);
-	a_Spaceship.pos.Get(a_Spaceship.fPosX, a_Spaceship.fPosY);
+	a_rSpaceship.bIsActive = true; //Set Active
+	a_rSpaceship.pos.Set(a_fXPos, a_fYPos);
+	UG::DrawSprite(a_rSpaceship.iSpriteID); //Draw Spaceship
+	UG::MoveSprite(a_rSpaceship.iSpriteID, a_rSpaceship.fPosX, a_rSpaceship.fPosY); //Move Spaceship
+	a_rSpaceship.pos.Get(a_rSpaceship.fPosX, a_rSpaceship.fPosY);
 }
 
-void oSpaceship::Destroy(oSpaceship& a_Spaceship, oLivescontroller& a_Livescontroller)
+void oSpaceship::Destroy(oSpaceship& a_rSpaceship, oLivescontroller& a_rLivescontroller)
 {
-	a_Livescontroller.UpdateLives(-1);
-	a_Spaceship.ResetVars(a_Spaceship);
-	UG::StopDrawingSprite(a_Spaceship.iSpriteID);
-	UG::DestroySprite(a_Spaceship.iSpriteID);
-	a_Spaceship.iSpriteID = -1;
+	a_rLivescontroller.UpdateLives(-1); //Updates Lives
+	a_rSpaceship.ResetVars(a_rSpaceship); //Reset Variables
+	UG::StopDrawingSprite(a_rSpaceship.iSpriteID); //Stop Drawing Sprite
+	UG::DestroySprite(a_rSpaceship.iSpriteID); //Destroy Sprite
+	a_rSpaceship.iSpriteID = -1; //Reset ISpriteID
 }
 
-void oSpaceship::SetSpaceshipMovementKeys(oSpaceship& a_Spaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey, short a_fireKey, short a_exitKey)
+void oSpaceship::SetSpaceshipMovementKeys(oSpaceship& a_rSpaceship, short a_upKey, short a_downKey, short a_leftKey, short a_rightKey,
+	short a_fireKey, short a_exitKey)
 {
-	a_Spaceship.upKey = a_upKey;
-	a_Spaceship.downKey = a_downKey;
-	a_Spaceship.leftKey = a_leftKey;
-	a_Spaceship.rightKey = a_rightKey;
-	a_Spaceship.fireKey = a_fireKey;
-	a_Spaceship.exitKey = a_exitKey;
+	a_rSpaceship.upKey = a_upKey; //Set Movement Keys
+	a_rSpaceship.downKey = a_downKey;
+	a_rSpaceship.leftKey = a_leftKey;
+	a_rSpaceship.rightKey = a_rightKey;
+	a_rSpaceship.fireKey = a_fireKey;
+	a_rSpaceship.exitKey = a_exitKey;
 }
-void oSpaceship::CheckCollision(oSpaceship & a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, oLivescontroller& a_Livescontroller, int& a_asteroidlargedeathcount, int& a_asteroidmediumdeathcount, int& a_asteroidsmalldeathcount, int& a_UFOEasydeathcount, int& a_UFOHarddeathcount)
+void oSpaceship::CheckCollision(oSpaceship & a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray,
+								oAsteroidSmall* a_paAsteroidSmallArray, oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, oLivescontroller& a_rLivescontroller,
+								int& a_rAsteroidLargedeathcount, int& a_rAsteroidMediumdeathcount, int& a_rAsteroidSmalldeathcount, int& a_rUFOEasydeathcount,
+								int& a_rUFOHarddeathcount)
 {
 	//Check for Large Asteroid Collision
 	for (int i = 0; i < 5; ++i)
 	{
-		if (a_aAsteroidLargeArray[i].IsActive())
+		if (a_paAsteroidLargeArray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidLargeArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidLargeArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			a_paAsteroidLargeArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidLargeArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
 			float fDistanceX = fPosX - fAsteroidPosX;
 			float fDistanceY = fPosY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < c_fRadius + (float)iAsteroidRadius)
 			{
-
+				//Collision
 				if (bIsActive == true)
 				{
-					a_Spaceship.Destroy(a_Spaceship, a_Livescontroller);
-					a_aAsteroidLargeArray[i].Destroy(a_aAsteroidLargeArray[i]);
-					++a_asteroidlargedeathcount;
+					a_rSpaceship.Destroy(a_rSpaceship, a_rLivescontroller); //Destroy Spaceship
+					a_paAsteroidLargeArray[i].Destroy(a_paAsteroidLargeArray[i]); //Destroy Asteroid
+					++a_rAsteroidLargedeathcount; //Increase Asteroid Death Count
 				}
-				a_Spaceship.bCollision = true;
+				a_rSpaceship.bCollision = true;
 			}
 			else
 			{
-				a_Spaceship.bCollision = false;
+				a_rSpaceship.bCollision = false; 
 			}
 		}
 	}
 	//Check for Medium Asteroid Collision
 	for (int i = 0; i < 15; ++i)
 	{
-		if (a_aAsteroidMediumArray[i].IsActive())
+		if (a_paAsteroidMediumArray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidMediumArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidMediumArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			a_paAsteroidMediumArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidMediumArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
 			float fDistanceX = fPosX - fAsteroidPosX;
 			float fDistanceY = fPosY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < c_fRadius + (float)iAsteroidRadius)
 			{
+				//Collision
 				if (bIsActive == true)
 				{
-					a_Spaceship.Destroy(a_Spaceship, a_Livescontroller);
-					a_aAsteroidMediumArray[i].Destroy(a_aAsteroidMediumArray[i]);
-					++a_asteroidmediumdeathcount;
+					a_rSpaceship.Destroy(a_rSpaceship, a_rLivescontroller); //Destroy Spaceship
+					a_paAsteroidMediumArray[i].Destroy(a_paAsteroidMediumArray[i]); //Destroy Asteroid
+					++a_rAsteroidMediumdeathcount; //Increase Asteroid Death Count
 				}
-				a_Spaceship.bCollision = true;
+				a_rSpaceship.bCollision = true;
 			}
 			else
 			{
-				a_Spaceship.bCollision = false;
+				a_rSpaceship.bCollision = false;
 			}
 		}
 	}
 	//Check for Small Asteroid Collision
 	for (int i = 0; i < 45; ++i)
 	{
-		if (a_aAsteroidSmallArray[i].IsActive())
+		if (a_paAsteroidSmallArray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidSmallArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidSmallArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			a_paAsteroidSmallArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidSmallArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
 			float fDistanceX = fPosX - fAsteroidPosX;
 			float fDistanceY = fPosY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < c_fRadius + (float)iAsteroidRadius)
 			{
+				//Collision
 				if (bIsActive == true)
 				{
-					a_Spaceship.Destroy(a_Spaceship, a_Livescontroller);
-					a_aAsteroidSmallArray[i].Destroy(a_aAsteroidSmallArray[i]);
-					++a_asteroidsmalldeathcount;
+					a_rSpaceship.Destroy(a_rSpaceship, a_rLivescontroller); //Destroy Spaceship
+					a_paAsteroidSmallArray[i].Destroy(a_paAsteroidSmallArray[i]); //Destroy Asteroid
+					++a_rAsteroidSmalldeathcount; //Increase Asteroid Death Count
 				}
-				a_Spaceship.bCollision = true;
+				a_rSpaceship.bCollision = true;
 			}
 			else
 			{
-				a_Spaceship.bCollision = false;
+				a_rSpaceship.bCollision = false;
 			}
 		}
 	}
 	//Check for UFOEasy Collision
-	if (a_UFOEasy.IsActive())
+	if (a_rUFOEasy.IsActive())
 	{
 		int iUFOWidth, iUFOHeight;
 		float fUFOPosX = 0.f, fUFOPosY = 0.f;
-		a_UFOEasy.GetPos(fUFOPosX, fUFOPosY);
-		a_UFOEasy.GetDimensions(iUFOWidth, iUFOHeight);
+		a_rUFOEasy.GetPos(fUFOPosX, fUFOPosY);
+		a_rUFOEasy.GetDimensions(iUFOWidth, iUFOHeight);
 		int iHalfUFOWidth = (int)(iUFOWidth * 0.5);
 		int iHalfUFOHeight = (int)(iUFOHeight * 0.5);
 
-		if ((fPosX - c_fRadius < fUFOPosX + iHalfUFOWidth && fPosX + c_fRadius > fUFOPosX - iHalfUFOWidth) && (fPosY - c_fRadius < fUFOPosY + iHalfUFOHeight && fPosY + c_fRadius > fUFOPosY - iHalfUFOHeight))
+		if ((fPosX - c_fRadius < fUFOPosX + iHalfUFOWidth && fPosX + c_fRadius > fUFOPosX - iHalfUFOWidth) && (fPosY - c_fRadius < fUFOPosY + iHalfUFOHeight &&
+			fPosY + c_fRadius > fUFOPosY - iHalfUFOHeight))
 		{
 			//Collision
 			if (bIsActive == true)
 			{
-				a_Spaceship.Destroy(a_Spaceship, a_Livescontroller);
-				a_Livescontroller.UpdateLives(-1);
-				a_UFOEasy.Destroy(a_UFOEasy);
-				++a_UFOEasydeathcount;
+				a_rSpaceship.Destroy(a_rSpaceship, a_rLivescontroller); //Destroy Spaceship
+				a_rUFOEasy.Destroy(a_rUFOEasy); //Destroy UFO
+				++a_rUFOEasydeathcount; //Increase UFO Death Count
 			}
 		}
 		else
 		{
-			a_Spaceship.bCollision = false;
+			a_rSpaceship.bCollision = false;
 		}
 	}
 	//Check for UFOHard Collision
-	if (a_UFOHard.IsActive())
+	if (a_rUFOHard.IsActive())
 	{
 		int iUFOWidth, iUFOHeight;
 		float fUFOPosX = 0.f, fUFOPosY = 0.f;
-		a_UFOHard.GetPos(fUFOPosX, fUFOPosY);
-		a_UFOHard.GetDimensions(iUFOWidth, iUFOHeight);
+		a_rUFOHard.GetPos(fUFOPosX, fUFOPosY);
+		a_rUFOHard.GetDimensions(iUFOWidth, iUFOHeight);
 		int iHalfUFOWidth = (int)(iUFOWidth * 0.5);
 		int iHalfUFOHeight = (int)(iUFOHeight * 0.5);
 
-		if ((fPosX - c_fRadius < fUFOPosX + iHalfUFOWidth && fPosX + c_fRadius > fUFOPosX - iHalfUFOWidth) && (fPosY - c_fRadius < fUFOPosY + iHalfUFOHeight && fPosY + c_fRadius > fUFOPosY - iHalfUFOHeight))
+		if ((fPosX - c_fRadius < fUFOPosX + iHalfUFOWidth && fPosX + c_fRadius > fUFOPosX - iHalfUFOWidth) && (fPosY - c_fRadius < fUFOPosY + iHalfUFOHeight &&
+			fPosY + c_fRadius > fUFOPosY - iHalfUFOHeight))
 		{
 			//Collision
 			if (bIsActive == true)
 			{
-				a_Spaceship.Destroy(a_Spaceship, a_Livescontroller);
-				a_Livescontroller.UpdateLives(-1);
-				a_UFOHard.Destroy(a_UFOHard);
-				++a_UFOHarddeathcount;
+				a_rSpaceship.Destroy(a_rSpaceship, a_rLivescontroller); //Destroy Spaceship
+				a_rUFOHard.Destroy(a_rUFOHard); //Destroy UFO
+				++a_rUFOHarddeathcount; //Increase UFO Death Count
 			}
 		}
 		else
 		{
-			a_Spaceship.bCollision = false;
+			a_rSpaceship.bCollision = false;
 		}
 	}
 }
 
-void oSpaceship::CheckSpawnCollision(oSpaceship & a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray)
+void oSpaceship::CheckSpawnCollision(oSpaceship & a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray,
+	oAsteroidSmall* a_paAsteroidSmallArray)
 {
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 5; ++i) //Checks to See if Spawn Area Is Occupied With Asteroids
 	{
-		if (a_aAsteroidLargeArray[i].IsActive())
+		if (a_paAsteroidLargeArray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidLargeArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidLargeArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			a_paAsteroidLargeArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidLargeArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
 			float fDistanceX = fPosX - fAsteroidPosX;
 			float fDistanceY = fPosY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < c_fSpawnRadius + (float)iAsteroidRadius)
 			{
-				a_Spaceship.bCollision = true;
+				//Collision
+				a_rSpaceship.bCollision = true;
 			}
 			else
 			{
-				a_Spaceship.bCollision = false;
+				a_rSpaceship.bCollision = false;
+			}
+		}
+	} 
+	for (int i = 0; i < 15; ++i) //Checks to See if Spawn Area Is Occupied With Asteroids
+	{
+		if (a_paAsteroidMediumArray[i].IsActive())
+		{
+			int iAsteroidRadius = 0;
+			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
+			a_paAsteroidMediumArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidMediumArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = fPosX - fAsteroidPosX;
+			float fDistanceY = fPosY - fAsteroidPosY;
+			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
+			if (fDistanceSquared < c_fSpawnRadius + (float)iAsteroidRadius)
+			{
+				//Collision
+				a_rSpaceship.bCollision = true;
+			}
+			else
+			{
+				a_rSpaceship.bCollision = false;
 			}
 		}
 	}
-	for (int i = 0; i < 15; ++i)
+	for (int i = 0; i < 45; ++i) //Checks to See if Spawn Area Is Occupied With Asteroids
 	{
-		if (a_aAsteroidMediumArray[i].IsActive())
+		if (a_paAsteroidSmallArray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidMediumArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidMediumArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			a_paAsteroidSmallArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidSmallArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
 			float fDistanceX = fPosX - fAsteroidPosX;
 			float fDistanceY = fPosY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
 			if (fDistanceSquared < c_fSpawnRadius + (float)iAsteroidRadius)
 			{
-				a_Spaceship.bCollision = true;
+				//Collision
+				a_rSpaceship.bCollision = true;
 			}
 			else
 			{
-				a_Spaceship.bCollision = false;
-			}
-		}
-	}
-	for (int i = 0; i < 45; ++i)
-	{
-		if (a_aAsteroidSmallArray[i].IsActive())
-		{
-			int iAsteroidRadius = 0;
-			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidSmallArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidSmallArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
-			float fDistanceX = fPosX - fAsteroidPosX;
-			float fDistanceY = fPosY - fAsteroidPosY;
-			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
-			if (fDistanceSquared < c_fSpawnRadius + (float)iAsteroidRadius)
-			{
-				a_Spaceship.bCollision = true;
-			}
-			else
-			{
-				a_Spaceship.bCollision = false;
+				a_rSpaceship.bCollision = false;
 			}
 		}
 	}
 }
 
-void oSpaceship::ResetVars(oSpaceship& a_Spaceship)
+void oSpaceship::ResetVars(oSpaceship& a_rSpaceship) // Reset Variables
 {
-	a_Spaceship.fTotalVelocity = 0.f;
-	a_Spaceship.fCurrentTurnRate = 0.f;
-	a_Spaceship.fPosX = 0.f;
-	a_Spaceship.fPosY = 0.f;
-	a_Spaceship.fVNewX = 0.f;
-	a_Spaceship.fVNewY = 0.f;
-	a_Spaceship.fFacingAngleDeg = 90.0;
-	a_Spaceship.fMovementAngleDeg = 90.0;
-	a_Spaceship.fFacingAngleRad = a_Spaceship.fFacingAngleDeg * a_Spaceship.c_degtorad;
-	a_Spaceship.fFireDelay = 0.f;
-	a_Spaceship.bIsActive = false;
-	a_Spaceship.bCollision = false;
-	a_Spaceship.fSpawnTime = 3.f;
-	a_Spaceship.vNew = Vector(0.f, 0.f);
+	a_rSpaceship.fTotalVelocity = 0.f;
+	a_rSpaceship.fCurrentTurnRate = 0.f;
+	a_rSpaceship.fPosX = 0.f;
+	a_rSpaceship.fPosY = 0.f;
+	a_rSpaceship.fVNewX = 0.f;
+	a_rSpaceship.fVNewY = 0.f;
+	a_rSpaceship.fFacingAngleDeg = 90.0;
+	a_rSpaceship.fMovementAngleDeg = 90.0;
+	a_rSpaceship.fFacingAngleRad = a_rSpaceship.fFacingAngleDeg * a_rSpaceship.c_degtorad;
+	a_rSpaceship.fFireDelay = 0.f;
+	a_rSpaceship.bIsActive = false;
+	a_rSpaceship.bCollision = false;
+	a_rSpaceship.fSpawnTime = 3.f;
+	a_rSpaceship.vNew = Vector(0.f, 0.f);
 }
 
-void oSpaceship::Respawn(oSpaceship & a_Spaceship)
+void oSpaceship::Respawn(oSpaceship & a_rSpaceship)
 {
 	bool bHasSpawned = false;
 	while (bHasSpawned == false)
 	{
-		if (!a_Spaceship.bCollision)
+		if (!a_rSpaceship.bCollision) // Check Spawn Collision
 		{
-			a_Spaceship.iSpriteID = UG::CreateSprite(a_Spaceship.c_cSpaceshipFileName, (float)a_Spaceship.c_iWidth, (float)a_Spaceship.c_iHeight);
-			a_Spaceship.Draw(a_Spaceship, g_iScreenWidth * 0.5f, g_iScreenHeight * 0.5f);
+			a_rSpaceship.iSpriteID = UG::CreateSprite(a_rSpaceship.c_cSpaceshipFileName, (float)a_rSpaceship.c_iWidth, (float)a_rSpaceship.c_iHeight); //Create Sprite
+			a_rSpaceship.Draw(a_rSpaceship, g_iScreenWidth * 0.5f, g_iScreenHeight * 0.5f); // Draw Sprite
 			bHasSpawned = true;
 		}
-		else if (a_Spaceship.bCollision)
+		else if (a_rSpaceship.bCollision)
 		{
 			//Do nothing
 		}
 	}
 }
 
-void oSpaceship::GetPos(float& a_fPosX, float& a_fPosY)
+void oSpaceship::GetPos(float& a_rfPosX, float& a_rfPosY)
 {
-	a_fPosX = fPosX;
-	a_fPosY = fPosY;
+	a_rfPosX = fPosX;
+	a_rfPosY = fPosY;
 }
 
-void oSpaceship::GetRadius(float& a_fRadius)
+void oSpaceship::GetRadius(float& a_rfRadius)
 {
-	a_fRadius = c_fRadius;
+	a_rfRadius = c_fRadius;
 }
 
 void oSpaceship::SetCollision(bool a_collision)
@@ -323,7 +333,7 @@ bool oSpaceship::IsActive()
 	return bIsActive;
 }
 
-float oSpaceship::AngleWrap(float x)
+float oSpaceship::AngleWrap(float x) // Wraps Angle Around if Greater Than 360 or Less Than 1
 {
 	float y;
 	y = fmodf(x, 360);

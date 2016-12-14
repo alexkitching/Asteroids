@@ -34,16 +34,19 @@ void const Vector::Normalise()
 		fY = fY / fMag;
 	}
 }
+//Set
 void Vector::Set(float & a_fX, float & a_fY)
 {
 	fX = a_fX;
 	fY = a_fY;
 }
+//Get
 void Vector::Get(float & a_fX, float & a_fY)
 {
 	a_fX = fX;
 	a_fY = fY;
 }
+//Set Random
 void Vector::SetRandom(float const a_fMin, float const a_fMax)
 {
 	float const fRange = a_fMax - a_fMin;
@@ -66,6 +69,7 @@ void Vector::SetRandom(float const a_fMin, float const a_fMax)
 	{
 	}
 }
+//SetRandomAsteroidSpawn
 void Vector::SetRandomAsteroidSpawn()
 {
 	fX = static_cast <float> (rand()) / static_cast <float> (RAND_MAX / ((float)g_iScreenWidth + 1.f));

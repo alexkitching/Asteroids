@@ -13,10 +13,14 @@
 class Menu
 {
 public:
-	Menu();
-	~Menu() {};
+
+	Menu(); //Constructor
+	~Menu() {}; //Destructor
+
 	GameState Initialise();
 private:
+
+	//Variables
 	bool bActive;
 	int iSelectedItem;
 	GameState gsNewState;

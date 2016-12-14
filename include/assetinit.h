@@ -11,6 +11,10 @@
 #include "Spaceship.h"
 #include "ObjectUpdateController.h"
 
-void InitialiseGameAssets(oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, oObjectUpdateController& a_ObjectUpdateController, oSpawncontroller a_Spawncontroller);
+//Declare Function
+void InitialiseGameAssets(oSpaceship& a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray,
+							oAsteroidMedium* a_paAsteroidMediumArray, oAsteroidSmall* a_paAsteroidSmallArray,
+							oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, oObjectUpdateController& a_rObjectUpdateController,
+							oSpawncontroller& a_rSpawncontroller);
 
 #endif // !_ASSETINIT_H_

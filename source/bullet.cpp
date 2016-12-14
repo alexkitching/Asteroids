@@ -12,380 +12,388 @@
 extern int g_iScreenHeight;
 extern int g_iScreenWidth;
 
-void oBullet::SetIsActive(bool a_IsActive)
+void oBullet::SetIsActive(bool a_bIsActive)
 {
-	bIsActive = a_IsActive;
+	bIsActive = a_bIsActive;
 }
 
-void oBullet::SetIsDrawn(bool a_IsDrawn)
+void oBullet::SetIsDrawn(bool a_bIsDrawn)
 {
-	bIsDrawn = a_IsDrawn;
+	bIsDrawn = a_bIsDrawn;
 }
 
-void oBullet::SetHasExpired(bool a_HasExpired)
+void oBullet::SetHasExpired(bool a_bHasExpired)
 {
-	bHasExpired = a_HasExpired;
+	bHasExpired = a_bHasExpired;
 }
 
-void oBullet::GetDimensions(int & a_iWidth, int & a_iHeight)
+void oBullet::GetDimensions(int & a_riWidth, int & a_riHeight)
 {
-	a_iWidth = iWidth, a_iHeight = iHeight;
+	a_riWidth = iWidth, a_riHeight = iHeight;
 }
 
-void oBullet::GetPos(float & a_PosX, float & a_PosY)
+void oBullet::GetPos(float & a_rfPosX, float & a_rfPosY)
 {
-	a_PosX = pos.fX;
-	a_PosY = pos.fY;
+	a_rfPosX = pos.fX;
+	a_rfPosY = pos.fY;
 }
 
-void oBullet::GetRadius(float & a_fRadius)
+void oBullet::GetRadius(float & a_rfRadius)
 {
-	a_fRadius = fRadius;
+	a_rfRadius = fRadius;
 }
 
-void oSpaceshipBullet::Draw(oSpaceshipBullet & a_SpaceshipBullet, float fSpaceshipFacingAngle, float fSpaceshipPosX, float fSpaceshipPosY)
+void oSpaceshipBullet::Draw(oSpaceshipBullet & a_rSpaceshipBullet, float a_fSpaceshipFacingAngle, float a_fSpaceshipPosX, float a_fSpaceshipPosY)
 {
-	a_SpaceshipBullet.bIsDrawn = true;
-	a_SpaceshipBullet.bIsActive = true;
-	a_SpaceshipBullet.bHasExpired = false;
+	a_rSpaceshipBullet.bIsDrawn = true;
+	a_rSpaceshipBullet.bIsActive = true;
+	a_rSpaceshipBullet.bHasExpired = false;
 	//Direction of Bullet = Direction Ship is Facing
-	a_SpaceshipBullet.vNew.fX = cosf(fSpaceshipFacingAngle);
-	a_SpaceshipBullet.vNew.fY = sinf(fSpaceshipFacingAngle);
+	a_rSpaceshipBullet.vNew.fX = cosf(a_fSpaceshipFacingAngle);
+	a_rSpaceshipBullet.vNew.fY = sinf(a_fSpaceshipFacingAngle);
 	// Set Initial Position of Bullet
-	a_SpaceshipBullet.pos.fX = fSpaceshipPosX;
-	a_SpaceshipBullet.pos.fY = fSpaceshipPosY;
+	a_rSpaceshipBullet.pos.fX = a_fSpaceshipPosX;
+	a_rSpaceshipBullet.pos.fY = a_fSpaceshipPosY;
 	//Move Bullet in front of ship
-	a_SpaceshipBullet.pos.fX += vNew.fX * 20;
-	a_SpaceshipBullet.pos.fY += vNew.fY * 20;
+	a_rSpaceshipBullet.pos.fX += vNew.fX * 20;
+	a_rSpaceshipBullet.pos.fY += vNew.fY * 20;
 	//Set Bullet Speed
-	a_SpaceshipBullet.vNew.fX *= 5;
-	a_SpaceshipBullet.vNew.fY *= 5;
-	a_SpaceshipBullet.vNew.Set(a_SpaceshipBullet.vNew.fX, a_SpaceshipBullet.vNew.fY);
-	a_SpaceshipBullet.iSpriteID = UG::CreateSprite("./images/bullet.png", (float)a_SpaceshipBullet.iWidth, (float)a_SpaceshipBullet.iHeight);
-	UG::DrawSprite(a_SpaceshipBullet.iSpriteID);
-	UG::MoveSprite(a_SpaceshipBullet.iSpriteID, a_SpaceshipBullet.pos.fX, a_SpaceshipBullet.pos.fY);
+	a_rSpaceshipBullet.vNew.fX *= 5;
+	a_rSpaceshipBullet.vNew.fY *= 5;
+	a_rSpaceshipBullet.vNew.Set(a_rSpaceshipBullet.vNew.fX, a_rSpaceshipBullet.vNew.fY);
+	a_rSpaceshipBullet.iSpriteID = UG::CreateSprite("./images/bullet.png", (float)a_rSpaceshipBullet.iWidth, (float)a_rSpaceshipBullet.iHeight);
+	UG::DrawSprite(a_rSpaceshipBullet.iSpriteID);
+	UG::MoveSprite(a_rSpaceshipBullet.iSpriteID, a_rSpaceshipBullet.pos.fX, a_rSpaceshipBullet.pos.fY);
 }
 
-void oSpaceshipBullet::CheckCollision(oSpaceshipBullet& a_SpaceshipBullet, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, int& a_asteroidlargedeathcount, int& a_asteroidmediumdeathcount, int& a_asteroidsmalldeathcount, int& a_UFOEasydeathcount, int& a_UFOHarddeathcount, oScorecontroller & a_Scorecontroller)
+void oSpaceshipBullet::CheckCollision(oSpaceshipBullet& a_rSpaceshipBullet, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray,
+	 oAsteroidSmall* a_paAsteroidSmallArray, oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, int& a_rAsteroidLargedeathcount, int& a_rAsteroidMediumdeathcount,
+	 int& a_rAsteroidSmalldeathcount, int& a_rUFOEasydeathcount, int& a_rUFOHarddeathcount, oScorecontroller & a_rScorecontroller)
 {
 	//Check Large Asteroid Collision
 	for (int i = 0; i < 5; ++i)
 	{
-		if (a_aAsteroidLargeArray[i].IsActive())
+		if (a_paAsteroidLargeArray[i].IsActive()) //Check Asteroid Is Active
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidLargeArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidLargeArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
-			float fDistanceX = a_SpaceshipBullet.pos.fX - fAsteroidPosX;
-			float fDistanceY = a_SpaceshipBullet.pos.fY - fAsteroidPosY;
+			a_paAsteroidLargeArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidLargeArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = a_rSpaceshipBullet.pos.fX - fAsteroidPosX;
+			float fDistanceY = a_rSpaceshipBullet.pos.fY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
-			if (fDistanceSquared < a_SpaceshipBullet.fRadius + (float)iAsteroidRadius)
+			if (fDistanceSquared < a_rSpaceshipBullet.fRadius + (float)iAsteroidRadius)
 			{
-				if (a_SpaceshipBullet.IsDrawn(a_SpaceshipBullet))
+				if (a_rSpaceshipBullet.IsDrawn(a_rSpaceshipBullet))
 				{
-					a_SpaceshipBullet.Destroy(a_SpaceshipBullet);
+					a_rSpaceshipBullet.Destroy(a_rSpaceshipBullet); //Destroy Bullet 
 				}
-				a_aAsteroidLargeArray[i].Destroy(a_aAsteroidLargeArray[i]);
-				if (!a_aAsteroidLargeArray[i].ScoreUpdated())
+				a_paAsteroidLargeArray[i].Destroy(a_paAsteroidLargeArray[i]); //Destroy Asteroid
+				if (!a_paAsteroidLargeArray[i].ScoreUpdated())
 				{
-					a_Scorecontroller.UpdateScore(a_aAsteroidLargeArray[i].Score(a_aAsteroidLargeArray[i]));
-					a_aAsteroidLargeArray[i].SetScoreUpdated(true);
+					a_rScorecontroller.UpdateScore(a_paAsteroidLargeArray[i].Score(a_paAsteroidLargeArray[i])); //Update Score
+					a_paAsteroidLargeArray[i].SetScoreUpdated(true); 
 				}
-				++a_asteroidlargedeathcount;
+				++a_rAsteroidLargedeathcount; //Increase Asteroid Death Count
 			}
 		}
 	}
 	//Check Medium Asteroid Collision
 	for (int i = 0; i < 15; ++i)
 	{
-		if (a_aAsteroidMediumArray[i].IsActive())
+		if (a_paAsteroidMediumArray[i].IsActive()) //Check Asteroid Is Active
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidMediumArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidMediumArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
-			float fDistanceX = a_SpaceshipBullet.pos.fX - fAsteroidPosX;
-			float fDistanceY = a_SpaceshipBullet.pos.fY - fAsteroidPosY;
+			a_paAsteroidMediumArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidMediumArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = a_rSpaceshipBullet.pos.fX - fAsteroidPosX;
+			float fDistanceY = a_rSpaceshipBullet.pos.fY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
-			if (fDistanceSquared < a_SpaceshipBullet.fRadius + (float)iAsteroidRadius)
+			if (fDistanceSquared < a_rSpaceshipBullet.fRadius + (float)iAsteroidRadius)
 			{
-				if (a_SpaceshipBullet.IsDrawn(a_SpaceshipBullet))
+				//Collision
+				if (a_rSpaceshipBullet.IsDrawn(a_rSpaceshipBullet))
 				{
-					a_SpaceshipBullet.Destroy(a_SpaceshipBullet);
+					a_rSpaceshipBullet.Destroy(a_rSpaceshipBullet); //Destroy Bullet 
 				}
-				a_aAsteroidMediumArray[i].Destroy(a_aAsteroidMediumArray[i]);
-				if (!a_aAsteroidMediumArray[i].ScoreUpdated())
+				a_paAsteroidMediumArray[i].Destroy(a_paAsteroidMediumArray[i]);
+				if (!a_paAsteroidMediumArray[i].ScoreUpdated())
 				{
-					a_Scorecontroller.UpdateScore(a_aAsteroidMediumArray[i].Score(a_aAsteroidMediumArray[i]));
-					a_aAsteroidMediumArray[i].SetScoreUpdated(true);
+					a_rScorecontroller.UpdateScore(a_paAsteroidMediumArray[i].Score(a_paAsteroidMediumArray[i])); //Update Score
+					a_paAsteroidMediumArray[i].SetScoreUpdated(true);
 				}
-				++a_asteroidmediumdeathcount;
+				++a_rAsteroidMediumdeathcount; //Increase Asteroid Death Count
 			}
 		}
 	}
 	//Check Small Asteroid Collision
 	for (int i = 0; i < 45; ++i)
 	{
-		if (a_aAsteroidSmallArray[i].IsActive())
+		if (a_paAsteroidSmallArray[i].IsActive()) //Check Asteroid Is Active
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidSmallArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidSmallArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
-			float fDistanceX = a_SpaceshipBullet.pos.fX - fAsteroidPosX;
-			float fDistanceY = a_SpaceshipBullet.pos.fY - fAsteroidPosY;
+			a_paAsteroidSmallArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidSmallArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = a_rSpaceshipBullet.pos.fX - fAsteroidPosX;
+			float fDistanceY = a_rSpaceshipBullet.pos.fY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
-			if (fDistanceSquared < a_SpaceshipBullet.fRadius + (float)iAsteroidRadius)
+			if (fDistanceSquared < a_rSpaceshipBullet.fRadius + (float)iAsteroidRadius)
 			{
-				if (a_SpaceshipBullet.IsDrawn(a_SpaceshipBullet))
+				//Collision
+				if (a_rSpaceshipBullet.IsDrawn(a_rSpaceshipBullet))
 				{
-					a_SpaceshipBullet.Destroy(a_SpaceshipBullet);
+					a_rSpaceshipBullet.Destroy(a_rSpaceshipBullet); //Destroy Bullet 
 				}
-				a_aAsteroidSmallArray[i].Destroy(a_aAsteroidSmallArray[i]);
-				if (!a_aAsteroidSmallArray[i].ScoreUpdated())
+				a_paAsteroidSmallArray[i].Destroy(a_paAsteroidSmallArray[i]);
+				if (!a_paAsteroidSmallArray[i].ScoreUpdated())
 				{
-					a_Scorecontroller.UpdateScore(a_aAsteroidSmallArray[i].Score(a_aAsteroidSmallArray[i]));
-					a_aAsteroidSmallArray[i].SetScoreUpdated(true);
+					a_rScorecontroller.UpdateScore(a_paAsteroidSmallArray[i].Score(a_paAsteroidSmallArray[i])); //Update Score
+					a_paAsteroidSmallArray[i].SetScoreUpdated(true);
 				}
-				++a_asteroidsmalldeathcount;
+				++a_rAsteroidSmalldeathcount; //Increase Asteroid Death Count
 			}
 		}
 	}
 	//Check for UFOEasy Collision
-	if (a_UFOEasy.IsActive())
+	if (a_rUFOEasy.IsActive()) //Check UFO Is Active
 	{
 		int iUFOWidth, iUFOHeight;
 		float fUFOPosX = 0.f, fUFOPosY = 0.f;
-		a_UFOEasy.GetPos(fUFOPosX, fUFOPosY);
-		a_UFOEasy.GetDimensions(iUFOWidth, iUFOHeight);
+		a_rUFOEasy.GetPos(fUFOPosX, fUFOPosY);
+		a_rUFOEasy.GetDimensions(iUFOWidth, iUFOHeight);
 		int iHalfUFOWidth = (int)(iUFOWidth * 0.5);
 		int iHalfUFOHeight = (int)(iUFOHeight * 0.5);
 
-		if ((a_SpaceshipBullet.pos.fX - a_SpaceshipBullet.fRadius < fUFOPosX + iHalfUFOWidth && a_SpaceshipBullet.pos.fX + a_SpaceshipBullet.fRadius > fUFOPosX - iHalfUFOWidth) && (a_SpaceshipBullet.pos.fY - a_SpaceshipBullet.fRadius < fUFOPosY + iHalfUFOHeight && a_SpaceshipBullet.pos.fY + a_SpaceshipBullet.fRadius > fUFOPosY - iHalfUFOHeight))
+		if ((a_rSpaceshipBullet.pos.fX - a_rSpaceshipBullet.fRadius < fUFOPosX + iHalfUFOWidth &&
+			a_rSpaceshipBullet.pos.fX + a_rSpaceshipBullet.fRadius > fUFOPosX - iHalfUFOWidth) &&
+			(a_rSpaceshipBullet.pos.fY - a_rSpaceshipBullet.fRadius < fUFOPosY + iHalfUFOHeight &&
+				a_rSpaceshipBullet.pos.fY + a_rSpaceshipBullet.fRadius > fUFOPosY - iHalfUFOHeight))
 		{
 			//Collision
-			if (a_SpaceshipBullet.IsDrawn(a_SpaceshipBullet))
+			if (a_rSpaceshipBullet.IsDrawn(a_rSpaceshipBullet))
 			{
-				a_SpaceshipBullet.Destroy(a_SpaceshipBullet);
+				a_rSpaceshipBullet.Destroy(a_rSpaceshipBullet); //Destroy Bullet 
 
 			}
-			a_UFOEasy.Destroy(a_UFOEasy);
-			if (!a_UFOEasy.ScoreUpdated())
+			a_rUFOEasy.Destroy(a_rUFOEasy);
+			if (!a_rUFOEasy.ScoreUpdated())
 			{
-				a_Scorecontroller.UpdateScore(a_UFOEasy.Score(a_UFOEasy));
-				a_UFOEasy.SetScoreUpdated(true);
+				a_rScorecontroller.UpdateScore(a_rUFOEasy.Score(a_rUFOEasy)); //Update Score
+				a_rUFOEasy.SetScoreUpdated(true);
 			}
-			++a_UFOEasydeathcount;
+			++a_rUFOEasydeathcount; //Increase UFO Death Count
 		}
 	}
 	//Check for UFOHard Collision
-	if (a_UFOHard.IsActive())
+	if (a_rUFOHard.IsActive()) //Check UFO Is Active
 	{
 		int iUFOWidth, iUFOHeight;
 		float fUFOPosX = 0.f, fUFOPosY = 0.f;
-		a_UFOHard.GetPos(fUFOPosX, fUFOPosY);
-		a_UFOHard.GetDimensions(iUFOWidth, iUFOHeight);
+		a_rUFOHard.GetPos(fUFOPosX, fUFOPosY);
+		a_rUFOHard.GetDimensions(iUFOWidth, iUFOHeight);
 		int iHalfUFOWidth = (int)(iUFOWidth * 0.5);
 		int iHalfUFOHeight = (int)(iUFOHeight * 0.5);
 
-		if ((a_SpaceshipBullet.pos.fX - a_SpaceshipBullet.fRadius < fUFOPosX + iHalfUFOWidth && a_SpaceshipBullet.pos.fX + a_SpaceshipBullet.fRadius > fUFOPosX - iHalfUFOWidth) && (a_SpaceshipBullet.pos.fY - a_SpaceshipBullet.fRadius < fUFOPosY + iHalfUFOHeight && a_SpaceshipBullet.pos.fY + a_SpaceshipBullet.fRadius > fUFOPosY - iHalfUFOHeight))
+		if ((a_rSpaceshipBullet.pos.fX - a_rSpaceshipBullet.fRadius < fUFOPosX + iHalfUFOWidth && a_rSpaceshipBullet.pos.fX + a_rSpaceshipBullet.fRadius > fUFOPosX - iHalfUFOWidth) && (a_rSpaceshipBullet.pos.fY - a_rSpaceshipBullet.fRadius < fUFOPosY + iHalfUFOHeight && a_rSpaceshipBullet.pos.fY + a_rSpaceshipBullet.fRadius > fUFOPosY - iHalfUFOHeight))
 		{
 			//Collision
-			if (a_SpaceshipBullet.IsDrawn(a_SpaceshipBullet))
+			if (a_rSpaceshipBullet.IsDrawn(a_rSpaceshipBullet))
 			{
-				a_SpaceshipBullet.Destroy(a_SpaceshipBullet);
+				a_rSpaceshipBullet.Destroy(a_rSpaceshipBullet); //Destroy Bullet 
 			}
-			a_UFOHard.Destroy(a_UFOHard);
-			if (!a_UFOHard.ScoreUpdated())
+			a_rUFOHard.Destroy(a_rUFOHard);
+			if (!a_rUFOHard.ScoreUpdated())
 			{
-				a_Scorecontroller.UpdateScore(a_UFOHard.Score(a_UFOHard));
-				a_UFOHard.SetScoreUpdated(true);
+				a_rScorecontroller.UpdateScore(a_rUFOHard.Score(a_rUFOHard)); //Update Score
+				a_rUFOHard.SetScoreUpdated(true);
 			}
-			++a_UFOHarddeathcount;
+			++a_rUFOHarddeathcount; //Increase UFO Death Count
 		}
 	}
 }
-
-bool oSpaceshipBullet::IsActive(oSpaceshipBullet & a_SpaceshipBullet)
+//Return Status Variables
+bool oSpaceshipBullet::IsActive(oSpaceshipBullet & a_rSpaceshipBullet)
 {
-	return a_SpaceshipBullet.bIsActive;
+	return a_rSpaceshipBullet.bIsActive;
 }
 
-bool oSpaceshipBullet::IsDrawn(oSpaceshipBullet & a_SpaceshipBullet)
+bool oSpaceshipBullet::IsDrawn(oSpaceshipBullet & a_rSpaceshipBullet)
 {
-	return a_SpaceshipBullet.bIsDrawn;
+	return a_rSpaceshipBullet.bIsDrawn;
 }
 
-bool oSpaceshipBullet::HasExpired(oSpaceshipBullet & a_SpaceshipBullet)
+bool oSpaceshipBullet::HasExpired(oSpaceshipBullet & a_rSpaceshipBullet)
 {
-	return a_SpaceshipBullet.bHasExpired;
+	return a_rSpaceshipBullet.bHasExpired;
 }
 
-void oSpaceshipBullet::Destroy(oSpaceshipBullet & a_SpaceshipBullet)
+void oSpaceshipBullet::Destroy(oSpaceshipBullet & a_rSpaceshipBullet)
 {
-	fCurrentDistance = 0.f;
+	fCurrentDistance = 0.f; //Reset Position and Movement Variables
 	pos.fX = 0.f;
 	pos.fY = 0.f;
 	vNew = Vector(0.0f, 0.0f);
-	a_SpaceshipBullet.SetIsDrawn(false);
-	a_SpaceshipBullet.SetIsActive(false);
-	a_SpaceshipBullet.SetHasExpired(true);
-	UG::StopDrawingSprite(a_SpaceshipBullet.iSpriteID);
-	UG::DestroySprite(a_SpaceshipBullet.iSpriteID);
-	a_SpaceshipBullet.iSpriteID = -1;
+	a_rSpaceshipBullet.SetIsDrawn(false); //Set Status Variables
+	a_rSpaceshipBullet.SetIsActive(false);
+	a_rSpaceshipBullet.SetHasExpired(true);
+	UG::StopDrawingSprite(a_rSpaceshipBullet.iSpriteID); //Stop Drawing Bullet
+	UG::DestroySprite(a_rSpaceshipBullet.iSpriteID); //Destroy Bullet
+	a_rSpaceshipBullet.iSpriteID = -1; //Reset iSpriteID
 }
 
-void oUFOBullet::Draw(oUFOBullet& a_UFOBullet, float fUFOPosX, float fUFOPosY, Vector& a_velocity)
+void oUFOBullet::Draw(oUFOBullet& a_rUFOBullet, float fUFOPosX, float fUFOPosY, Vector a_velocity)
 {
-	a_UFOBullet.bIsDrawn = true;
-	a_UFOBullet.bIsActive = true;
-	a_UFOBullet.bHasExpired = false;
-	a_UFOBullet.vNew = a_velocity;
+	a_rUFOBullet.bIsDrawn = true; //Set Status Variables
+	a_rUFOBullet.bIsActive = true;
+	a_rUFOBullet.bHasExpired = false;
+	a_rUFOBullet.vNew = a_velocity;
 	// Set Initial Position of Bullet
-	a_UFOBullet.pos.fX = fUFOPosX;
-	a_UFOBullet.pos.fY = fUFOPosY;
-
-	a_UFOBullet.iSpriteID = UG::CreateSprite("./images/bullet.png", (float)a_UFOBullet.iWidth, (float)a_UFOBullet.iHeight);
-	UG::DrawSprite(a_UFOBullet.iSpriteID);
-	UG::MoveSprite(a_UFOBullet.iSpriteID, a_UFOBullet.pos.fX, a_UFOBullet.pos.fY);
+	a_rUFOBullet.pos.fX = fUFOPosX;
+	a_rUFOBullet.pos.fY = fUFOPosY;
+	//Create New BulletSprite
+	a_rUFOBullet.iSpriteID = UG::CreateSprite("./images/bullet.png", (float)a_rUFOBullet.iWidth, (float)a_rUFOBullet.iHeight);
+	UG::DrawSprite(a_rUFOBullet.iSpriteID); //Draw Bullet Sprite
+	UG::MoveSprite(a_rUFOBullet.iSpriteID, a_rUFOBullet.pos.fX, a_rUFOBullet.pos.fY); //Move Bullet
 }
 
-void oUFOBullet::CheckCollision(oUFOBullet & a_UFOBullet, oSpaceship & a_Spaceship, oAsteroidLarge * a_aAsteroidLargeArray, oAsteroidMedium * a_aAsteroidMediumArray, oAsteroidSmall * a_aAsteroidSmallArray, oLivescontroller a_Livescontroller, int & a_asteroidlargedeathcount, int & a_asteroidmediumdeathcount, int & a_asteroidsmalldeathcount)
+void oUFOBullet::CheckCollision(oUFOBullet & a_rUFOBullet, oSpaceship & a_rSpaceship, oAsteroidLarge * a_paAsteroidLargeArray, oAsteroidMedium * a_paAsteroidMediumArray, oAsteroidSmall * a_paAsteroidSmallArray, oLivescontroller a_rLivescontroller, int & a_rAsteroidLargedeathcount, int & a_rAsteroidMediumdeathcount, int & a_rAsteroidSmalldeathcount)
 {
 	//Check Large Asteroid Collision
 	for (int i = 0; i < 5; ++i)
 	{
-		if (a_aAsteroidLargeArray[i].IsActive())
+		if (a_paAsteroidLargeArray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidLargeArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidLargeArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
-			float fDistanceX = a_UFOBullet.pos.fX - fAsteroidPosX;
-			float fDistanceY = a_UFOBullet.pos.fY - fAsteroidPosY;
+			a_paAsteroidLargeArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidLargeArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = a_rUFOBullet.pos.fX - fAsteroidPosX;
+			float fDistanceY = a_rUFOBullet.pos.fY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
-			if (fDistanceSquared < a_UFOBullet.fRadius + (float)iAsteroidRadius)
+			if (fDistanceSquared < a_rUFOBullet.fRadius + (float)iAsteroidRadius)
 			{
-				if (a_UFOBullet.IsDrawn(a_UFOBullet))
+				if (a_rUFOBullet.IsDrawn(a_rUFOBullet))
 				{
-					a_UFOBullet.Destroy(a_UFOBullet);
+					a_rUFOBullet.Destroy(a_rUFOBullet); //If Bullet is Drawn, Destroy
 				}
-				a_aAsteroidLargeArray[i].Destroy(a_aAsteroidLargeArray[i]);
-				++a_asteroidlargedeathcount;
+				a_paAsteroidLargeArray[i].Destroy(a_paAsteroidLargeArray[i]); //Destroy Asteroid
+				++a_rAsteroidLargedeathcount; //Increase Asteroid Death Count
 			}
 		}
 	}
 	//Check Medium Asteroid Collision
 	for (int i = 0; i < 15; ++i)
 	{
-		if (a_aAsteroidMediumArray[i].IsActive())
+		if (a_paAsteroidMediumArray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidMediumArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidMediumArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
-			float fDistanceX = a_UFOBullet.pos.fX - fAsteroidPosX;
-			float fDistanceY = a_UFOBullet.pos.fY - fAsteroidPosY;
+			a_paAsteroidMediumArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidMediumArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = a_rUFOBullet.pos.fX - fAsteroidPosX;
+			float fDistanceY = a_rUFOBullet.pos.fY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
-			if (fDistanceSquared < a_UFOBullet.fRadius + (float)iAsteroidRadius)
-			{
-				if (a_UFOBullet.IsDrawn(a_UFOBullet))
+			if (fDistanceSquared < a_rUFOBullet.fRadius + (float)iAsteroidRadius)
+			{	//Collision
+				if (a_rUFOBullet.IsDrawn(a_rUFOBullet))
 				{
-					a_UFOBullet.Destroy(a_UFOBullet);
+					a_rUFOBullet.Destroy(a_rUFOBullet); //If Bullet is Drawn, Destroy
 				}
-				a_aAsteroidMediumArray[i].Destroy(a_aAsteroidMediumArray[i]);
-				++a_asteroidmediumdeathcount;
+				a_paAsteroidMediumArray[i].Destroy(a_paAsteroidMediumArray[i]); //Destroy Asteroid
+				++a_rAsteroidMediumdeathcount; //Increase Asteroid Death Count
 			}
 		}
 	}
 	//Check Small Asteroid Collision
 	for (int i = 0; i < 45; ++i)
 	{
-		if (a_aAsteroidSmallArray[i].IsActive())
+		if (a_paAsteroidSmallArray[i].IsActive())
 		{
 			int iAsteroidRadius = 0;
 			float fAsteroidPosX = 0.f, fAsteroidPosY = 0.f;
-			a_aAsteroidSmallArray[i].GetRadius(iAsteroidRadius);
-			a_aAsteroidSmallArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
-			float fDistanceX = a_UFOBullet.pos.fX - fAsteroidPosX;
-			float fDistanceY = a_UFOBullet.pos.fY - fAsteroidPosY;
+			a_paAsteroidSmallArray[i].GetRadius(iAsteroidRadius);
+			a_paAsteroidSmallArray[i].GetPos(fAsteroidPosX, fAsteroidPosY);
+			float fDistanceX = a_rUFOBullet.pos.fX - fAsteroidPosX;
+			float fDistanceY = a_rUFOBullet.pos.fY - fAsteroidPosY;
 			float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
-			if (fDistanceSquared < a_UFOBullet.fRadius + (float)iAsteroidRadius)
+			if (fDistanceSquared < a_rUFOBullet.fRadius + (float)iAsteroidRadius)
 			{
-				if (a_UFOBullet.IsDrawn(a_UFOBullet))
+				//Collision
+				if (a_rUFOBullet.IsDrawn(a_rUFOBullet))
 				{
-					a_UFOBullet.Destroy(a_UFOBullet);
+					a_rUFOBullet.Destroy(a_rUFOBullet); //If Bullet is Drawn, Destroy
 				}
-				a_aAsteroidSmallArray[i].Destroy(a_aAsteroidSmallArray[i]);
-				++a_asteroidsmalldeathcount;
+				a_paAsteroidSmallArray[i].Destroy(a_paAsteroidSmallArray[i]); //Destroy Asteroid
+				++a_rAsteroidSmalldeathcount; //Increase Asteroid Death Count
 			}
 		}
 	}
 
 	//Check Spaceship Collision
-	if (a_Spaceship.IsActive())
+	if (a_rSpaceship.IsActive())
 	{
 		float fSpaceshipRadius = 0;
-		float fSpaceshipPosX = 0.f, fSpaceshipPosY = 0.f;
-		a_Spaceship.GetRadius(fSpaceshipRadius);
-		a_Spaceship.GetPos(fSpaceshipPosX, fSpaceshipPosY);
-		float fDistanceX = a_UFOBullet.pos.fX - fSpaceshipPosX;
-		float fDistanceY = a_UFOBullet.pos.fY - fSpaceshipPosY;
+		float a_fSpaceshipPosX = 0.f, a_fSpaceshipPosY = 0.f;
+		a_rSpaceship.GetRadius(fSpaceshipRadius);
+		a_rSpaceship.GetPos(a_fSpaceshipPosX, a_fSpaceshipPosY);
+		float fDistanceX = a_rUFOBullet.pos.fX - a_fSpaceshipPosX;
+		float fDistanceY = a_rUFOBullet.pos.fY - a_fSpaceshipPosY;
 		float fDistanceSquared = sqrtf((fDistanceX * fDistanceX) + (fDistanceY * fDistanceY));
-		if (fDistanceSquared < a_UFOBullet.fRadius + fSpaceshipRadius)
+		if (fDistanceSquared < a_rUFOBullet.fRadius + fSpaceshipRadius)
 		{
-			if (a_UFOBullet.IsDrawn(a_UFOBullet))
+			if (a_rUFOBullet.IsDrawn(a_rUFOBullet))
 			{
-				a_UFOBullet.Destroy(a_UFOBullet);
+				a_rUFOBullet.Destroy(a_rUFOBullet); //If Bullet is Drawn, Destroy
 			}
-			a_Spaceship.Destroy(a_Spaceship, a_Livescontroller);
-			++a_asteroidsmalldeathcount;
-			a_Spaceship.SetCollision(true);
+			a_rSpaceship.Destroy(a_rSpaceship, a_rLivescontroller); //Destroy Spaceship
+			a_rSpaceship.SetCollision(true); // Spaceship Collided
 		}
 		else
 		{
-			a_Spaceship.SetCollision(false);
+			a_rSpaceship.SetCollision(false); // Spaceship Hasn't Collided
 		}
 	}
 }
 
-Vector oUFOBullet::NewFireDirection(oUFOHard & a_UFOHard, oSpaceship & a_Spaceship)
+Vector oUFOBullet::NewFireDirection(oUFOHard& a_rUFOHard, oSpaceship & a_rSpaceship)
 {
-	float fSpaceshipPosX, fSpaceshipPosY;
-	a_Spaceship.GetPos(fSpaceshipPosX, fSpaceshipPosY);
+	float a_fSpaceshipPosX, a_fSpaceshipPosY;
+	a_rSpaceship.GetPos(a_fSpaceshipPosX, a_fSpaceshipPosY);
 
-	Vector vDirection = Vector(fSpaceshipPosX - a_UFOHard.pos.fX, fSpaceshipPosY - a_UFOHard.pos.fY);
+	Vector vDirection = Vector(a_fSpaceshipPosX - a_rUFOHard.pos.fX, a_fSpaceshipPosY - a_rUFOHard.pos.fY); //Set Trajectory to Aim at Spaceship
 	vDirection.Normalise();
-	vDirection*a_UFOHard.BulletSpeed();
+	vDirection * (float) a_rUFOHard.BulletSpeed(); // Increase Bullet Speed
 	return vDirection;
 }
 
-bool oUFOBullet::IsActive(oUFOBullet & a_UFOBullet)
+//Return Status Variables
+bool oUFOBullet::IsActive(oUFOBullet & a_rUFOBullet)
 {
-	return a_UFOBullet.bIsActive;
+	return a_rUFOBullet.bIsActive;
 }
 
-bool oUFOBullet::IsDrawn(oUFOBullet & a_UFOBullet)
+bool oUFOBullet::IsDrawn(oUFOBullet & a_rUFOBullet)
 {
-	return a_UFOBullet.bIsDrawn;
+	return a_rUFOBullet.bIsDrawn;
 }
 
-bool oUFOBullet::HasExpired(oUFOBullet & a_UFOBullet)
+bool oUFOBullet::HasExpired(oUFOBullet & a_rUFOBullet)
 {
-	return a_UFOBullet.bHasExpired;
+	return a_rUFOBullet.bHasExpired;
 }
 
-void oUFOBullet::Destroy(oUFOBullet & a_UFOBullet)
+void oUFOBullet::Destroy(oUFOBullet & a_rUFOBullet)
 {
-	fCurrentDistance = 0.f;
+	fCurrentDistance = 0.f; //Reset Position Variables
 	pos.fX = 0.f;
 	pos.fY = 0.f;
 	vNew = Vector(0.0f, 0.0f);
-	a_UFOBullet.SetIsDrawn(false);
-	a_UFOBullet.SetIsActive(false);
-	a_UFOBullet.SetHasExpired(true);
-	UG::StopDrawingSprite(a_UFOBullet.iSpriteID);
-	UG::DestroySprite(a_UFOBullet.iSpriteID);
-	a_UFOBullet.iSpriteID = -1;
+	a_rUFOBullet.SetIsDrawn(false); //Reset Status Variables
+	a_rUFOBullet.SetIsActive(false);
+	a_rUFOBullet.SetHasExpired(true);
+	UG::StopDrawingSprite(a_rUFOBullet.iSpriteID); //Stop Drawing Bullet
+	UG::DestroySprite(a_rUFOBullet.iSpriteID); //Destroy Bullet Sprite
+	a_rUFOBullet.iSpriteID = -1; //Reset SpriteID;
 }

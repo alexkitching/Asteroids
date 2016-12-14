@@ -45,14 +45,14 @@ void oSpawncontroller::Spawncontroller(int a_MaxObjects, const int a_ObjectWidth
 			}
 			else if (std::max(fOldXPosMax, fNewXPosMax) - std::min(fOldXPosMin, fNewXPosMin) > (fOldXPosMax - fOldXPosMin) + (fNewXPosMax - fNewXPosMin) && std::max(fOldYPosMax, fNewYPosMax) - std::min(fOldYPosMin, fNewYPosMin) > (fOldYPosMax - fOldYPosMin) + (fNewYPosMax - fNewYPosMin))
 			{
-				afSpawnPosArray[i][0] = fNewPosX;
+				afSpawnPosArray[i][0] = fNewPosX; // Saves Asteroid Position
 				afSpawnPosArray[i][1] = fNewPosY;
 				i++;
 			}
 		}
-		else if (i == 0)
+		else if (i == 0) //If First Item
 		{
-			afSpawnPosArray[i][0] = fNewPosX;
+			afSpawnPosArray[i][0] = fNewPosX; //Saves Asteroid Position
 			afSpawnPosArray[i][1] = fNewPosY;
 			i++;
 		}
@@ -60,18 +60,18 @@ void oSpawncontroller::Spawncontroller(int a_MaxObjects, const int a_ObjectWidth
 	}
 }
 
-void oSpawncontroller::UFOSpawncontroller(oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, oScorecontroller& a_Scorecontroller)
+void oSpawncontroller::UFOSpawncontroller(oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, oScorecontroller& a_rScorecontroller)
 {
 	
-	if (a_Scorecontroller.RoundScore() > 1200 && a_UFOEasy.CanSpawn())
+	if (a_rScorecontroller.RoundScore() > 1200 && a_rUFOEasy.CanSpawn()) // UFOEasy Can Spawn
 	{
-			a_UFOEasy.Draw();
-			a_UFOEasy.SetCanSpawn(false);
+			a_rUFOEasy.Draw(); //Spawn UFO
+			a_rUFOEasy.SetCanSpawn(false);
 	}
-	if (a_Scorecontroller.RoundScore() > 2200 && a_UFOHard.CanSpawn())
+	if (a_rScorecontroller.RoundScore() > 2200 && a_rUFOHard.CanSpawn()) // UFOHard Can Spawn
 	{
-		a_UFOHard.Draw();
-		a_UFOHard.SetCanSpawn(false);
+		a_rUFOHard.Draw(); //Spawn UFO
+		a_rUFOHard.SetCanSpawn(false);
 	}
 
 	

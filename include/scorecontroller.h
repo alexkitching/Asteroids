@@ -10,8 +10,11 @@
 class oScorecontroller
 {
 public:
-	oScorecontroller() {};
-	~oScorecontroller() {};
+
+	oScorecontroller() {}; //Constructor
+	~oScorecontroller() {}; //Destructor
+
+	//Functions
 	void DrawScore();
 	void UpdateScore(int a_inewscore);
 	void ResetRoundScore();
@@ -19,8 +22,12 @@ public:
 	int CurrentScore();
 	int RoundScore();
 	int LivesScore();
+
+	//Friend Classes
 	friend class oObjectUpdateController;
 private:
+
+	//Score Variables
 	int iCurrentScore = 0;
 	int iRoundScore = 0;
 	int iLivesScore = 0;

@@ -27,9 +27,9 @@ int oLivescontroller::CurrentLives()
 	return iCurrentLives;
 }
 
-void oLivescontroller::UpdateLives(int a_inewlives)
+void oLivescontroller::UpdateLives(int a_iNewLives)
 {
-	iCurrentLives += a_inewlives;
+	iCurrentLives += a_iNewLives;
 }
 
 void oLivescontroller::ExtraLife()

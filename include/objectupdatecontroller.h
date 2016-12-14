@@ -18,20 +18,30 @@
 class oObjectUpdateController
 {
 public:
-	oObjectUpdateController() {};
-	~oObjectUpdateController() {};
-	bool Spaceship(oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, oLivescontroller& a_Livescontroller, oScorecontroller& a_Scorecontroller);
-	void SpaceshipBullet(oSpaceshipBullet& a_Spaceshipbullet, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, oScorecontroller& a_Scorecontroller);
-	void AsteroidLarge(oAsteroidLarge& a_AsteroidLarge, oAsteroidMedium* a_aAsteroidMediumArray);
-	void AsteroidMedium(oAsteroidMedium& a_AsteroidMedium, oAsteroidSmall* a_aAsteroidSmallArray);
-	void AsteroidSmall(oAsteroidSmall& a_AsteroidSmall);
-	void UFOEasy(oUFOEasy & a_UFOEasy, oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oLivescontroller& a_Livescontroller);
-	void UFOHard(oUFOHard & a_UFOHard, oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oLivescontroller& a_Livescontroller);
-	void UFOBullet(oUFOBullet& a_UFOBullet, oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oLivescontroller& a_Livescontroller);
-	void ReinitialiseAsteroids(oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray);
+
+	oObjectUpdateController() {}; //Constructor
+	~oObjectUpdateController() {}; //Destructor
+
+	//Functions
+	bool Spaceship(oSpaceship& a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray,
+		           oAsteroidSmall* a_paAsteroidSmallArray, oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, oLivescontroller& a_rLivescontroller,
+		           oScorecontroller& a_rScorecontroller);
+	void SpaceshipBullet(oSpaceshipBullet& a_rSpaceshipBullet, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray,
+		                 oAsteroidSmall* a_paAsteroidSmallArray, oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, oScorecontroller& a_rScorecontroller);
+	void AsteroidLarge(oAsteroidLarge& a_rAsteroidLarge, oAsteroidMedium* a_paAsteroidMediumArray);
+	void AsteroidMedium(oAsteroidMedium& a_rAsteroidMedium, oAsteroidSmall* a_paAsteroidSmallArray);
+	void AsteroidSmall(oAsteroidSmall& a_rAsteroidSmall);
+	void UFOEasy(oUFOEasy& a_rUFOEasy, oSpaceship& a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray,
+		         oAsteroidSmall* a_paAsteroidSmallArray, oLivescontroller& a_rLivescontroller);
+	void UFOHard(oUFOHard& a_rUFOHard, oSpaceship& a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray,
+		         oAsteroidSmall* a_paAsteroidSmallArray, oLivescontroller& a_rLivescontroller);
+	void UFOBullet(oUFOBullet& a_rUFOBullet, oSpaceship& a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray,
+		           oAsteroidSmall* a_paAsteroidSmallArray, oLivescontroller& a_rLivescontroller);
+	void ReinitialiseAsteroids(oAsteroidMedium* a_paAsteroidMediumArray, oAsteroidSmall* a_paAsteroidSmallArray);
 	void ResetCount();
 	bool ClearedCheck();
 
+	//Object Count Variables
 	int iAsteroidLargeSpawnCount = 0;
 	int iAsteroidLargeDeathCount = 0;
 	int iAsteroidMediumSpawnCount = 0;
@@ -41,6 +51,7 @@ public:
 	int iUFOEasyDeathCount = 0;
 	int iUFOHardDeathCount = 0;
 	bool bAllDead = false;
+
 private:
 	
 

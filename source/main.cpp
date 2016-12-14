@@ -26,7 +26,7 @@ int g_iScreenWidth = 0;
 int g_iScreenHeight = 0;
 float g_fDeltaTime = 0.0f;
 
-void ClearObjects(oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, oLivescontroller& a_Livescontroller, oScorecontroller& a_Scorecontroller, oObjectUpdateController& a_ObjectUpdateController, oSpawncontroller& a_Spawncontroller);
+void ClearObjects(oSpaceship& a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray, oAsteroidSmall* a_paAsteroidSmallArray, oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, oLivescontroller& a_rLivescontroller, oScorecontroller& a_rScorecontroller, oObjectUpdateController& a_rObjectUpdateController, oSpawncontroller& a_rSpawncontroller);
 
 int main(int argv, char* argc[])
 {
@@ -156,51 +156,51 @@ int main(int argv, char* argc[])
 }
 
 //Clears Game Of Sprites and Objects
-void ClearObjects(oSpaceship& a_Spaceship, oAsteroidLarge* a_aAsteroidLargeArray, oAsteroidMedium* a_aAsteroidMediumArray, oAsteroidSmall* a_aAsteroidSmallArray, oUFOEasy& a_UFOEasy, oUFOHard& a_UFOHard, oLivescontroller& a_Livescontroller, oScorecontroller& a_Scorecontroller, oObjectUpdateController& a_ObjectUpdateController, oSpawncontroller& a_Spawncontroller)
+void ClearObjects(oSpaceship& a_rSpaceship, oAsteroidLarge* a_paAsteroidLargeArray, oAsteroidMedium* a_paAsteroidMediumArray, oAsteroidSmall* a_paAsteroidSmallArray, oUFOEasy& a_rUFOEasy, oUFOHard& a_rUFOHard, oLivescontroller& a_rLivescontroller, oScorecontroller& a_rScorecontroller, oObjectUpdateController& a_rObjectUpdateController, oSpawncontroller& a_rSpawncontroller)
 {
-	if (a_Spaceship.IsActive())
+	if (a_rSpaceship.IsActive())
 	{
-		a_Spaceship.Destroy(a_Spaceship, a_Livescontroller);
+		a_rSpaceship.Destroy(a_rSpaceship, a_rLivescontroller);
 	}
-	a_Spaceship.~oSpaceship();
+	a_rSpaceship.~oSpaceship();
 	for (int i = 0; i < 5; i++)
 	{
-		if (a_aAsteroidLargeArray[i].IsActive())
+		if (a_paAsteroidLargeArray[i].IsActive())
 		{
-			a_aAsteroidLargeArray[i].Destroy(a_aAsteroidLargeArray[i]);
+			a_paAsteroidLargeArray[i].Destroy(a_paAsteroidLargeArray[i]);
 		}
-		a_aAsteroidLargeArray[i].~oAsteroidLarge();
+		a_paAsteroidLargeArray[i].~oAsteroidLarge();
 	}
 	for (int i = 0; i < 15; i++)
 	{
-		if (a_aAsteroidMediumArray[i].IsActive())
+		if (a_paAsteroidMediumArray[i].IsActive())
 		{
-			a_aAsteroidMediumArray[i].Destroy(a_aAsteroidMediumArray[i]);
+			a_paAsteroidMediumArray[i].Destroy(a_paAsteroidMediumArray[i]);
 		}
-		a_aAsteroidMediumArray[i].~oAsteroidMedium();
+		a_paAsteroidMediumArray[i].~oAsteroidMedium();
 	}
 	for (int i = 0; i < 45; i++)
 	{
-		if (a_aAsteroidSmallArray[i].IsActive())
+		if (a_paAsteroidSmallArray[i].IsActive())
 		{
-			a_aAsteroidSmallArray[i].Destroy(a_aAsteroidSmallArray[i]);
+			a_paAsteroidSmallArray[i].Destroy(a_paAsteroidSmallArray[i]);
 		}
-		a_aAsteroidSmallArray[i].~oAsteroidSmall();
+		a_paAsteroidSmallArray[i].~oAsteroidSmall();
 	}
-	if (a_UFOEasy.IsActive())
+	if (a_rUFOEasy.IsActive())
 	{
-		a_UFOEasy.Destroy(a_UFOEasy);
+		a_rUFOEasy.Destroy(a_rUFOEasy);
 	}
-	a_UFOEasy.~oUFOEasy();
+	a_rUFOEasy.~oUFOEasy();
 
-	if (a_UFOHard.IsActive())
+	if (a_rUFOHard.IsActive())
 	{
-		a_UFOHard.Destroy(a_UFOHard);
+		a_rUFOHard.Destroy(a_rUFOHard);
 	}
-	a_UFOHard.~oUFOHard();
+	a_rUFOHard.~oUFOHard();
 
-	a_Livescontroller.~oLivescontroller();
-	a_Scorecontroller.~oScorecontroller();
-	a_Spawncontroller.~oSpawncontroller();
-	a_ObjectUpdateController.~oObjectUpdateController();
+	a_rLivescontroller.~oLivescontroller();
+	a_rScorecontroller.~oScorecontroller();
+	a_rSpawncontroller.~oSpawncontroller();
+	a_rObjectUpdateController.~oObjectUpdateController();
 }
