@@ -6,9 +6,9 @@
 
 This was my very first finished game project I produced at university.
 
-We were tasked with Recreating a Retro Arcade Game and I decided to choose asteroids.
+I was tasked with Recreating a Retro Arcade Game and I decided to choose asteroids.
 
-Compared to my Later Projects this isn't my best work however it was where I started and is a useful comparison especially when looking at my seconds assignment Tiny Tanks.
+Compared to my Later Projects this isn't my best work however it was where I started and is a useful comparison to see how I've developed my skills especially when looking at my seconds assignment Tiny Tanks.
 
 **Features:** <br/>
 Authentic Asteroids Gameplay <br/>
